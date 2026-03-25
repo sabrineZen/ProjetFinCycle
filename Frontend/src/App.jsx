@@ -3,12 +3,20 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './index.css';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <div className="bg-test">
+  Test Tailwind
+</div>
+<div className="bg-red-500 text-white p-8 rounded-lg shadow-xl">
+  Test Tailwind
+</div>
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
