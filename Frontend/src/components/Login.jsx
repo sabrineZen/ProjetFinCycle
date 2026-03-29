@@ -96,14 +96,14 @@ export default function Login() {
           className="flex-1 p-8 flex flex-col items-center"
         >
           <div 
-            className="self-start text-[#951418] font-bold mb-4 ml-4 cursor-pointer"
+            className="self-start text-[#951418] font-bold mb-3 ml-4 cursor-pointer"
             onClick={() => setShowInscription(false)}
           >
             LOGO
           </div>
 
           {showInscription ? (
-          <h1 className="text-[#951418] text-6xl mb-2 font-semibold mt-4 ">
+          <h1 className="text-[#951418] text-6xl mb-4 font-semibold mt-0 ">
             Client
           </h1>
         ) : (
@@ -138,7 +138,7 @@ export default function Login() {
             </div>
           )}
 
-          <div className="flex w-[90%] gap-2 mb-2 mt-4">
+          <div className="flex w-[90%] gap-2 mb-3 mt-3">
   
             {/* BOUTON 1 */}
             <button
