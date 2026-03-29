@@ -11,17 +11,17 @@ const images = [img1, img2, img3, img4];
 export default function Login() {
   const [index, setIndex] = useState(0);
   const [showInscription, setShowInscription] = useState(false);
+  const [role, setRole] = useState("client");
 
   const prevImage = () => setIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
   const nextImage = () => setIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
 
-  // Réglage de la vitesse (1.3 secondes pour un mouvement bien fluide)
   const slowTransition = { type: "tween", duration: 1.1, ease: "easeInOut" };
 
   return (
     <div className="min-h-screen flex justify-center items-center font-sans relative bg-[#FDE9DC] overflow-hidden">
       
-      {/* IMAGE DE FOND (EXTÉRIEUR) */}
+      {/* IMAGE DE FOND */}
       <motion.div 
         layout
         transition={slowTransition}
@@ -35,16 +35,16 @@ export default function Login() {
             ? "polygon(10% 0, 100% 0, 100% 100%, 0 100%)" 
             : "polygon(0 0, 100% 0, 90% 100%, 0 100%)"
         }}
-      ></motion.div>
+      />
 
-      {/* COULEUR UNIE (EXTÉRIEUR) */}
+      {/* COULEUR UNIE */}
       <motion.div 
         layout
         transition={slowTransition}
         className={`absolute inset-y-0 w-[35%] bg-[#FDE9DC] z-0 ${showInscription ? "left-0" : "right-0"}`}
-      ></motion.div>
+      />
 
-      {/* CARTE BLANCHE PRINCIPALE */}
+      {/* CARTE PRINCIPALE */}
       <motion.div 
         layout
         transition={slowTransition}
@@ -53,12 +53,12 @@ export default function Login() {
         }`}
       >
         
-        {/* SECTION IMAGE : zIndex 20 pour passer au-dessus */}
+        {/* SECTION IMAGE */}
         <motion.div 
           layout 
           transition={slowTransition}
           style={{ zIndex: 20 }} 
-          className="flex-[1.2] relative rounded-[40px] overflow-hidden l"
+          className="flex-[1.2] relative rounded-[40px] overflow-hidden"
         >
           <img
             src={images[index]}
@@ -71,7 +71,6 @@ export default function Login() {
             }}
           />
 
-          {/* Boutons flèches */}
           <div className={`absolute bottom-8 flex gap-3 ${showInscription ? "left-12" : "right-12"}`}>
             <div
               className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition"
@@ -88,42 +87,100 @@ export default function Login() {
           </div>
         </motion.div>
 
-        {/* SECTION FORMULAIRE : zIndex 10 pour rester en dessous */}
+        {/* SECTION FORMULAIRE */}
         <motion.div 
           layout 
           transition={slowTransition}
           style={{ zIndex: 10 }}
           className="flex-1 p-8 flex flex-col items-center"
         >
-          <div 
-            className="self-start text-[#951418] font-bold mb-3 ml-4 cursor-pointer"
-            onClick={() => setShowInscription(false)}
-          >
-            LOGO
+          
+          {/* HEADER AVEC LOGO + ROLE */}
+          <div className="w-full flex justify-between items-center mb-1">
+            
+            <div 
+              className="text-[#951418] font-bold ml-2 cursor-pointer"
+              onClick={() => setShowInscription(false)}
+            >
+              LOGO
+            </div>
+
+            {showInscription && (
+              <div className="flex bg-[#FFE2D3] rounded-full p-1 mr-0 shadow-md">
+                <button
+                  type="button"
+                  onClick={() => setRole("client")}
+                  className={`px-4 py-1 text-sm font-medium rounded-full transition ${
+                    role === "client"
+                      ? "bg-[#FF7031] text-white"
+                      : "bg-transparent text-[#951418]"
+                  }`}
+                >
+                  Client
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setRole("restaurateur")}
+                  className={`px-4 py-1 text-sm font-medium rounded-full transition ${
+                    role === "restaurateur"
+                      ? "bg-[#FF7031] text-white"
+                      : "bg-transparent text-[#951418]"
+                  }`}
+                >
+                  Restaurateur
+                </button>
+              </div>
+            )}
           </div>
 
+          {/* TITRE */}
           {showInscription ? (
-          <h1 className="text-[#951418] text-6xl mb-4 font-semibold mt-0 ">
-            Client
-          </h1>
-        ) : (
-          <h1 className="text-[#951418] text-6xl mb-12 font-semibold mt-4">
-            Welcome
-          </h1>
-        )}
+            <h1 className="text-[#951418] text-4xl mb-2 font-semibold mt-0">
+              {role === "client" ? "Client" : "Restaurateur"}
+            </h1>
+          ) : (
+            <h1 className="text-[#951418] text-6xl mb-12 font-semibold mt-4">
+              Welcome
+            </h1>
+          )}
 
           <div className="w-full flex flex-col items-center gap-4 mb-2">
             {showInscription ? (
-              <>
-                <form className="">
-                  <input type="text" placeholder="Nom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
-                  <input type="text" placeholder="Prénom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
-                  <input type="email" placeholder="Email" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
-                  <input type="password" placeholder="Mot de passe" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
-                  <input type="tel" placeholder="Numéro de tél." className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
-                  <input type="text" placeholder="Adresse" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
-                </form>
-              </>
+              <form className="w-full flex flex-col items-center gap-2">
+                {role === "client" ? (
+                  <>
+                    <input type="text" placeholder="Nom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="text" placeholder="Prénom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="email" placeholder="Email" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="password" placeholder="Mot de passe" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="tel" placeholder="Numéro de tél." className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="text" placeholder="Adresse" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                  </>
+                ) : (
+                  <>
+                    <input type="text" placeholder="Nom du Restaurant" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="text" placeholder="Adresse du restaurant" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="email" placeholder="Email pro" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="password" placeholder="Mot de passe" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="tel" placeholder="Téléphone du restaurant" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                    <input type="text" placeholder="Numéro de Registre du commerce" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none" />
+                   <div className="w-[85%] relative">
+                  <input
+                    type="file"
+                    id="file-upload"
+                    className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
+                  />
+                  <label
+                    htmlFor="file-upload"
+                    className="text-[#951418] block p-2 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer"
+                  >
+                    Télécharger document officiel
+                  </label>
+                 </div>
+                  </>
+                )}
+              </form>
             ) : (
               <>
                 <input type="email" placeholder="Email" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none" />
@@ -138,9 +195,7 @@ export default function Login() {
             </div>
           )}
 
-          <div className="flex w-[90%] gap-2 mb-3 mt-3">
-  
-            {/* BOUTON 1 */}
+          <div className="flex w-[90%] gap-2 mb-3 mt-1">
             <button
               onClick={() => setShowInscription(!showInscription)}
               className="flex-1 bg-[#951418] p-3 rounded-3xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md"
@@ -148,25 +203,14 @@ export default function Login() {
               {showInscription ? "Annuler" : "Inscrire"}
             </button>
 
-            {/* BOUTON 2 */}
             <button
-              onClick={() => {
-                if (showInscription) {
-                  // ici tu peux ajouter la logique d'inscription
-                  console.log("Inscription...");
-                } else {
-                  // logique de connexion
-                  console.log("Connexion...");
-                }
-              }}
               className="flex-1 bg-[#FF7031] p-3 rounded-3xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md"
             >
               {showInscription ? "S'inscrire" : "Se connecter"}
             </button>
-
           </div>
 
-          <footer className="text-[10px] text-gray-500 text-center px-4 ">
+          <footer className="text-[10px] text-gray-500 text-center px-4">
             En continuant, vous acceptez nos <span className="text-[#8b2323] font-bold">condition d'utilisation</span>, et notre <span className="text-[#8b2323] font-bold">politique de confidentialité</span>.
           </footer>
         </motion.div>
