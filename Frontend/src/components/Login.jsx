@@ -102,16 +102,27 @@ export default function Login() {
             LOGO
           </div>
 
-          <h1 className="text-[#951418] text-6xl mb-12 font-semibold mt-4">
-            {showInscription ? "Inscription" : "Welcome"}
+          {showInscription ? (
+          <h1 className="text-[#951418] text-6xl mb-2 font-semibold mt-4 ">
+            Client
           </h1>
+        ) : (
+          <h1 className="text-[#951418] text-6xl mb-12 font-semibold mt-4">
+            Welcome
+          </h1>
+        )}
 
           <div className="w-full flex flex-col items-center gap-4 mb-2">
             {showInscription ? (
               <>
-                <input type="text" placeholder="Nom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none" />
-                <input type="email" placeholder="Email" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none" />
-                <input type="password" placeholder="Mot de passe" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none" />
+                <form className="">
+                  <input type="text" placeholder="Nom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
+                  <input type="text" placeholder="Prénom" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
+                  <input type="email" placeholder="Email" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
+                  <input type="password" placeholder="Mot de passe" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
+                  <input type="tel" placeholder="Numéro de tél." className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
+                  <input type="text" placeholder="Adresse" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 mb-2 ml-8 rounded-xl outline-none" />
+                </form>
               </>
             ) : (
               <>
@@ -127,28 +138,35 @@ export default function Login() {
             </div>
           )}
 
-          <div className="flex w-[90%] gap-2 mb-8 mt-4">
-            {showInscription ? (
-              <button className="flex-1 bg-[#951418] p-3 rounded-3xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md">
-                S'inscrire
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowInscription(true)}
-                className="flex-1 bg-[#951418] p-3 rounded-3xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md"
-              >
-                Inscrire
-              </button>
-            )}
+          <div className="flex w-[90%] gap-2 mb-2 mt-4">
+  
+            {/* BOUTON 1 */}
             <button
-              onClick={() => setShowInscription(false)}
+              onClick={() => setShowInscription(!showInscription)}
+              className="flex-1 bg-[#951418] p-3 rounded-3xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md"
+            >
+              {showInscription ? "Annuler" : "Inscrire"}
+            </button>
+
+            {/* BOUTON 2 */}
+            <button
+              onClick={() => {
+                if (showInscription) {
+                  // ici tu peux ajouter la logique d'inscription
+                  console.log("Inscription...");
+                } else {
+                  // logique de connexion
+                  console.log("Connexion...");
+                }
+              }}
               className="flex-1 bg-[#FF7031] p-3 rounded-3xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md"
             >
-              Se connecter
+              {showInscription ? "S'inscrire" : "Se connecter"}
             </button>
+
           </div>
 
-          <footer className="text-[10px] text-gray-500 text-center px-4">
+          <footer className="text-[10px] text-gray-500 text-center px-4 ">
             En continuant, vous acceptez nos <span className="text-[#8b2323] font-bold">condition d'utilisation</span>, et notre <span className="text-[#8b2323] font-bold">politique de confidentialité</span>.
           </footer>
         </motion.div>
