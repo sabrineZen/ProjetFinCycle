@@ -1,65 +1,60 @@
-import React from "react";
+import React from "react"; 
 import RestaurantProfile from "./RestaurantProfile";
 import RestaurantStatus from "./RestaurantStatus";
 import RestaurantInfoForm from "./RestaurantInfoForm";
 import OptionsPlats from "./OptionsPlats";
-import ModalForm from "./ModalForm";
 import Compte from "./Compte";
 
 function Content({ currentPage, openModal }) {
   const pages = {
-    dashboard: (
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold">Tableau de bord</h2>
-      </div>
-    ),
+    dashboard: <h2 className="text-lg font-semibold">Tableau de bord</h2>,
+
     restaurant: (
-      <div className="flex flex-col gap-6 p-6">
+      <div className="absolute top-2 left-12 space-y-4">
         <RestaurantProfile />
         <RestaurantStatus />
         <RestaurantInfoForm />
       </div>
     ),
+
     plats: (
-      <div className="p-6">
+      <>
+        {/* Ligne1 */}
         <div className="flex justify-between items-center mb-4">
-          <p className="text-lg font-semibold total"></p>
+          <p className="text-gray-500 relative top-5 left-9"></p>
           <button
-            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition"
+            className="bg-[#ff7d31] text-white w-[140px] h-[41px] rounded-[15px] cursor-pointer relative top-7"
             onClick={openModal}
           >
             + Ajouter un plat
           </button>
         </div>
 
+        {/* Options */}
         <OptionsPlats />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 plats-container">
-          <div className="flex justify-center items-center border-2 border-dashed border-gray-300 rounded-lg h-32 card-add">
+        {/* Container des plats */}
+        <div className="relative top-20 left-9 flex gap-5 flex-wrap">
+          <div className="w-[231px] h-[300px] bg-white rounded-[15px] p-4 shadow-md flex justify-center items-center">
             <button
-              className="text-3xl font-bold text-gray-400 hover:text-orange-500 transition add"
+              className="bg-[#ff7d31] text-white w-[100px] h-[100px] rounded-[10px] text-4xl cursor-pointer"
               onClick={openModal}
             >
               +
             </button>
           </div>
         </div>
-      </div>
+      </>
     ),
-    commandes: (
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold">Commandes</h2>
-      </div>
-    ),
+
+    commandes: <h2 className="text-lg font-semibold">Commandes</h2>,
+
     compte: <Compte />,
-    deconnection: (
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold">Déconnexion</h2>
-      </div>
-    ),
+
+    deconnection: <h2 className="text-lg font-semibold">Déconnexion</h2>,
   };
 
-  return pages[currentPage] || null;
+  return pages[currentPage];
 }
 
 export default Content;

@@ -19,54 +19,78 @@ function Header() {
   return (
     <>
       {/* HEADER */}
-      <header className="flex justify-between items-center p-4 bg-white shadow-md">
-        <div className="flex items-center gap-2">
-          <img src="img4.jpg" alt="logo" className="w-10 h-10 rounded-full" />
-          <span className="text-xl font-bold text-orange-500">DALIZIO</span>
+      <header className="bg-[#fff4ec] h-[92px] w-full absolute top-0 left-0 z-10 rounded-xl flex items-center justify-between px-4">
+        
+        {/* LOGO */}
+        <div className="flex items-center w-[200px]">
+          <img src="img4.jpg" className="w-[80px] h-[80px] ml-2 rounded-xl" />
+          <span className="text-[#951418] ml-2 text-xl font-semibold">
+            DALIZIO
+          </span>
         </div>
 
-        <div className="text-center">
+        {/* CENTER */}
+        <div className="absolute left-[650px] top-[5px] w-[300px] h-[80px] flex flex-col justify-center">
+          <p className="text-[#951418] text-xl"></p>
           <DateAujourdhui />
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="relative w-6 h-6 bg-gray-200 rounded-full"></div> {/* notification icon */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gray-300 rounded-full"></div> {/* profile image */}
-            <span className="font-medium text-gray-700">Ghanou Yns</span>
+        {/* RIGHT */}
+        <div className="absolute right-0 top-[38px] w-[300px] h-[80px] flex items-center">
+          
+          <div className="bg-[#ff7d31] w-[50px] h-[50px] rounded-full absolute -top-[15px] -left-[60px]"></div>
+
+          <div className="relative flex items-center">
+            <span className="bg-[#ff7d31] w-[50px] h-[50px] rounded-full absolute -top-[15px]"></span>
+            <span className="text-[#951418] text-xl ml-[70px]">
+              Nom Compte
+            </span>
           </div>
         </div>
       </header>
 
-      {/* NAVIGATION */}
-      <nav className="flex items-center justify-between p-4 bg-gray-50 shadow-inner">
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-green-500 rounded-full inline-block"></span>
-          <span className="font-medium text-gray-700">Restaurant actif</span>
+      {/* NAV */}
+      <nav className="relative top-[100px] left-[20px]">
+        
+        {/* STATUS */}
+        <div className="flex items-center justify-center gap-5 bg-[#d4f5df] w-[212px] h-[62px] rounded-[25px] text-[#2e7d32] mb-5">
+          <span className="w-[10px] h-[10px] bg-[#2ecc71] rounded-full shadow-[0_0_8px_#2ecc71]"></span>
+          <span>Restaurant actif</span>
         </div>
 
-        <ul className="flex gap-6">
-          {menuItems.map((item) => (
-            <li
-              key={item.page}
-              className={`cursor-pointer font-medium text-gray-700 hover:text-orange-500 ${
-                currentPage === item.page ? "text-orange-500 border-b-2 border-orange-500" : ""
-              }`}
-              onClick={() => setCurrentPage(item.page)}
-            >
-              {item.name}
-            </li>
-          ))}
-        </ul>
+        {/* MENU */}
+        <div className="bg-white w-[246px] rounded-xl p-5">
+          <ul className="p-0">
+            {menuItems.map((item) => (
+              <li
+                key={item.page}
+                onClick={() => setCurrentPage(item.page)}
+                className={`cursor-pointer p-2 rounded-md transition ${
+                  currentPage === item.page
+                    ? "bg-[#ff7d31] text-white"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                {item.name}
+              </li>
+            ))}
+          </ul>
+        </div>
       </nav>
 
-      {/* CONTENU PRINCIPAL */}
-      <main className="p-4">
-        <Content currentPage={currentPage} openModal={() => setModalOpen(true)} />
-      </main>
+      {/* CONTENT */}
+      <div className="absolute top-[100px] left-[300px]">
+        <Content
+          currentPage={currentPage}
+          openModal={() => setModalOpen(true)}
+        />
+      </div>
 
       {/* MODAL */}
-      <ModalForm isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <ModalForm
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </>
   );
 }

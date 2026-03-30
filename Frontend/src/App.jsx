@@ -25,13 +25,8 @@ function App() {
       </div>
 
       {/* Exemple d'affichage direct de certains composants */}
-      <div className="p-4 grid grid-cols-2 gap-4">
-        <RestaurantProfile />
-        <RestaurantStatus />
-        <RestaurantInfoForm />
-        <OptionsPlats />
-        <Compte />
-        <DateAujourdhui />
+      <div className="p-4">
+        <Content currentPage={currentPage} openModal={() => setModalOpen(true)} />
       </div>
 
       {/* Modal global */}

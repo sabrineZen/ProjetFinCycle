@@ -6,27 +6,22 @@ export default function RestaurantStatus() {
   const toggleStatus = () => setActive(!active);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-md mx-auto space-y-4">
+    <div className="relative -bottom-[130px] left-6 space-y-4">
       {/* Stat box */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-center gap-7 w-[242px] h-[39px] rounded-[25px] text-[#2e7d32] bg-[#d4f5df] mb-4">
         <span
-          className={`w-4 h-4 rounded-full ${
-            active ? "bg-green-500" : "bg-red-500"
-          } transition-colors`}
-        ></span>
-        <span className="text-gray-700 font-medium">
+          className="w-[10px] h-[10px] rounded-full shadow-[0_0_8px] inline-block"
+          style={{ backgroundColor: active ? "#ff0000" : "red", boxShadow: active ? "0 0 8px #ff0000" : "0 0 8px red" }}
+        />
+        <span className="text-sm">
           {active ? "Restaurant actif" : "Restaurant désactivé"}
         </span>
       </div>
 
-      {/* Bouton pour changer le statut */}
+      {/* Bouton */}
       <button
         onClick={toggleStatus}
-        className={`px-4 py-2 rounded-md font-semibold transition-colors ${
-          active
-            ? "bg-red-500 text-white hover:bg-red-600"
-            : "bg-green-500 text-white hover:bg-green-600"
-        }`}
+        className="flex items-center justify-center w-[242px] h-[39px] bg-[#ff7d31] rounded-[10px] text-white"
       >
         {active ? "Désactiver le restaurant" : "Activer le restaurant"}
       </button>

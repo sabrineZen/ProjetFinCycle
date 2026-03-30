@@ -13,40 +13,30 @@ export default function RestaurantProfile() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm mx-auto text-center space-y-4">
-      {/* Image de profil */}
-      <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden bg-gray-200">
-        {image ? (
-          <div
-            className="w-full h-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${image})` }}
-          />
-        ) : (
-          <span className="w-full h-full flex items-center justify-center text-gray-400">
-            Image
-          </span>
-        )}
-
-        {/* Overlay pour cliquer et changer l'image */}
+    <div className="bg-white w-[300px] h-[392px] rounded-[15px] flex flex-col items-center mb-4">
+      {/* Image */}
+      <div
+        className="w-[143px] h-[143px] bg-[#ffe3ce] rounded-[15px] relative mt-8 mb-8 bg-center bg-cover"
+        style={{
+          backgroundImage: image ? `url(${image})` : "none",
+        }}
+      >
         <div
-          className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 cursor-pointer transition-opacity"
+          className="w-[41px] h-[41px] bg-[#ff7d31] rounded-[15px] absolute bottom-0 right-0 cursor-pointer"
           onClick={() => document.getElementById("fileInput").click()}
-        >
-          <span className="text-white font-semibold">Changer</span>
-        </div>
-
+        />
         <input
           type="file"
           id="fileInput"
           accept="image/*"
-          className="hidden"
+          hidden
           onChange={handleFileChange}
         />
       </div>
 
       {/* Nom et catégorie */}
-      <p className="text-lg font-semibold text-gray-800">Chez les berberes</p>
-      <p className="text-sm text-gray-500">Pizza</p>
+      <p className="text-[#951418] text-[25px] mb-0">Chez les berberes</p>
+      <p className="text-gray-500 text-[20px] mt-0">Pizza</p>
     </div>
   );
 }
