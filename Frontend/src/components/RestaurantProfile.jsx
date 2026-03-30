@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./style.css";
 
 export default function RestaurantProfile() {
   const [image, setImage] = useState(null);
@@ -14,26 +13,40 @@ export default function RestaurantProfile() {
   };
 
   return (
-    <div className="profil">
-      <div
-        className="profil-img"
-        style={{
-          backgroundImage: image ? `url(${image})` : "none",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="insert" onClick={() => document.getElementById("fileInput").click()} />
+    <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm mx-auto text-center space-y-4">
+      {/* Image de profil */}
+      <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden bg-gray-200">
+        {image ? (
+          <div
+            className="w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${image})` }}
+          />
+        ) : (
+          <span className="w-full h-full flex items-center justify-center text-gray-400">
+            Image
+          </span>
+        )}
+
+        {/* Overlay pour cliquer et changer l'image */}
+        <div
+          className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 cursor-pointer transition-opacity"
+          onClick={() => document.getElementById("fileInput").click()}
+        >
+          <span className="text-white font-semibold">Changer</span>
+        </div>
+
         <input
           type="file"
           id="fileInput"
           accept="image/*"
-          hidden
+          className="hidden"
           onChange={handleFileChange}
         />
       </div>
-      <p className="nom-rest">Chez les berberes</p>
-      <p className="categorie-rest">Pizza</p>
+
+      {/* Nom et catégorie */}
+      <p className="text-lg font-semibold text-gray-800">Chez les berberes</p>
+      <p className="text-sm text-gray-500">Pizza</p>
     </div>
   );
 }

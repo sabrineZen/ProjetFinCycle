@@ -1,27 +1,34 @@
 import React, { useState } from "react";
-import './style.css';
 
 function OptionsPlats() {
-  // Les différentes options
   const options = ["Tous", "Burger", "Pizza", "Salade", "Desserts", "Boissons"];
-
-  // State pour garder l'option active
   const [activeOption, setActiveOption] = useState("Tous");
 
   return (
-    <div className="ligne2">
-      <ul>
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-4">
+      {/* Les boutons d'options */}
+      <ul className="flex flex-wrap gap-2">
         {options.map(option => (
           <li
             key={option}
-            className={`options ${activeOption === option ? "active" : ""}`}
-            onClick={() => setActiveOption(option)} // Met à jour l'option active
+            className={`px-4 py-2 rounded-full cursor-pointer transition-colors duration-200
+              ${activeOption === option 
+                ? "bg-orange-500 text-white" 
+                : "bg-gray-200 text-gray-700 hover:bg-orange-200"
+              }`}
+            onClick={() => setActiveOption(option)}
           >
             {option}
           </li>
         ))}
       </ul>
-      <input type="search" className="search" placeholder="Rechercher un plat" />
+
+      {/* Barre de recherche */}
+      <input
+        type="search"
+        placeholder="Rechercher un plat"
+        className="border border-gray-300 rounded-md p-2 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-orange-500"
+      />
     </div>
   );
 }

@@ -1,43 +1,65 @@
 import React from "react";
-import "./style.css";
 import RestaurantProfile from "./RestaurantProfile";
 import RestaurantStatus from "./RestaurantStatus";
 import RestaurantInfoForm from "./RestaurantInfoForm";
 import OptionsPlats from "./OptionsPlats";
 import ModalForm from "./ModalForm";
 import Compte from "./Compte";
-function Content({ currentPage ,openModal}) {
+
+function Content({ currentPage, openModal }) {
   const pages = {
-    dashboard: <h2>Tableau de bord</h2>,
+    dashboard: (
+      <div className="p-6">
+        <h2 className="text-2xl font-semibold">Tableau de bord</h2>
+      </div>
+    ),
     restaurant: (
-      <div className="pose">
+      <div className="flex flex-col gap-6 p-6">
         <RestaurantProfile />
         <RestaurantStatus />
         <RestaurantInfoForm />
       </div>
     ),
     plats: (
-      <>
-        <div className="ligne1">
-          <p className="total"></p>
-          <button className="btn-add" onClick={openModal}>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-lg font-semibold total"></p>
+          <button
+            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition"
+            onClick={openModal}
+          >
             + Ajouter un plat
           </button>
         </div>
+
         <OptionsPlats />
-        <div className="plats-container">
-          <div className="card-add">
-            <button className="add" onClick={openModal}>+</button>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4 plats-container">
+          <div className="flex justify-center items-center border-2 border-dashed border-gray-300 rounded-lg h-32 card-add">
+            <button
+              className="text-3xl font-bold text-gray-400 hover:text-orange-500 transition add"
+              onClick={openModal}
+            >
+              +
+            </button>
           </div>
         </div>
-      </>
+      </div>
     ),
-    commandes: <h2>Commandes</h2>,
+    commandes: (
+      <div className="p-6">
+        <h2 className="text-2xl font-semibold">Commandes</h2>
+      </div>
+    ),
     compte: <Compte />,
-    deconnection: <h2>Déconnexion</h2>,
+    deconnection: (
+      <div className="p-6">
+        <h2 className="text-2xl font-semibold">Déconnexion</h2>
+      </div>
+    ),
   };
 
-  return pages[currentPage];
+  return pages[currentPage] || null;
 }
 
 export default Content;

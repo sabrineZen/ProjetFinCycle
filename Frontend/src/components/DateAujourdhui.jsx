@@ -11,7 +11,10 @@ function DateAujourdhui() {
   };
 
   return (
-    <p id="date">
+    <p 
+      id="date"
+      className="text-gray-700 font-medium text-lg mb-2"
+    >
       {aujourdHui.toLocaleDateString("fr-FR", options)}
     </p>
   );
