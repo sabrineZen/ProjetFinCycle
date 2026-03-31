@@ -14,7 +14,7 @@ export default function RestaurantInfoForm() {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-6">
+    <div className="flex flex-col items-center space-y-6 absolute top-0 left-80">
       {/* Formulaire informations générales */}
       <div className="bg-white w-[628px] rounded-[15px] p-6">
         <div className="flex items-center mb-5">
@@ -95,7 +95,7 @@ export default function RestaurantInfoForm() {
             <label className="text-[#951418]">Heure d'ouverture</label>
             <input
               type="text"
-              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] px-3 mt-2"
+              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] w-[174px] px-3 mt-2"
               value={ouverture}
               onChange={e => setOuverture(e.target.value)}
             />
@@ -104,7 +104,7 @@ export default function RestaurantInfoForm() {
             <label className="text-[#951418]">Heure de fermeture</label>
             <input
               type="text"
-              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] px-3 mt-2"
+              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] w-[174px] px-3 mt-2"
               value={fermeture}
               onChange={e => setFermeture(e.target.value)}
             />
@@ -113,7 +113,7 @@ export default function RestaurantInfoForm() {
             <label className="text-[#951418]">Délai de livraison</label>
             <input
               type="text"
-              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] px-3 mt-2"
+              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] w-[174px] px-3 mt-2"
             />
           </div>
         </div>
@@ -123,14 +123,14 @@ export default function RestaurantInfoForm() {
             <label className="text-[#951418]">Commande min</label>
             <input
               type="text"
-              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] px-3 mt-2"
+              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] w-[174px] px-3 mt-2"
             />
           </div>
           <div className="flex flex-col flex-1">
             <label className="text-[#951418]">Frais de livraison</label>
             <input
               type="text"
-              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] px-3 mt-2"
+              className="bg-[#ffe3ce] rounded-[15px] border border-[#c0a0a0] h-[46px] w-[174px] px-3 mt-2"
             />
           </div>
         </div>
@@ -139,16 +139,16 @@ export default function RestaurantInfoForm() {
       {/* Bouton sauvegarder */}
       <button
         onClick={handleSave}
-        className="w-[339px] h-[59px] bg-[#ff7d31] text-white rounded-[15px]"
+        className="w-[339px] h-[59px] bg-[#ff7d31] text-white rounded-[15px] ml-72"
       >
         Sauvegarder
       </button>
 
       {/* Informations sauvegardées */}
-      <div className="bg-white w-full max-w-[628px] rounded-[15px] flex flex-col items-center p-4 space-y-2">
+      <div className="bg-white h-[174px] w-[300px] rounded-[15px] flex flex-col items-center p-4 space-y-2 absolute top-80 left-[-320px] top-[410px]">
         <p className="text-[#951418] text-[20px]">Informations rapides</p>
-        <p>Téléphone: {savedData.tel}</p>
-        <p>Adresse: {savedData.adresse}</p>
+        <p className="text-gray-500">Téléphone: {savedData.tel}</p>
+        <p className="text-gray-500">Adresse: {savedData.adresse}</p>
         <div className="text-gray-500">
           {savedData.ouverture} - {savedData.fermeture}
         </div>

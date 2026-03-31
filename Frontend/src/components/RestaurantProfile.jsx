@@ -37,6 +37,7 @@ export default function RestaurantProfile() {
       {/* Nom et catégorie */}
       <p className="text-[#951418] text-[25px] mb-0">Chez les berberes</p>
       <p className="text-gray-500 text-[20px] mt-0">Pizza</p>
+      
     </div>
   );
 }

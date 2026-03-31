@@ -10,7 +10,7 @@ function Compte() {
           <>
             <div className="bg-white text-[#951418] rounded-[15px] w-[697px] h-[366px]">
               <p className="text-[20px] ml-16 mt-8">Informations personnelles</p>
-              <form className="flex gap-8 mt-10 px-4">
+              <form className="flex gap-8 mt-4 px-4">
                 <div className="flex flex-col gap-5">
                   <label>Prénom</label>
                   <input type="text" className="w-[313px] h-[44px] rounded-[15px] bg-[#ffe3ce] border border-[#c0a0a0] p-2" />
@@ -34,7 +34,7 @@ function Compte() {
                 </div>
               </form>
             </div>
-            <button className="bg-[#ff7d31] text-white rounded-[15px] w-[185px] h-[53px] mt-5 ml-[512px]">
+            <button className="bg-[#ff7d31] text-white rounded-[15px] w-[185px] h-[53px] mt-4 ml-[512px]">
               Sauvegarder
             </button>
           </>
@@ -45,7 +45,7 @@ function Compte() {
           <>
             <div className="bg-white text-[#951418] rounded-[15px] w-[697px] h-[366px]">
               <p className="text-[20px] ml-16 mt-8">Changer le mot de passe</p>
-              <form className="flex flex-col gap-5 mt-16 ml-8">
+              <form className="flex flex-col gap-5 mt-4 ml-8">
                 <label>Mot de passe</label>
                 <input type="text" className="w-[483px] h-[44px] rounded-[15px] bg-[#ffe3ce] border border-[#c0a0a0] p-2" />
                 
@@ -86,9 +86,9 @@ function Compte() {
     <div className="flex">
       {/* Profil latéral */}
       <div className="bg-white rounded-[15px] w-[218px] h-[340px] flex flex-col items-center justify-center space-y-2">
-        <div className="relative w-[100px] h-[100px] rounded-[15px] bg-white">
-          <div className="w-[87px] h-[87px] bg-[#ffe3ce] rounded-[15px] mx-auto mt-2"></div>
-          <div className="w-[33px] h-[33px] bg-[#ff7d31] rounded-[10px] absolute right-0 top-2"></div>
+        <div className="relative w-[100px] h-[100px] rounded-[15px] ">
+          <div className="w-[87px] h-[87px] bg-[#ffe3ce] rounded-[15px]"></div>
+          <div className="w-[33px] h-[33px] bg-[#ff7d31] rounded-[10px] absolute right-0 bottom-0"></div>
         </div>
 
         <p className="text-[#951418] text-[20px]">Ghanou yns</p>
@@ -111,12 +111,12 @@ function Compte() {
       </div>
 
       {/* Menu vertical */}
-      <div className="bg-white rounded-[15px] w-[218px] h-[213px] text-[#951418] text-[20px] ml-4">
+      <div className="bg-white rounded-[15px] w-[218px] h-[213px] text-[#951418] absolute top-[360px] ">
         <ul className="flex flex-col justify-center items-start h-full">
           {["Profil", "Sécurité", "Notification", "Abonnement"].map((item) => (
             <li
               key={item}
-              className={`list-none m-4 px-4 py-2 rounded-[15px] cursor-pointer ${
+              className={`list-none m-2 px-14 py-2 rounded-[15px] cursor-pointer ${
                 activeTab === item ? "bg-[#ff7d31] text-white" : ""
               }`}
               onClick={() => setActiveTab(item)}
@@ -128,7 +128,7 @@ function Compte() {
       </div>
 
       {/* Contenu dynamique */}
-      <div className="ml-4 mt-0">{renderContent()}</div>
+      <div className="ml-4 mt-[-30px]">{renderContent()}</div>
     </div>
   );
 }

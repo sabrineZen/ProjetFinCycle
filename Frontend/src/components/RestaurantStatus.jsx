@@ -6,7 +6,7 @@ export default function RestaurantStatus() {
   const toggleStatus = () => setActive(!active);
 
   return (
-    <div className="relative -bottom-[130px] left-6 space-y-4">
+    <div className="relative -top-30 left-6 space-y-4">
       {/* Stat box */}
       <div className="flex items-center justify-center gap-7 w-[242px] h-[39px] rounded-[25px] text-[#2e7d32] bg-[#d4f5df] mb-4">
         <span

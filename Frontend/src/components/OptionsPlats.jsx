@@ -24,7 +24,7 @@ function OptionsPlats() {
       <input
         type="search"
         placeholder="Rechercher un plat"
-        className="bg-[#ffe3ce] text-gray-500 w-[140px] h-[41px] rounded-[15px] flex justify-center items-center absolute top-[20px] left-[460px] px-3"
+        className="bg-[#ffe3ce] text-gray-500 w-[140px] h-[41px] rounded-[15px] flex justify-center items-center absolute top-[15px] left-[1000px] px-3"
       />
     </div>
   );

@@ -23,7 +23,7 @@ function Header() {
         
         {/* LOGO */}
         <div className="flex items-center w-[200px]">
-          <img src="img4.jpg" className="w-[80px] h-[80px] ml-2 rounded-xl" />
+          <img src="public/img4.jpg" className="w-[80px] h-[80px] ml-2 rounded-xl" />
           <span className="text-[#951418] ml-2 text-xl font-semibold">
             DALIZIO
           </span>
@@ -31,7 +31,7 @@ function Header() {
 
         {/* CENTER */}
         <div className="absolute left-[650px] top-[5px] w-[300px] h-[80px] flex flex-col justify-center">
-          <p className="text-[#951418] text-xl"></p>
+          <p className="text-[#951418] text-xl">Title</p>
           <DateAujourdhui />
         </div>
 
@@ -40,7 +40,7 @@ function Header() {
           
           <div className="bg-[#ff7d31] w-[50px] h-[50px] rounded-full absolute -top-[15px] -left-[60px]"></div>
 
-          <div className="relative flex items-center">
+          <div className="relative -top-6 flex items-center ">
             <span className="bg-[#ff7d31] w-[50px] h-[50px] rounded-full absolute -top-[15px]"></span>
             <span className="text-[#951418] text-xl ml-[70px]">
               Nom Compte
@@ -60,12 +60,12 @@ function Header() {
 
         {/* MENU */}
         <div className="bg-white w-[246px] rounded-xl p-5">
-          <ul className="p-0">
+          <ul className="p-2">
             {menuItems.map((item) => (
               <li
                 key={item.page}
                 onClick={() => setCurrentPage(item.page)}
-                className={`cursor-pointer p-2 rounded-md transition ${
+                className={`cursor-pointer p-2 rounded-xl transition ${
                   currentPage === item.page
                     ? "bg-[#ff7d31] text-white"
                     : "hover:bg-gray-100"

@@ -36,7 +36,7 @@ function ModalForm({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white p-5 rounded-[15px] w-[378px] relative">
+      <div className="bg-white p-5 rounded-[15px] relative">
         <span
           className="absolute top-2 right-2 text-xl cursor-pointer"
           onClick={handleClose}
@@ -98,11 +98,14 @@ function ModalForm({ isOpen, onClose }) {
               />
             </div>
 
+            <label className="text-[#951418] absolute top-[425px] left-[220px]">
+                Categorie :
+            </label>
             <select
               name="categorie"
               value={formData.categorie}
               onChange={handleChange}
-              className="bg-[#ffe3ce] w-[182px] h-[38px] border border-gray-300 rounded-[5px] px-2 mt-6"
+              className="bg-[#ffe3ce] w-[182px] h-[38px] border border-gray-300 rounded-[5px] px-2 mt-7"
             >
               <option value="">-- Choisir une catégorie --</option>
               <option value="Burger">Burger</option>
