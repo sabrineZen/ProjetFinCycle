@@ -8,6 +8,7 @@ import RestaurantProfile from "./components/RestaurantProfile";
 import RestaurantStatus from "./components/RestaurantStatus";
 import RestaurantInfoForm from "./components/RestaurantInfoForm";
 import DateAujourdhui from "./components/DateAujourdhui";
+import NotificationsPanel from "./components/NotificationsPanel";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("dashboard");

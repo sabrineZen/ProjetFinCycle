@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import NotificationsPanel from "./NotificationsPanel";
 function Compte() {
   const [activeTab, setActiveTab] = useState("Profil");
 
@@ -72,10 +72,72 @@ function Compte() {
         );
 
       case "Notification":
-        return <p>Notifications</p>;
+        return <NotificationsPanel />;
 
       case "Abonnement":
-        return <h2>Abonnement</h2>;
+        return (
+          <>
+            <div className="bg-white text-[#951418] rounded-[15px] w-[697px] h-[230px] absolute top-0">
+            </div>
+            <div className="bg-white text-[#951418] rounded-[15px] w-[697px] h-[385px] absolute top-62">
+              <p className="text-[25px] ml-[50px] mt-[20px]">
+                Changer de plan
+              </p>
+              <div className="flex gap-4 mt-[40px] ml-10">
+                <div className="w-[200px] h-[273px] bg-[#ffe3ce] rounded-[15px] justify-center gap-10">
+                  <p className="text-[20px] mt-[20px] ml-[20px]" >Starter</p>
+                  <p className="text-[18px] mt-5 ml-5">900  <span className="text-[gray] text-[15px]">DA/mois</span></p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-4">Commision 15%</p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-2">1 Restaurant</p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-2">Support standard</p>
+                  <button className="text-white bg-[#ff7d31] w-[152px] h-[39px] rounded-[15px] ml-6 mt-4">
+                    Choisir ce plan
+                  </button>
+                </div>
+                <div className="w-[200px] h-[273px] bg-[#ffe3ce] rounded-[15px] justify-center gap-10">
+                  <p className="text-[20px] mt-[20px] ml-[20px]" >Pro</p>
+                  <p className="text-[18px] mt-5 ml-5">2900  <span className="text-[gray] text-[15px]">DA/mois</span></p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-4">Commision 8%</p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-2">1 Restaurant</p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-2">Support prioritaire</p>
+                  <button className="text-white bg-[#ff7d31] w-[152px] h-[39px] rounded-[15px] ml-6 mt-4">
+                    Choisir ce plan
+                  </button>
+                </div>
+                <div className="w-[200px] h-[273px] bg-[#ffe3ce] rounded-[15px] justify-center gap-10">
+                  <p className="text-[20px] mt-[20px] ml-[20px]" >Businnes</p>
+                  <p className="text-[18px] mt-5 ml-5">6500  <span className="text-[gray] text-[15px]">DA/mois</span></p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-4">Commision 5%</p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-2">5 Restaurant</p>
+                  <p className="text-[gray] text-[15px] ml-12 mt-2">Support dedie 24/7</p>
+                  <button className="text-white bg-[#ff7d31] w-[152px] h-[39px] rounded-[15px] ml-6 mt-4">
+                    Choisir ce plan
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white text-[#951418] rounded-[15px] w-[697px] h-[247px] absolute top-163">
+              <p className="text-[25px] ml-[50px] mt-[20px]">
+                Zone de danger
+              </p>
+              <div className="mt-[40px] ml-10">
+                <p className=" mb-[20px] text-[18px]">Résilier l'abonnement</p>
+                <p className="text-[gray] text-[12px]">votre compte sera désactivé à la fin de la période en cours</p>
+                <button className="w-[115px] h-[41px] bg-[#ff7d31] text-white rounded-[15px] ml-[500px] relative top-[-60px]">
+                  Résilier
+                </button>
+              </div>  
+              <div className="mt-[-30px] ml-10">
+                <p className="mb-[20px] text-[18px]">Suppprimer le compte</p>
+                <p className="text-[gray] text-[12px]">Action irréversible-toutes vos donnés seront supprimées</p>
+                <button className="w-[115px] h-[41px] bg-[#ff7d31] text-white rounded-[15px] ml-[500px] relative top-[-50px]">
+                  Supprimer
+                </button>
+              </div>
+              
+            </div>
+          </>
+        );
 
       default:
         return null;
