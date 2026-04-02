@@ -6,122 +6,49 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css';
 
+import Home from './pages/ClientPage/ClientHome.jsx';
+import CategoriesPage from './pages/ClientPage/CategoriesPage.jsx';
+
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-    <div className="bg-test">
-  Test Tailwind
-</div>
-<div className="bg-red-500 text-white p-8 rounded-lg shadow-xl">
-  Test Tailwind
-</div>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <BrowserRouter>
+      <Routes>
+        <Route path="/homeClient" element={<Home />} />
+        {/*le route en bas avec l element categoriespage il va servir comme page des catégories */}
+        {/*donc navigate je dis bon tu vas dans cette adresse et route verfiei dans cette adresse queceuqe il ya et il affiche le contenue */}
+        <Route path="/categoriesPage" element={<CategoriesPage />} />
+        <Route path="/" element={
+      <><div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
+              <h1 className="text-6xl font-bold text-purple-600 drop-shadow-lg">
+                Tailwind OK ✅
+              </h1>
+              <p className="text-xl text-gray-700">
+                Si ce texte est stylé, Tailwind fonctionne !
+              </p>
+              <button className="px-8 py-4 bg-green-500 text-white rounded-xl hover:bg-green-600 transition duration-300 shadow-lg">
+                Bouton Test
+              </button>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="h-24 bg-red-500 rounded-lg"></div>
+                <div className="h-24 bg-blue-500 rounded-lg"></div>
+                <div className="h-24 bg-yellow-400 rounded-lg"></div>
+              </div>
+            </div><div className="flex flex-col md:flex-row gap-4">
+                <div className="bg-red-500 p-4 text-white">Box 1</div>
+                <div className="bg-blue-500 p-4 text-white">Box 2</div>
+              </div><div className="bg-test">
+                Test Tailwind
+              </div><div className="bg-red-500 text-white p-8 rounded-lg shadow-xl">
+                Test Tailwind
+              </div></>
+        }/>
+      </Routes>
+    </BrowserRouter>
+    
     </>
   )
 }
