@@ -33,7 +33,7 @@ function Panier({ produits }) {
         </div>
       
         <button
-          className="p-3 rounded-full hover:bg-orange-100 transition"
+          className="p-3 rounded-full hover:bg-orange-100 transition "
           onClick={() => setMontrerHistorique(!montrerHistorique)}
         >
           <FaHistory className="text-2xl text-secondary" />

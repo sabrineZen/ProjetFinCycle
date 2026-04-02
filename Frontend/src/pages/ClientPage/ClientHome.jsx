@@ -13,6 +13,7 @@ import { FaTruck } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa";
 import { FaMedal } from "react-icons/fa";
 import Recherche from "../../composants/rechercheInput";
+import HistoriqueAchats from "../../composants/historique";
 import CategoriesPage from "./CategoriesPage";
 function Home(){
     const navigate = useNavigate();
@@ -68,7 +69,6 @@ function Home(){
                 <button
                     className="p-3 rounded-full hover:bg-orange-100 transition"
                     onClick={() => setMontrerPanier(!montrerPanier)}
-                    onBlur={()=>setMontrerPanier(!montrerPanier)}
                 >
                     
                     <FaShoppingCart className="text-2xl text-secondary" />
