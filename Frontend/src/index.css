@@ -1,4 +1,21 @@
 @import "tailwindcss";
+@theme {
+  --color-secondary: #8B2A1B;
+  --color-fond: #FFF9F5;
+  --color-accent: #EFAF9B;
+  --color-tri: #EBC0A6;
+  --color-button:#FF9D4A;
+  --color-valider:#FF6900;
+  --color-bordure:#E5E7EB;
+}
+/* cacher scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .bg-test {
   @apply bg-red-500 text-white p-4;

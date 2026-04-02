@@ -1,4 +1,18 @@
+html{
+  background-color: #FFF9F5;
+}
+.scroll-container {
+  overflow-x: auto; /* scroll horizontal actif */
+  scrollbar-width: none; /* Firefox */
+}
 
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
+}
+/*
+.text-secondary {
+  color: #8B2A1B;
+}
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -183,3 +197,4 @@
     border-right-color: var(--border);
   }
 }
+*/
