@@ -8,7 +8,7 @@ import './index.css';
 
 import Home from './pages/ClientPage/ClientHome.jsx';
 import CategoriesPage from './pages/ClientPage/CategoriesPage.jsx';
-
+import ProfilPage from './pages/ClientPage/ProfilPage.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +21,7 @@ function App() {
         {/*le route en bas avec l element categoriespage il va servir comme page des catégories */}
         {/*donc navigate je dis bon tu vas dans cette adresse et route verfiei dans cette adresse queceuqe il ya et il affiche le contenue */}
         <Route path="/categoriesPage" element={<CategoriesPage />} />
+        <Route path="/profil" element={<ProfilPage />} />
         <Route path="/" element={
       <><div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
               <h1 className="text-6xl font-bold text-purple-600 drop-shadow-lg">

@@ -73,7 +73,7 @@ function Home() {
             >
             <FaShoppingCart className="text-2xl text-secondary" />
         </button>
-        <div className="p-2 sm:p-3 rounded-full hover:bg-orange-100 transition">
+        <div className="p-2 sm:p-3 rounded-full hover:bg-orange-100 transition" onClick={() => navigate("/profil")}>{/*j'ai ajouter pour passer vers page profil*/}
           <FaUser className="text-xl sm:text-2xl text-secondary" />
         </div>
       </div>
@@ -100,8 +100,8 @@ function Home() {
         </div>
         <div
           className="cursor-pointer pr-2 sm:pr-10 pt-6 sm:pt-20 text-button text-base sm:text-xl"
-          onClick={() => navigate("/categoriesPage")}
-        >
+          onClick={() => navigate("/categoriesPage")} 
+        >{/*j'ai ajouter pour passer vers page catégorie*/}
           voir tout
         </div>
       </div>
@@ -113,6 +113,7 @@ function Home() {
             hoverClass="hover:scale-110 transition-transform duration-300"
             category={cat}
             couleur={cat.couleur}
+            onClick={() => navigate("/categoriesPage", { state: cat })}
           />
         ))}
       </div>
