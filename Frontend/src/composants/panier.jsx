@@ -83,7 +83,7 @@ function Panier({ produits }) {
       {/* Historique */}
       {montrerHistorique && (
         <div className="fixed top-20 right-2 sm:right-10 z-50">
-          <HistoriqueAchats />
+          <HistoriqueAchats onClose={() => setMontrerHistorique(false)} />
         </div>
       )}
     </div>
