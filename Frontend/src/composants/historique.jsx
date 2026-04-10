@@ -3,8 +3,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import Panier from "./panier";
 import { FaClock } from "react-icons/fa";
 
-function HistoriqueAchats() {
-  const [montrerPanier, setMontrerPanier] = useState(false);
+function HistoriqueAchats({ onClose }) {
   const [panier, setPanier] = useState([
     { id: 1, name: "Pizza Margherita", prix: 150 },
     { id: 2, name: "Burger Classique", prix: 80 },
@@ -38,19 +37,12 @@ function HistoriqueAchats() {
         <div className="flex items-center gap-4">
           <button
             className="p-3 rounded-full hover:bg-orange-100 transition"
-            onClick={() => setMontrerPanier(!montrerPanier)}
+            onClick={onClose}
           >
             <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
           </button>
         </div>
       </div>
-
-      {/* Affichage Panier */}
-      {montrerPanier && (
-        <div className="fixed top-20 right-2 sm:right-10 z-50">
-          <Panier produits={panier} />
-        </div>
-      )}
 
       {/* Container des achats */}
       <div className="w-full mt-6 border-2 border-bordure rounded-[10px] p-2 flex flex-col gap-4 overflow-y-auto scrollbar-hide max-h-[60vh]">
