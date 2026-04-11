@@ -4,7 +4,13 @@ import { MdLogout } from "react-icons/md";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import { BsPerson } from "react-icons/bs";
 import { IoChevronForward } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
+import { useState } from "react";
+import InfoPersonnelles from "../../composants/infospersonnelles";
+import MesCommandes from "../../composants/mescommandes";
+import Parametre from "../../composants/paremtre";
 function ProfilPage(){
+    const [pageActive, setPageActive] = useState("informations")
     return(
       <div>
            <div className="flex justify-between items-center shadow-md bg-white rounded-2xl p-4 m-4 ">{/*partie header*/}
@@ -32,29 +38,39 @@ function ProfilPage(){
             
            </div>
            <div className="flex gap-4 m-4  ">{/*partie Menu+contenu*/}
-             <div className="bg-white rounded-3xl shadow-md flex flex-col gap-2 p-4 h-64 w-64" >{/*partie Menu*/}
-                <button className="flex justify-between items-center p-2 rounded-lg hover:bg-orange-500 group transition " > 
+             <div className="bg-white rounded-3xl shadow-md flex flex-col gap-2 p-4 h-56 w-64" >{/*partie Menu*/}
+                <button className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FBE5DA]  active:bg-[#FF6900] group transition" onClick={()=>setPageActive("informations")}> 
                     <div className="flex items-center gap-2" >
-                    <BsPerson className="text-[#8B2A1B] text-xl group-hover:text-white"/>
-                    <span className="font-bold text-[#8B2A1B] group-hover:text-white">Informations</span>
+                    <BsPerson className="text-[#8B2A1B] text-xl group-active:text-white "/>
+                    <span className="font-bold text-[#8B2A1B] group-active:text-white">Informations</span>
                     </div>
-                    <IoChevronForward className="text-[#8B2A1B] text-xl group-hover:text-white" />
+                    <IoChevronForward className="text-[#8B2A1B] text-xl group-active:text-white" />
                 </button>
-                <button className="flex justify-between items-center p-2 rounded-lg hover:bg-orange-500 group transition ">
+                <button className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FBE5DA] active:bg-[#FF6900] group transition " onClick={()=>setPageActive("commandes")}>
                     <div className="flex items-center gap-2">
-                        <MdOutlineShoppingBag className="text-[#8B2A1B] text-xl group-hover:text-white" />
-                       <span className="font-bold text-[#8B2A1B] group-hover:text-white">Mes Commandes</span>
+                        <MdOutlineShoppingBag className="text-[#8B2A1B] text-xl group-active:text-white " />
+                       <span className="font-bold text-[#8B2A1B] group-active:text-white ">Mes Commandes</span>
                     </div>
-                    <IoChevronForward className="text-[#8B2A1B] text-xl group-hover:text-white"/> 
+                    <IoChevronForward className="text-[#8B2A1B] text-xl group-active:text-white "/> 
+                </button>
+                <button className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FBE5DA] active:bg-[#FF6900]  group transition " onClick={()=>setPageActive("parmetres")}>
+                    <div className="flex items-center gap-2">
+                        <IoSettingsOutline className="text-[#8B2A1B] text-xl group-active:text-white" />
+                       <span className="font-bold text-[#8B2A1B] group-active:text-white ">Paramétre</span>
+                    </div>
+                    <IoChevronForward className="text-[#8B2A1B] text-xl group-active:text-white"/> 
                 </button>
                 <hr className="border-gray-100 mx-3" />
-                <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-orange-500 group transition">
-                        <MdLogout className="text-[#FF6900] text-xl group-hover:text-white"/>
-                       <span className="font-bold text-[#FF6900] group-hover:text-white">Se déconnecter</span>
+                <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#FBE5DA] active:bg-[#FF6900] group transition">
+                        <MdLogout className="text-[#FF6900] text-xl group-active:text-white"/>
+                       <span className="font-bold text-[#FF6900] group-active:text-white">Se déconnecter</span>
                 </button>
              </div>
-              <div className="bg-white rounded-3xl shadow-md flex-1 p-4"></div>{/*partie contenu*/}
-
+                <div className="bg-white rounded-3xl shadow-md flex-1 p-4">{/*partie contenu*/}
+                  {pageActive === "informations" && <InfoPersonnelles/>}
+                  {pageActive === "commandes" && <MesCommandes/>}
+                  {pageActive === "parmetres" && <Parametre/>}
+                </div>
            </div>
    
        </div>
