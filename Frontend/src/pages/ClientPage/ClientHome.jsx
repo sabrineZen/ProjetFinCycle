@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavbarHome from "../../composants/navbarHome";
 import CardInfo from "../../composants/cardInfo";
 import CategoryCard from "../../composants/categoryCard";
+import { categories as categoriesData } from "../../data/categories";
 import PlatPopular from "../../composants/platPopular";
 import RestaurantPopular from "../../composants/retaurantPopular";
 import Footer from "../../composants/footer";
@@ -26,15 +27,7 @@ function Home() {
 
   ]);
 
-  const categories = [
-    { id: 1, name: "Plat traditionnel", couleur: "linear-gradient(to top right, #FFEFE7, #FFEBE1)" },
-    { id: 2, name: "grillades", couleur: "linear-gradient(to top right, #FF8238, #FF7C31)" },
-    { id: 3, name: "fastfood", couleur: "linear-gradient(to top right, #FFB391, #FFA67F)" },
-    { id: 4, name: "Salades", couleur: "linear-gradient(to top right, #FFCEB2, #FFD9C3)" },
-    { id: 5, name: "Desserts", couleur: "linear-gradient(to top right, #FF995D, #FF996D)" },
-    { id: 6, name: "Boissons", couleur: "linear-gradient(to top right, #C76366, #C76370)" },
-    { id: 7, name: "Plats asiatique", couleur: "linear-gradient(to top right, #FCCEC1, #FCCEC2)" },
-  ];
+  const categories = categoriesData;
 
   const plats = [
     { id: 1, name: "Pizza" },
@@ -100,7 +93,7 @@ function Home() {
         </div>
         <div
           className="cursor-pointer pr-2 sm:pr-10 pt-6 sm:pt-20 text-button text-base sm:text-xl"
-          onClick={() => navigate("/categoriesPage")} 
+          onClick={() => navigate("/CategoriesAll")} 
         >{/*j'ai ajouter pour passer vers page catégorie*/}
           voir tout
         </div>
@@ -110,7 +103,7 @@ function Home() {
         {categories.map((cat) => (
           <CategoryCard
             key={cat.id}
-            hoverClass="hover:scale-110 transition-transform duration-300"
+            hoverClass="hover:scale-107 transition-transform duration-300"
             category={cat}
             couleur={cat.couleur}
             onClick={() => navigate("/categoriesPage", { state: cat })}
@@ -127,7 +120,7 @@ function Home() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4 pt-8">
         {affichagePlats.map((plat) => (
-          <PlatPopular key={plat.id} plat={plat} hoverClass="hover:scale-110 transition-transform duration-300" />
+          <PlatPopular key={plat.id} plat={plat} hoverClass="hover:scale-107 transition-transform duration-300" />
         ))}
       </div>
 
@@ -141,7 +134,7 @@ function Home() {
         {restaurantsPopulaires.map((restaurant) => (
           <RestaurantPopular
             key={restaurant.id}
-            hoverClass="hover:scale-110 transition-transform duration-300"
+            hoverClass="hover:scale-107 transition-transform duration-300"
             restaurant={restaurant}
           />
         ))}
