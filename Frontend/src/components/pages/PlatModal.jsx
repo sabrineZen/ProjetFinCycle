@@ -45,11 +45,11 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-md font-regular text-[#951418] ml-2">Nom du plat *</label>
+              <label className="text-md font-regular text-[#951418] ml-2 ">Nom du plat *</label>
               <input 
                 type="text" 
                 defaultValue={isEditing ? currentPlat?.nom : ""}
-                className="w-full bg-[#FFE3CE] border-2 border-[#C0A0A0] rounded-2xl p-4 " 
+                className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
                 placeholder="Ex: Pizza Fruits de Mer" 
               />
             </div>
@@ -59,7 +59,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <textarea 
                 rows="2" 
                 defaultValue={isEditing ? currentPlat?.description : ""}
-                className="w-full bg-[#FFE3CE] border-2 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] font-regular" 
+                className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
                 placeholder="Ingrédients..."
               ></textarea>
             </div>
@@ -70,14 +70,14 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
                 <input 
                   type="number" 
                   defaultValue={isEditing ? currentPlat?.prix.replace(" DA", "") : ""}
-                  className="w-full bg-[#FFE3CE] border-2 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] font-regular" 
+                  className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-md font-regular text-[#951418]  ml-2">Catégorie</label>
                 <select 
                   defaultValue={isEditing ? currentPlat?.categorie : "Pizza"}
-                  className="w-full bg-[#FFE3CE] border-2 border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418]  "
+                  className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none "
                 >
                   <option >Pizza</option>
                   <option>Burger</option>

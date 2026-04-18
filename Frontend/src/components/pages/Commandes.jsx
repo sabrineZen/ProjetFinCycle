@@ -80,7 +80,7 @@ const Commandes = () => {
             <button
               key={cat.id}
               onClick={() => { setFilter(cat.id); setExpandedId(null); }}
-              className={`px-6 py-3 rounded-3xl border-1 border-[#C0A0A0] font-regular text-sm flex items-center gap-2 transition-all ${
+              className={`px-6 py-3 rounded-xl border-1 border-[#C0A0A0] font-regular text-sm flex items-center gap-3 transition-all ${
                 filter === cat.id ? 'bg-[#FF843D] text-white shadow-sm s' : 'bg-[#FFE3CE]/40 text-[#8B2C21]'
               }`}
             >
