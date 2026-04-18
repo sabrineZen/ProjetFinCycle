@@ -98,7 +98,7 @@ const MesPlats = () => {
               onClick={handleDeleteCategory}
               className="px-2 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors flex items-center gap-2 font-regular text-sm shadow-md"
             >
-              <Trash2 size={16} /> Supprimer categories
+              <Trash2 size={16} /> Supprimer all plats
             </button>
           )}
         </div>
