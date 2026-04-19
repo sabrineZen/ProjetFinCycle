@@ -85,11 +85,22 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
                  <select className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 appearance-none focus:ring-2 focus:ring-[#FF843D] transition-all outline-none">
                     <option >Pizza</option>
                     <option>Burger</option>
+                    <option>Salade</option>
+                    <option>Desserts</option>
+                    <option>Boissons</option>
                  </select>
                </div>
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Email</label>
                  <input type="email" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz " />
+               </div>
+               <div className="space-y-2">
+                 <label className="text-xl font-regular text-[#951418] ml-2">Telephone</label>
+                 <input type="tel" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="+213 ... " />
+               </div>
+               <div className="space-y-2">
+                 <label className="text-xl font-regular text-[#951418] ml-2">Adresse</label>
+                 <input type="text" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
                </div>
             </div>
           </div>
@@ -114,6 +125,14 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
              <div className="space-y-2">
                <label className="text-lg font-regular text-[#951418]/70 ml-2">Délai livraison (min)</label>
                <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="30" />
+             </div>
+             <div className="space-y-2">
+               <label className="text-lg font-regular text-[#951418]/70 ml-2">Commande minimum(DA)</label>
+               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
+             </div>
+             <div className="space-y-2">
+               <label className="text-lg font-regular text-[#951418]/70 ml-2">Frais de livraison(DA)</label>
+               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
              </div>
           </div>
         </div>

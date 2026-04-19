@@ -108,7 +108,6 @@ const MesPlats = () => {
           <input type="text" placeholder="Rechercher un plat..." className="w-full bg-[#FFE3CE] border-none rounded-2xl py-3 pl-14 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
         </div>
       </div>
-
       {/* GRILLE */}
       <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-8">
         {platsFiltrés.map((plat) => (
@@ -141,17 +140,18 @@ const MesPlats = () => {
             </div>
           </div>
         ))}
-
         {/* Bouton Ajouter (Style simple) */}
-        <div className="flex items-center justify-center">
-          <button onClick={handleAdd} className="flex flex-col items-center justify-center gap-3 p-6 text-[#951418] hover:scale-105 transition-all">
-            <div className="w-16 h-16 bg-[#FF843D] rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <Plus size={32} strokeWidth={3} />
-            </div>
-            <span className="font-regular text-lg">Ajouter un plat</span>
-          </button>
+        <div className="bg-white w-62 h-80 rounded-3xl flex items-center justify-center">
+            <button onClick={handleAdd} className="flex flex-col items-center justify-center gap-3 p-6 text-[#951418] hover:scale-105 transition-all">
+              <div className="w-16 h-16 bg-[#FF843D] rounded-2xl flex items-center justify-center text-white shadow-lg">
+                <Plus size={32} strokeWidth={3} />
+              </div>
+              <span className="font-regular text-lg">Ajouter un plat</span>
+            </button>
         </div>
       </div>
+      
+      
 
       <PlatModal 
         isOpen={showModal} 
