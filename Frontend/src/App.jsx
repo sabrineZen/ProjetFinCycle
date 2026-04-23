@@ -9,6 +9,8 @@ import Home from './pages/ClientPage/ClientHome.jsx';
 import CategoriesPage from './pages/ClientPage/CategoriesPage.jsx';
 import ProfilPage from './pages/ClientPage/ProfilPage.jsx'
 import AllCategories from './pages/ClientPage/CategoriesAll.jsx';
+import LundingPage from './pages/ClientPage/lunding-page';
+import LandingPage from './pages/ClientPage/lunding-page'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +19,7 @@ function App() {
     <>
       <BrowserRouter>
       <Routes>
+        <Route path='/'element={<LandingPage/>}/>
         <Route path="/homeClient" element={<Home />} />
         {/*le route en bas avec l element categoriespage il va servir comme page des catégories */}
         {/*donc navigate je dis bon tu vas dans cette adresse et route verfiei dans cette adresse queceuqe il ya et il affiche le contenue */}
