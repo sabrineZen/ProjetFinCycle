@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import Sidebar from './components/navbar/Sidebar';
 import Header from './components/navbar/Header';
-// Importe ton composant Dashboard ici
 import Dashboard from './components/pages/Dashboard'; 
 import MonRestaurant from './components/pages/MonRestaurant';
 import MesPlats from './components/pages/MesPlats';
@@ -10,23 +8,50 @@ import Commandes from './components/pages/Commandes';
 import MonCompte from './components/pages/MonCompte';
 
 function App() {
-  // L'état qui mémorise la page active
+  // 1. ÉTAT POUR LA NAVIGATION
   const [activePage, setActivePage] = useState('dashboard');
   const [restaurantActif, setRestaurantActif] = useState(true);
+
+  // 2. ÉTAT POUR LE MENU BURGER (MOBILE/TABLETTE)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Fonction pour obtenir le titre propre selon l'ID de la page
+  const getTitle = (id) => {
+    switch(id) {
+      case 'dashboard': return 'Tableau de bord';
+      case 'restaurant': return 'Mon restaurant';
+      case 'plats': return 'Mes plats';
+      case 'commandes': return 'Commandes';
+      case 'compte': return 'Mon compte';
+      default: return 'RestoPro';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#FFF8F3] flex">
-      {/* 1. La Sidebar (On lui passe activePage et setPage) */}
-      <Sidebar currentPage={activePage} setPage={setActivePage} estActif={restaurantActif} />
+    <div className="min-h-screen bg-[#FFF8F3] flex flex-col">
+      {/* HEADER : On passe onMenuClick pour ouvrir le burger */}
+      <Header 
+        title={getTitle(activePage)} 
+        onMenuClick={() => setIsMenuOpen(true)} 
+      />
 
-      <div className="flex-1 flex flex-col">
-        {/* 2. Le Header (Il affiche le titre de la page active) */}
-        <Header title={activePage === 'dashboard' ? 'Tableau de bord' : activePage} />
+      <div className="flex flex-1">
+        {/* SIDEBAR : On passe isOpen et setIsOpen pour la gestion mobile */}
+        <Sidebar 
+          currentPage={activePage} 
+          setPage={setActivePage} 
+          estActif={restaurantActif}
+          isOpen={isMenuOpen}
+          setIsOpen={setIsMenuOpen}
+        />
 
-        {/* 3. La Zone de Contenu */}
-        <main className="pt-32 pl-[380px] pr-10 pb-10">
+        {/* CONTENU PRINCIPAL */}
+        {/* Note: ml-0 sur mobile, ml-[340px] sur desktop pour laisser la place à la sidebar fixe */}
+        <main className="flex-1 pt-24 lg:pt-32 lg:ml-[340px] px-4 md:px-10 pb-10 transition-all duration-300">
           
-          {/* SI activePage est 'dashboard', on affiche le Dashboard */}
-          {activePage === 'dashboard' && <Dashboard estActif={restaurantActif} setEstActif={setRestaurantActif} />}
+          {activePage === 'dashboard' && (
+            <Dashboard estActif={restaurantActif} setEstActif={setRestaurantActif} />
+          )}
           
           {activePage === 'restaurant' && (
             <MonRestaurant 
@@ -35,20 +60,17 @@ function App() {
             />
           )}
 
-          {/* AJOUTE CECI : Si la page active est plats */}
-            {activePage === "plats" && (
-              <MesPlats />
-            )}
+          {activePage === "plats" && (
+            <MesPlats />
+          )}
 
-            {/* 2. Ajout du rendu pour la page Commandes */}
           {activePage === "commandes" && (
             <Commandes />
           )}
 
-          {/* 2. Ajout du rendu pour la page Mon Compte */}
-            {activePage === "compte" && (
-              <MonCompte />
-            )}
+          {activePage === "compte" && (
+            <MonCompte />
+          )}
 
         </main>
       </div>
