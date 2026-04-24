@@ -11,7 +11,7 @@ const Header = ({ title }) => {
         });
   return (
     // 'fixed top-0 left-0 w-full' pour qu'il prenne tout le haut
-    <header className="fixed top-0 left-0 w-full h-24 bg-[#FFF4EC] flex items-center justify-between px-10  border-b border-gray-100 z-50 font-sans shadow-lg shadow-gray-300  ">
+    <header className="fixed top-0 left-0 w-full h-24 bg-[#FFF4EC] flex items-center justify-between px-10  border-b border-gray-100 z-50 font-sans shadow-md shadow-gray-300  ">
       
       {/* Section Logo (Couverts croisés comme sur la photo) */}
       <div className="flex items-center gap-5 min-w-[200px]">

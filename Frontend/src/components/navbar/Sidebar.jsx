@@ -45,7 +45,7 @@ const Sidebar = ({ currentPage, setPage,estActif }) => {
 
       {/* 2. La Carte du Menu (Rectangle blanc arrondi) */}
       {/* 'bg-white rounded-[32px] shadow-2xl' pour l'effet carte */}
-      <nav className="w-full bg-white flex flex-col p-6 rounded-[20px] shadow-2xl shadow-gray-300 ">
+      <nav className="w-full bg-white flex flex-col p-6 rounded-[20px] shadow-lg  ">
         
         {/* Liens de Navigation */}
         <div className="flex-1 space-y-1">

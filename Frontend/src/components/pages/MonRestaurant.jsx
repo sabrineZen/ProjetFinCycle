@@ -9,7 +9,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
       <div className="w-280px space-y-6">
         
         {/* Carte Profil */}
-        <div className="bg-white p-11 rounded-[20px] shadow-2xl  flex flex-col items-center text-center">
+        <div className="bg-white p-11 rounded-[20px] shadow-md  flex flex-col items-center text-center">
           <div className="relative">
             <img 
               src="https://cdn.mos.cms.futurecdn.net/HNnPBHRgfDcRwMyPAbGoDR.jpg" //Remplace par ton image de 
@@ -44,7 +44,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
         </div>
 
         {/* Carte Infos Rapides */}
-        <div className="bg-white p-8 rounded-[20px] shadow-xl ">
+        <div className="bg-white p-8 rounded-[20px] shadow-md ">
           <h3 className="text-xl font-regular text-[#951418] mb-6">Informations rapides</h3>
           <div className="space-y-4">
             <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
@@ -64,7 +64,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
       <div className="lg:w-2/3 space-y-8">
         
         {/* Section Informations Générales */}
-        <div className="bg-white p-10 rounded-[20px] shadow-2xl ">
+        <div className="bg-white p-10 rounded-[20px] shadow-md ">
           <div className="flex items-center gap-3 mb-8">
             <Info className="text-[#951418] "  size={28}/>
             <h3 className="text-3xl font-regular text-[#951418]">Informations générales</h3>
@@ -107,7 +107,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
         </div>
 
         {/* Section Horaires & Livraison */}
-        <div className="bg-white p-10 rounded-[20px] shadow-xl ">
+        <div className="bg-white p-10 rounded-[20px] shadow-md ">
           <div className="flex items-center gap-3 mb-8">
             <Clock className="text-[#8B2C21]" />
             <h3 className="text-2xl font-bold text-[#8B2C21]">Horaires & Livraison</h3>
@@ -116,30 +116,30 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
              <div className="space-y-2">
                <label className="text-lg font-regular text-[#951418]/70 ml-2">Heure d'ouverture</label>
-               <input type="time" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz" />
+               <input type="time" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz" />
              </div>
              <div className="space-y-2">
                <label className="text-lg font-regular text-[#951418]/70 ml-2">Heure de fermeture</label>
-               <input type="time" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz" />
+               <input type="time" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz" />
              </div>
              <div className="space-y-2">
                <label className="text-lg font-regular text-[#951418]/70 ml-2">Délai livraison (min)</label>
-               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="30" />
+               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="30" />
              </div>
              <div className="space-y-2">
-               <label className="text-lg font-regular text-[#951418]/70 ml-2">Commande minimum(DA)</label>
-               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
+               <label className="text-lg font-regular text-[#951418]/70 ml-2">Commande min(DA)</label>
+               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
              </div>
              <div className="space-y-2">
                <label className="text-lg font-regular text-[#951418]/70 ml-2">Frais de livraison(DA)</label>
-               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
+               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
              </div>
           </div>
         </div>
 
         {/* Bouton Sauvegarder (Fixé en bas à droite ou en fin de page) */}
         <div className="flex justify-end">
-          <button className="bg-[#FF843D] text-white px-10 py-5 rounded-3xl font-regular shadow-xl shadow-orange-100 hover:scale-105 transition-all flex items-center gap-3">
+          <button className="bg-[#FF843D] text-white px-10 py-5 rounded-3xl font-regular shadow-lg shadow-orange-100 hover:scale-105 transition-all flex items-center gap-3">
             <Save size={24} /> Sauvegarder les modifications
           </button>
         </div>

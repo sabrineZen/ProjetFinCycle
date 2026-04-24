@@ -24,7 +24,7 @@ const MonCompte = () => {
       
       {/* --- COLONNE GAUCHE (Sidebar) --- */}
       <div className="w-[280px] flex-shrink-0 space-y-8">
-        <div className="bg-white p-10 rounded-[20px] shadow-xl border border-gray-50 flex flex-col items-center">
+        <div className="bg-white p-10 rounded-[20px] shadow-md border border-gray-50 flex flex-col items-center">
           <div className="relative mb-6">
             <div className="w-28 h-28 rounded-[20px] overflow-hidden border-4 border-[#FFE8D6] shadow-sm">
               <img 
@@ -33,7 +33,7 @@ const MonCompte = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <button className="absolute -right-2 -bottom-2 bg-[#FF843D] text-white p-2.5 rounded-2xl shadow-lg border-4 border-white hover:scale-110 transition-transform">
+            <button className="absolute -right-2 -bottom-2 bg-[#FF843D] text-white p-2.5 rounded-2xl shadow-md border-4 border-white hover:scale-110 transition-transform">
               <Camera size={18} fill="currentColor" />
             </button>
           </div>
@@ -41,7 +41,7 @@ const MonCompte = () => {
           <h3 className="text-[28px] font-regular text-[#951418] mb-1 text-center">Ghanou Yns</h3>
           <p className="text-gray-400 text-sm font-regular mb-6 truncate w-full text-center">younsighanou43@gmail.com</p>
           
-          <div className="bg-[#FFE3CE] px-3.5 py-3 rounded-2xl flex items-center gap-3 mb-10 shadow-xl">
+          <div className="bg-[#FFE3CE] px-3.5 py-3 rounded-2xl flex items-center gap-3 mb-10 shadow-sm">
             <Settings size={20} className="text-[#8B2C21]" />
             <span className="text-[#951418] text-[12px]  font-regular uppercase tracking-widest">Compte vérifié</span>
           </div>
@@ -59,12 +59,12 @@ const MonCompte = () => {
         </div>
 
         {/* MENU DE NAVIGATION */}
-        <div className="bg-white p-4 rounded-[20px] shadow-xl  ">
+        <div className="bg-white p-4 rounded-[20px] shadow-md  ">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 p-4 rounded-[20px] font-regular  text-lg transition-all ${
+              className={`w-full flex items-center gap-3 p-3 rounded-[20px] font-regular  text-lg transition-all ${
                 activeTab === item.id 
                 ? 'bg-[#FF843D] text-white shadow-xl shadow-xl scale-[1.02]' 
                 : 'text-[#8B2C21]  '

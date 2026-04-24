@@ -80,7 +80,7 @@ const MesPlats = () => {
       </div>
 
       {/* FILTRES & RECHERCHE */}
-      <div className="bg-white p-4 rounded-[20px] shadow-xl flex flex-wrap items-center justify-between gap-6 mb-10">
+      <div className="bg-white p-4 rounded-[20px] shadow-md flex flex-wrap items-center justify-between gap-6 mb-10">
         <div className="flex items-center gap-3">
           {categoriesList.map((cat) => (
             <button 
@@ -111,7 +111,7 @@ const MesPlats = () => {
       {/* GRILLE */}
       <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-8">
         {platsFiltrés.map((plat) => (
-          <div key={plat.id} className="bg-white rounded-[25px] overflow-hidden shadow-xl flex flex-col">
+          <div key={plat.id} className="bg-white rounded-[25px] overflow-hidden shadow-md flex flex-col">
             <div className="relative h-50">
               <img src={plat.image} alt={plat.nom} className="w-full h-full object-cover" />
               <div className={`absolute top-5 right-5 px-4 py-1.5 rounded-full text-[11px] font-black uppercase backdrop-blur-md ${plat.disponible ? 'bg-green-500/20 text-green-600' : 'bg-red-500/20 text-red-600'}`}>

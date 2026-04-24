@@ -36,7 +36,7 @@ const Abonnement = () => {
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-5 duration-500 pb-10">
       
       {/* --- PLAN ACTUEL --- */}
-      <div className="bg-white p-7 rounded-[20px] shadow-xl ">
+      <div className="bg-white p-7 rounded-[20px] shadow-md ">
         <div className="flex justify-between items-start mb-7">
           <div>
             <p className="text-[#951418] font-regular text-md">Plan actuel</p>
@@ -66,7 +66,7 @@ const Abonnement = () => {
       </div>
 
       {/* --- CHANGER DE PLAN --- */}
-      <div className="bg-white p-8 rounded-[20px] shadow-2xl ">
+      <div className="bg-white p-8 rounded-[20px] shadow-md ">
         <div className="flex items-center gap-2 mb-8">
           <RefreshCw className="text-[#951418]" size={30} />
           <h2 className="text-3xl font-regular text-[#951418]">Changer de plan</h2>
@@ -74,7 +74,7 @@ const Abonnement = () => {
 
         <div className="grid grid-cols-3 gap-6">
           {plans.map((plan, index) => (
-            <div key={index} className={`p-6 rounded-[20px] border-1 flex flex-col items-center shadow-xl text-center transition-all ${plan.current ? 'border-1 border-[#951418] bg-[#FFE3CE]' : 'border-1 border-[#C0A0A0] bg-[#FFE3CE]/50'}`}>
+            <div key={index} className={`p-6 rounded-[20px] border-1 flex flex-col items-center shadow-md text-center transition-all ${plan.current ? 'border-1 border-[#951418] bg-[#FFE3CE]' : 'border-1 border-[#C0A0A0] bg-[#FFE3CE]/50'}`}>
               <div className="flex justify-between w-full items-start mb-4">
                 <h3 className="text-2xl font-regular text-[#951418]">{plan.name}</h3>
                 {plan.current && <span className="bg-[#951418] text-white text-[10px] px-3 py-1 rounded-full font-regular shadow-md shadow-[#951418]">Actuel</span>}
@@ -100,7 +100,7 @@ const Abonnement = () => {
       </div>
 
       {/* --- ZONE DE DANGER --- */}
-      <div className="bg-white p-10 rounded-[20px] shadow-2xl ">
+      <div className="bg-white p-10 rounded-[20px] shadow-md ">
         <div className="flex items-center gap-3.5 mb-8">
           <AlertTriangle className="text-[#951418]" size={35} />
           <h2 className="text-3xl font-regular text-[#951418]">Zone de danger</h2>

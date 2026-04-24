@@ -29,7 +29,7 @@ const Notifications = () => {
     <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-5 duration-500">
       
       {/* --- CARTE PRINCIPALE --- */}
-      <div className="bg-white p-12 rounded-[20px] shadow-2xl ">
+      <div className="bg-white p-12 rounded-[20px] shadow-md ">
         
         {/* EN-TÊTE */}
         <div className="flex items-center gap-4 mb-6 pb-5 ">
@@ -68,7 +68,7 @@ const Notifications = () => {
 
       {/* --- BOUTON DE SAUVEGARDE --- */}
       <div className="flex justify-end mt-2">
-         <button className="bg-[#FF843D] text-white px-10 py-4 rounded-2xl font-regular text-xl flex items-center gap-2 shadow-md shadow-[#FF843D] hover:scale-105 active:scale-95 transition-all ">
+         <button className="bg-[#FF843D] text-white px-10 py-4 rounded-2xl font-regular text-xl flex items-center gap-2 shadow-sm shadow-[#FF843D] hover:scale-105 active:scale-95 transition-all ">
               <Download size={26} />
                Sauvegarder les préférences
            </button>

@@ -44,7 +44,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
     <div className="flex-1 space-y-10 pb-10 text-[#951418] font-regular ">
       
       {/* 1. SECTION : Statut du Restaurant */}
-      <section className="bg-white p-6 rounded-[20px] shadow-2xl  flex items-center justify-between transition-all">
+      <section className="bg-white p-6 rounded-[20px] shadow-md  flex items-center justify-between transition-all">
         <div>
             <h2 className="text-xl ">Statut de votre restaurant</h2>
             <p className="text-sm text-[#951418]/70 mt-1">
@@ -81,7 +81,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
       {/* 2. SECTION : Cartes de Statistiques Clés */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statsCards.map((stat) => (
-          <div key={stat.id} className="bg-white p-7 rounded-[20px] shadow-xl  flex items-center gap-5 transition-transform hover:translate-y-[-5px]">
+          <div key={stat.id} className="bg-white p-7 rounded-[20px] shadow-md  flex items-center gap-5 transition-transform hover:translate-y-[-5px]">
             <div className={`p-4 rounded-3xl ${stat.bg} ${stat.color}`}>
               {stat.icon}
             </div>
@@ -97,7 +97,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
         {/* A. Graphique Ventes de la semaine (Prend 2/3 de l'espace sur grand écran) */}
-        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-2xl  relative min-h-[400px]">
+        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md  relative min-h-[400px]">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-3xl">Ventes de la semaine</h3>
             <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold  shadow-lg shadow-orange-100 hover:scale-105 transition-all">
@@ -113,7 +113,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
         </div>
 
         {/* B. Top Plats (Prend 1/3 de l'espace) */}
-        <div className="bg-white p-8 rounded-[20px] shadow-xl ">
+        <div className="bg-white p-8 rounded-[20px] shadow-md ">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-2xl font-regular">Top Plats</h3>
             <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-md shadow-orange-100 hover:scale-105 transition-all">
@@ -150,7 +150,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
       </section>
 
       {/* 4. SECTION : Tableau des Commandes Récentes */}
-      <section className="bg-white p-10 rounded-[20px] shadow-2xl ">
+      <section className="bg-white p-10 rounded-[20px] shadow-md ">
         <div className="flex items-center justify-between mb-10">
           <h3 className="text-3xl ">Commandes récentes</h3>
           <button className="flex items-center gap-2 bg-[#FF843D] text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg shadow-orange-100 hover:scale-105 transition-all">

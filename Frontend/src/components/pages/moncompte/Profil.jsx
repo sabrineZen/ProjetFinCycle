@@ -21,7 +21,7 @@ const Profil = () => {
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-8 duration-500">
       
       {/* SECTION BLANCHE : INFORMATIONS PERSONNELLES */}
-      <div className="bg-white p-8 rounded-[20px] shadow-2xl ">
+      <div className="bg-white p-8 rounded-[20px] shadow-md ">
         
         {/* EN-TÊTE AVEC ICÔNE ET TITRE */}
         <div className="flex items-center gap-2 mb-6 pb-5 ">
@@ -111,7 +111,7 @@ const Profil = () => {
 
       {/* BOUTON SAUVEGARDER POSITIONNÉ À DROITE */}
       <div className="flex justify-end mt-2">
-        <button className="bg-[#FF843D] text-white px-8 py-4.5 rounded-[18px] font-regular text-xl flex items-center gap-3 shadow-md shadow-[#FF843D] hover:scale-[1.03] active:scale-[0.98] transition-all">
+        <button className="bg-[#FF843D] text-white px-8 py-4.5 rounded-[18px] font-regular text-xl flex items-center gap-3 shadow-sm shadow-[#FF843D] hover:scale-[1.03] active:scale-[0.98] transition-all">
           <Download size={26} />
           Sauvegarder
         </button>

@@ -58,7 +58,7 @@ const Commandes = () => {
   return (
     <div className="space-y-5">
       {/* BANNIÈRE ALERTE */}
-      <div className="bg-[#FF843D] text-white p-4 rounded-[14px] flex items-center gap-3 shadow-xl ">
+      <div className="bg-[#FF843D] text-white p-4 rounded-[14px] flex items-center gap-3 shadow-md ">
         <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
         <span className="font-regular">nouvelle(s) commande(s) reçue(s)</span>
       </div>
@@ -66,7 +66,7 @@ const Commandes = () => {
       {/* CARTES STATS */}
       <div className="grid grid-cols-4 gap-4">
         {['Nouvelles', 'En cours', 'Prets', 'Livrés'].map((l) => (
-          <div key={l} className="bg-white p-3 rounded-[20px] shadow-lg  flex flex-col items-center">
+          <div key={l} className="bg-white p-3 rounded-[20px] shadow-md  flex flex-col items-center">
             <span className="text-4xl font-regular text-[#951418]">{getCount(l)}</span>
             <span className=" text-[#951418]/60 font-regular">{l}</span>
           </div>
@@ -74,7 +74,7 @@ const Commandes = () => {
       </div>
 
       {/* TO-DO LISTE (FILTRES) */}
-      <div className="bg-white p-4 rounded-[20px] shadow-lg flex items-center justify-between gap-4">
+      <div className="bg-white p-4 rounded-[20px] shadow-md flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
           {categories.map((cat) => (
             <button
@@ -109,7 +109,7 @@ const Commandes = () => {
       <div className="space-y-4">
         {commandesFiltrées.length > 0 ? (
           commandesFiltrées.map((cmd) => (
-            <div key={cmd.id} className="bg-white rounded-[20px] shadow-xl  overflow-hidden transition-all">
+            <div key={cmd.id} className="bg-white rounded-[20px] shadow-sm  overflow-hidden transition-all">
               
               {/* LIGNE PRINCIPALE */}
               <div 
