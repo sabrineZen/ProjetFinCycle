@@ -42,7 +42,7 @@ const Profil = () => {
               name="prenom"
               value={formData.prenom}
               onChange={handleChange}
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 
@@ -54,7 +54,7 @@ const Profil = () => {
               name="nom"
               value={formData.nom}
               onChange={handleChange}
-             className="w-full  border-1  bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  
+             className="w-full  border-1  bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  
             />
           </div>
 
@@ -66,7 +66,7 @@ const Profil = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  
             />
           </div>
 
@@ -78,7 +78,7 @@ const Profil = () => {
               name="telephone"
               value={formData.telephone}
               onChange={handleChange}
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 
@@ -90,7 +90,7 @@ const Profil = () => {
               name="ville"
               value={formData.ville}
               onChange={handleChange}
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  
             />
           </div>
 
@@ -102,7 +102,7 @@ const Profil = () => {
               name="rib"
               value={formData.rib}
               onChange={handleChange}
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 

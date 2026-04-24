@@ -53,7 +53,7 @@ const Notifications = () => {
               {/* TOGGLE SWITCH CUSTOM (Style RestoPro) */}
               <button 
                 onClick={() => togglePref(item.id)}
-                className={`relative w-15 h-8 rounded-full border-2 border-[#8B2C21] transition-colors duration-300 ${
+                className={`relative w-17 h-8 p-1 rounded-full border-2 border-[#8B2C21] transition-colors duration-300 ${
                   prefs[item.id] ? 'bg-[#FF843D]' : 'bg-[#FFF4EC]'
                 }`}
               >

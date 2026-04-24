@@ -19,7 +19,7 @@ const Securite = () => {
             <input 
               type="password" 
               placeholder="••••••••"
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 
@@ -29,7 +29,7 @@ const Securite = () => {
             <input 
               type="password" 
               placeholder="••••••••"
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 
@@ -39,7 +39,7 @@ const Securite = () => {
             <input 
               type="password" 
               placeholder="••••••••"
-             className="w-full border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-2xl py-4 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+             className="w-full border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
         </div>
