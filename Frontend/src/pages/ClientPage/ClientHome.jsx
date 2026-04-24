@@ -13,6 +13,7 @@ import { FaUser } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa";
 import { FaMedal } from "react-icons/fa";
+import { HiTranslate } from "react-icons/hi";
 import Recherche from "../../composants/rechercheInput";
 import HistoriqueAchats from "../../composants/historique";
 
@@ -68,6 +69,9 @@ function Home() {
         </button>
         <div className="p-2 sm:p-3 rounded-full hover:bg-orange-100 transition" onClick={() => navigate("/profil")}>{/*j'ai ajouter pour passer vers page profil*/}
           <FaUser className="text-xl sm:text-2xl text-secondary" />
+        </div>
+        <div className=" hover:bg-orange-100 transition rounded-full p-2 sm:p-3 ">
+          <HiTranslate className="text-xl sm:text-2xl text-secondary cursor-pointer" />
         </div>
       </div>
 
