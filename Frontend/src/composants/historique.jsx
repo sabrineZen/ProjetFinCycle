@@ -1,26 +1,23 @@
 import { useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaClock } from "react-icons/fa";
-import { FaBox } from "react-icons/fa";
+import { FaShoppingCart, FaClock, FaBox } from "react-icons/fa";
 
 function HistoriqueAchats({ onClose }) {
-
-  const [achats, setAchats] = useState([
+  const [achats] = useState([
     { id: 1, prix: 150 },
     { id: 2, prix: 80 },
     { id: 3, prix: 200 },
     { id: 4, prix: 120 },
-    { id: 5, prix: 60},
+    { id: 5, prix: 60 },
     { id: 6, prix: 90 },
   ]);
-const total=0;
+
   const now = new Date();
   const dateStr = now.toLocaleDateString([], { day: "2-digit", month: "short", year: "numeric" });
   const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <div className="bg-white shadow-lg p-4 rounded-[20px] w-[95vw] max-w-[800px] h-auto">
-      
+    //  Pas de div bg-white ici, on utilise celle du Panier
+    <>
       {/* Header */}
       <div className="h-auto min-h-[80px] pl-2 sm:pl-4 pr-2 sm:pr-4 flex items-center justify-between flex-wrap gap-2">
         <div className="flex flex-row gap-3 items-center">
@@ -29,20 +26,17 @@ const total=0;
             Historique des achats
           </h2>
         </div>
-        <div className="flex items-center gap-4">
-          <button
-            className="p-3 rounded-full hover:bg-orange-100 transition"
-            onClick={onClose}
-          >
-            <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
-          </button>
-        </div>
+        <button
+          className="p-3 rounded-full hover:bg-orange-100 transition"
+          onClick={onClose}
+        >
+          <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
+        </button>
       </div>
 
-      {/* Container des achats */}
-      <div className="w-full mt-6 inset-0 border-2 border-bordure rounded-[10px] p-2 flex flex-col gap-4 overflow-y-auto scrollbar-hide max-h-[60vh]">
-         {achats.map((achat, index) => (
-
+      {/* Liste des achats */}
+      <div className="w-full mt-6 border-2 border-bordure rounded-[10px] p-2 flex flex-col gap-4 overflow-y-auto scrollbar-hide max-h-[60vh]">
+        {achats.map((achat, index) => (
           <div key={achat.id} className="bg-[#F9FAFB] rounded-[10px] p-3 shadow-sm">
             <div className="w-full flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-3">
@@ -50,7 +44,7 @@ const total=0;
                   <FaBox className="text-[#FF6900] text-xl" />
                 </div>
                 <div className="flex flex-col text-base sm:text-lg font-semibold">
-                  <span className="text-[#951418]">Achat # {index + 1}</span>
+                  <span className="text-[#951418]">Achat #{index + 1}</span>
                   <span className="text-[13px] font-normal text-[#AFB0B3]">
                     Date: {dateStr} {timeStr}
                   </span>
@@ -60,44 +54,14 @@ const total=0;
                 Livré
               </span>
             </div>
-
-            <div className="mt-2 flex flex-col gap-2">
-              <div className="bg-white h-[60px] rounded-[5px] flex items-center pl-2 shadow-sm">
-                <div className="h-[45px] w-[45px] bg-green-500 rounded mr-2 flex-shrink-0">
-                   <img
-                      src={achat.image || "/default.png"}
-                      alt={achat.name}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                    
-                </div>
-                
-                Produit 1
-                <div className="ml-auto text-lg font-semibold text-[#FF6900] mr-2">
-                  {achat.prix} DA
-                </div>
-              </div>
-              <div className="bg-white h-[60px] rounded-[5px] flex items-center pl-2 shadow-sm">
-                <div className="h-[45px] w-[45px] bg-green-500 rounded mr-2 flex-shrink-0">
-                  <img
-                    src={achat.image || "/default.png"}
-                    alt={achat.name}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
-                Produit 2
-                 <div className="ml-auto text-lg font-semibold text-[#FF6900] mr-2">
-                  {achat.prix} DA
-                </div>
-              </div>
-            </div>
             <div className="mt-2 text-right font-semibold text-[#951418]">
-                    Total payé: {total} DA
+              Total payé: {achat.prix} DA
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
+
 export default HistoriqueAchats;
