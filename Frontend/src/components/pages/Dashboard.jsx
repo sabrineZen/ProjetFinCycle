@@ -159,10 +159,10 @@ const Dashboard = ({ estActif, setEstActif }) => {
         </div>
 
         {/* Tableau Responsive */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left min-w-[800px]">
+        <div className="w-full">
+          <table className="w-full text-left">
             <thead className="border-b border-gray-100">
-              <tr className="text-sm font-bold  uppercase tracking-tight">
+             <tr className="text-xs md:text-sm font-bold uppercase tracking-tight">
                 <th className="pb-5 pr-4">ID</th>
                 <th className="pb-5 pr-4">Client</th>
                 <th className="pb-5 pr-4">Plats</th>
@@ -175,16 +175,16 @@ const Dashboard = ({ estActif, setEstActif }) => {
             <tbody>
               {commandesRecentes.map((commande, index) => (
                 <tr key={index} className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50/50">
-                  <td className="py-6 font-semibold  text-sm">{commande.id}</td>
-                  <td className="py-6 font-semibold text-sm">{commande.client}</td>
-                  <td className="py-6 font-semibold text-sm">{commande.plats}</td>
-                  <td className="py-6 font-bold  text-sm">{commande.montant}</td>
-                  <td className="py-6">
+                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.id}</td>
+                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.client}</td>
+                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.plats}</td>
+                 <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.montant}</td>
+                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">
                     <span className={`px-4 py-1.5 rounded-full text-xs font-bold ${getStatusStyle(commande.status)}`}>
                       {commande.status}
                     </span>
                   </td>
-                  <td className="py-6 font-semibold text-sm">{commande.heure}</td>
+                  <td className="py-4 font-semibold text-xs md:text-sm">{commande.heure}</td>
                   <td className="py-6 text-center">
                     <button className="p-2  hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                       <MoreHorizontal size={20} />

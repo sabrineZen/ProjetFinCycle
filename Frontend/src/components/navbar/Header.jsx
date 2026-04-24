@@ -22,7 +22,7 @@ const Header = ({ title, onMenuClick }) => {
         </button>
 
         <div className="hidden lg:block ml-6 text-left">
-          <h1 className="text-[28px] text-[#951418] font-medium">
+          <h1 className="text-[28px] text-[#951418] font-regular">
             {title}
           </h1>
           <p className="text-base text-gray-400 capitalize mt-1">
@@ -41,7 +41,7 @@ const Header = ({ title, onMenuClick }) => {
           <span className="text-[15px] text-[#951418] uppercase tracking-wider leading-tight">
             Espace
           </span>
-          <span className="text-[19px] text-[#951418] leading-tight font-bold">
+          <span className="text-[19px] text-[#951418] leading-tight font-regular">
             RestoPro
           </span>
         </div>
@@ -55,10 +55,10 @@ const Header = ({ title, onMenuClick }) => {
         </button>
 
         <div className="flex items-center gap-2 md:gap-3 cursor-pointer group">
-          <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-[#FF843D] flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-md group-hover:scale-105 transition-transform">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-[#FF843D] flex items-center justify-center text-white font-regular text-lg md:text-xl shadow-md group-hover:scale-105 transition-transform">
             G
           </div>
-          <span className="hidden lg:block text-sm text-[#951418] font-bold uppercase tracking-tight group-hover:text-[#B23B2B]">
+          <span className="hidden lg:block text-sm text-[#951418] font-regular uppercase tracking-tight group-hover:text-[#B23B2B]">
             YOUNSI Ghanou
           </span>
         </div>

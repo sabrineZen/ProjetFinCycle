@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { Search, Bell, Clock, CheckCircle2, Truck, AlertCircle, ChevronDown, ChevronUp, MapPin, User, Phone, AlertTriangle, Clock3 } from 'lucide-react';
+import { motion } from "framer-motion";
+import {
+  Search, Bell, Clock, CheckCircle2, Truck,
+  AlertCircle, ChevronDown, ChevronUp, AlertTriangle
+} from 'lucide-react';
 
 const Commandes = () => {
   const [filter, setFilter] = useState('Tous');
   const [expandedId, setExpandedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Données basées sur vos captures
-  const [commandesList] = useState([
+  // ✅ STATE MODIFIABLE
+  const [commandesList, setCommandesList] = useState([
     { id: "#0045", client: "GHANOU Y.", heure: "12:30", prix: "4100 DA", status: "Nouvelle", badge: "Nouveau!", icon: <Bell className="text-[#951418]" /> },
     { id: "#0046", client: "AHMED Y.", heure: "12:30", prix: "3200 DA", status: "En cours", icon: <Clock className="text-[#951418]" /> },
     { id: "#0047", client: "WASSIM Y.", heure: "12:35", prix: "3600 DA", status: "Pret", icon: <CheckCircle2 className="text-[#951418]" /> },
@@ -15,13 +19,13 @@ const Commandes = () => {
     { id: "#0049", client: "DIANA Y.", heure: "12:45", prix: "2600 DA", status: "Annulé", icon: <AlertCircle className="text-[#951418]" /> },
   ]);
 
-  // Calcul dynamique des nombres pour la To-do liste
-  const getCount = (catId) => {
-    if (catId === 'Tous') return commandesList.length;
-    if (catId === 'Nouvelles') return commandesList.filter(c => c.status === 'Nouvelle').length;
-    if (catId === 'Annuler') return commandesList.filter(c => c.status === 'Annulé').length;
-    if (catId === 'Prets') return commandesList.filter(c => c.status === 'Pret').length;
-    return commandesList.filter(c => c.status === catId).length;
+  // 🔥 ANNULATION
+  const handleCancel = (id) => {
+    const updated = commandesList.map((cmd) =>
+      cmd.id === id ? { ...cmd, status: "Annulé" } : cmd
+    );
+    setCommandesList(updated);
+    setExpandedId(null);
   };
 
   const categories = [
@@ -32,6 +36,14 @@ const Commandes = () => {
     { id: 'Livrés', label: 'Livrés' },
     { id: 'Annuler', label: 'Annuler' },
   ];
+
+  const getCount = (catId) => {
+    if (catId === 'Tous') return commandesList.length;
+    if (catId === 'Nouvelles') return commandesList.filter(c => c.status === 'Nouvelle').length;
+    if (catId === 'Annuler') return commandesList.filter(c => c.status === 'Annulé').length;
+    if (catId === 'Prets') return commandesList.filter(c => c.status === 'Pret').length;
+    return commandesList.filter(c => c.status === catId).length;
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -44,150 +56,196 @@ const Commandes = () => {
     }
   };
 
-  // Filtrage combiné (Catégorie + Recherche)
   const commandesFiltrées = commandesList.filter(cmd => {
-    const matchesSearch = cmd.client.toLowerCase().includes(searchQuery.toLowerCase()) || cmd.id.includes(searchQuery);
-    const matchesFilter = filter === 'Tous' || 
-                         (filter === 'Nouvelles' && cmd.status === 'Nouvelle') ||
-                         (filter === 'Annuler' && cmd.status === 'Annulé') ||
-                         (filter === 'Prets' && cmd.status === 'Pret') ||
-                         cmd.status === filter;
+    const matchesSearch =
+      cmd.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cmd.id.includes(searchQuery);
+
+    const matchesFilter =
+      filter === 'Tous' ||
+      (filter === 'Nouvelles' && cmd.status === 'Nouvelle') ||
+      (filter === 'Annuler' && cmd.status === 'Annulé') ||
+      (filter === 'Prets' && cmd.status === 'Pret') ||
+      cmd.status === filter;
+
     return matchesSearch && matchesFilter;
   });
 
   return (
-    <div className="space-y-5">
-      {/* BANNIÈRE ALERTE */}
-      <div className="bg-[#FF843D] text-white p-4 rounded-[14px] flex items-center gap-3 shadow-md ">
+    <div className="space-y-5 w-full max-w-[100vw] overflow-x-hidden px-3 sm:px-4">
+
+      {/* BANNER */}
+      <div className="bg-[#FF843D] text-white p-4 rounded-[14px] flex items-center gap-3 shadow-md">
         <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-        <span className="font-regular">nouvelle(s) commande(s) reçue(s)</span>
+        <span className="text-sm sm:text-base">
+          nouvelle(s) commande(s) reçue(s)
+        </span>
       </div>
 
-      {/* CARTES STATS */}
-      <div className="grid grid-cols-4 gap-4">
+      {/* STATS */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         {['Nouvelles', 'En cours', 'Prets', 'Livrés'].map((l) => (
-          <div key={l} className="bg-white p-3 rounded-[20px] shadow-md  flex flex-col items-center">
-            <span className="text-4xl font-regular text-[#951418]">{getCount(l)}</span>
-            <span className=" text-[#951418]/60 font-regular">{l}</span>
+          <div key={l} className="bg-white p-3 sm:p-4 rounded-[20px] shadow-md flex flex-col items-center">
+            <span className="text-2xl sm:text-4xl text-[#951418]">
+              {getCount(l)}
+            </span>
+            <span className="text-xs sm:text-sm text-[#951418]/60">
+              {l}
+            </span>
           </div>
         ))}
       </div>
 
-      {/* TO-DO LISTE (FILTRES) */}
-      <div className="bg-white p-4 rounded-[20px] shadow-md flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+      {/* FILTER + SEARCH */}
+      <div className="bg-white p-3 sm:p-4 rounded-[20px] shadow-md flex flex-col gap-4">
+
+        <div className="flex flex-wrap gap-2">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => { setFilter(cat.id); setExpandedId(null); }}
-              className={`px-6 py-3 rounded-xl border-1 border-[#C0A0A0] font-regular text-sm flex items-center gap-3 transition-all ${
-                filter === cat.id ? 'bg-[#FF843D] text-white shadow-sm s' : 'bg-[#FFE3CE]/40 text-[#8B2C21]'
+              className={`px-3 sm:px-4 py-2 rounded-xl border text-xs sm:text-sm flex items-center gap-2 ${
+                filter === cat.id
+                  ? 'bg-[#FF843D] text-white'
+                  : 'bg-[#FFE3CE]/40 text-[#8B2C21]'
               }`}
             >
-              {cat.label} 
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
-                filter === cat.id ? 'bg-white/20' : 'bg-[#FF843D]/20 text-[#FF843D]'
-              }`}>
+              {cat.label}
+              <span className="text-[10px] sm:text-xs">
                 {getCount(cat.id)}
               </span>
             </button>
           ))}
         </div>
-        <div className="relative min-w-[250px]">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#951418]" size={20} />
-          <input 
-            type="text" 
-            placeholder="ID ou client .." 
+
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#951418]" size={18} />
+          <input
+            type="text"
+            placeholder="ID ou client .."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl py-3 pl-12 pr-4 font-regular text-[#951418] placeholder-[#951418]/40 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+            className="w-full bg-[#FFE3CE] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none"
           />
         </div>
       </div>
 
-      {/* LISTE DES COMMANDES AVEC ACCORDÉON */}
+      {/* LIST */}
       <div className="space-y-4">
-        {commandesFiltrées.length > 0 ? (
-          commandesFiltrées.map((cmd) => (
-            <div key={cmd.id} className="bg-white rounded-[20px] shadow-sm  overflow-hidden transition-all">
-              
-              {/* LIGNE PRINCIPALE */}
-              <div 
-                onClick={() => setExpandedId(expandedId === cmd.id ? null : cmd.id)}
-                className="p-4 flex items-center justify-between cursor-pointer group"
-              >
-                <div className="flex items-center gap-6">
-                  <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-[#951418]">{cmd.icon}</div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-regular text-[#951418]">{cmd.id}</span>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-regular uppercase ${getStatusColor(cmd.status)}`}>{cmd.status}</span>
-                      {cmd.badge && <span className="bg-red-500 text-white px-3 py-1 rounded-full text-[10px] font-regular animate-bounce">{cmd.badge}</span>}
-                    </div>
-                    <div className="text-xs font-regular text-gray-400">{cmd.client} • {cmd.heure}</div>
+
+        {commandesFiltrées.map((cmd) => (
+          <div
+            key={cmd.id}
+            className="bg-white rounded-[20px] shadow-md overflow-hidden w-full"
+          >
+
+            {/* HEADER */}
+            <div
+              onClick={() =>
+                setExpandedId(expandedId === cmd.id ? null : cmd.id)
+              }
+              className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer"
+            >
+
+              <div className="flex items-center gap-8 sm:gap-4">
+                {cmd.icon}
+
+                <div>
+                  <div className="flex flex-wrap gap-3 items-center">
+                    <span className="text-[#951418]">
+                      {cmd.id}
+                    </span>
+
+                    <span className={`px-2 py-1 rounded-full text-[10px] sm:text-xs ${getStatusColor(cmd.status)}`}>
+                      {cmd.status}
+                    </span>
+
+                    {cmd.badge && (
+                      <motion.span
+                        animate={{
+                          scale: [1, 1.1, 1],
+                          boxShadow: [
+                            "0px 0px 0px rgba(239,68,68,0)",
+                            "0px 0px 12px rgba(239,68,68,0.8)",
+                            "0px 0px 0px rgba(239,68,68,0)"
+                          ]
+                        }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                        className="bg-red-500 text-white px-2 py-1 rounded-full text-[10px]"
+                      >
+                        {cmd.badge}
+                      </motion.span>
+                    )}
                   </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="font-regular text-[#951418]">{cmd.prix}</span>
-                  {expandedId === cmd.id ? <ChevronUp className="text-[#951418]" size={24} /> : <ChevronDown className="text-[#951418]/70 group-hover:text-[#951418]" size={24} />}
+
+                  <div className="text-xs text-gray-400">
+                    {cmd.client} • {cmd.heure}
+                  </div>
                 </div>
               </div>
 
-              {/* DÉTAILS DÉPLOYÉS */}
-              {expandedId === cmd.id && (
-                <div className="px-10 pb-8 pt-4 border-t border-gray-50 animate-in slide-in-from-top-2 duration-300">
-                  <div className="grid grid-cols-2 gap-10 mb-8 text-sm">
-                    <div className="space-y-2">
-                      <h4 className="text-[#951418]/70 font-regular">Client</h4>
-                      <p className="font-regular text-[#951418]">Younsi Ghanou</p>
-                      <p className=" text-[#951418]/70 font-regular">0777777 513</p>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="text-[#951418]/70 font-regular">Adresse de livraison</h4>
-                      <p className="text-[#951418]/70 font-regular">Rue Didouche Morad, Alger</p>
-                    </div>
-                  </div>
+              <div className="flex items-center gap-3">
+                <span className="text-[#951418]">
+                  {cmd.prix}
+                </span>
 
-                  <div className="space-y-4 mb-8">
-                    <h4 className="font-regular text-[#951418] text-lg border-gray-300 pb-2">Détail de commande</h4>
-                    <div className="flex justify-between font-regular text-[#951418]">
-                      <span className="text-[#951418]/70">2 * Burger Gourmet</span>
-                      <span>3100 DA</span>
-                    </div>
-                    <div className="flex justify-between font-regular text-[#951418]">
-                      <span className="text-[#951418]/70">2 * Frites Maison</span>
-                      <span>1000 DA</span>
-                    </div>
-                    <div className="flex justify-between border-t pt-4 font-regular text-lg text-[#951418]">
-                      <span>Total</span>
-                      <span>{cmd.prix}</span>
-                    </div>
-                  </div>
+                {expandedId === cmd.id ? <ChevronUp /> : <ChevronDown />}
+              </div>
 
-                  {/* NOTE CLIENT */}
-                  <div className="bg-[#FFCC99]/70 p-4 rounded-xl mb-8 font-regular text-[#951418] text-sm shadow-md">
-                    <span className="text-[#951418]/70 font-regular">Note de client :</span> Sans oignon s'il vous plaît
-                  </div>
-
-                  {/* BOUTONS D'ACTION */}
-                  <div className="flex gap-10">
-                    <button className="flex-1 bg-[#FF843D] text-white py-2 rounded-xl font-regular flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] active:scale-[1.02] transition-all">
-                      <CheckCircle2 size={20} /> Passer à "En cours"
-                    </button>
-                    <button className="bg-[#FFF4EC] text-[#951418] px-8 py-4 rounded-xl font-regular flex items-center justify-center gap-2 shadow-lg hover:scale-[1.03] active:scale-[1.02] transition-alll">
-                      <AlertTriangle size={20} /> Annulé
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
-          ))
-        ) : (
-          <div className="py-20 text-center text-[#95141870 font-regular bg-white rounded-[20px] shadow-xl">
-            Aucune commande trouvée.
+
+            {/* DETAILS */}
+            {expandedId === cmd.id && (
+              <div className="p-4 border-t space-y-4 border-gray-400">
+
+                <div className="text-sm">
+                  <p className="text-[#951418]">Client: Younsi Ghanou</p>
+                  <p className="text-gray-500">0777777 513</p>
+                  <p className="text-gray-500">Rue Didouche Morad, Alger</p>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className='text-[#951418]'>2x Burger</span>
+                  <span className='text-[#951418]'>3100 DA</span>
+                </div>
+
+                <div className="flex justify-between border-t pt-2 font-regular border-gray-400">
+                  <span className='text-[#951418]'>Total</span>
+                  <span className='text-[#951418]'>{cmd.prix}</span>
+                </div>
+
+                <div className="bg-[#FFCC99]/70 p-3 rounded-xl text-sm text-[#951418] shadow-md ">
+                  Sans oignon s'il vous plaît
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-12">
+
+                  <button className="bg-[#FF843D] text-white py-1  rounded-xl flex-1 hover:scale-103 transition-all">
+                    En cours
+                  </button>
+
+                  {/* ✅ ANNULER */}
+                  <button
+                    onClick={() => handleCancel(cmd.id)}
+                    className="bg-[#FFF4EC] text-[#951418] py-2 border border-[#951418] rounded-xl flex-1 flex items-center justify-center gap-2 hover:scale-103 transition-all"
+                  >
+                    <AlertTriangle size={18} /> Annulé
+                  </button>
+
+                </div>
+
+              </div>
+            )}
+
           </div>
-        )}
+        ))}
+
       </div>
+
     </div>
   );
 };

@@ -6,7 +6,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
     <div className="flex flex-col lg:flex-row gap-12 pb-20">
       
       {/* --- COLONNE GAUCHE (Profil & Infos rapides) --- */}
-      <div className="w-280px space-y-6">
+      <div className="w-full lg:w-[280px] space-y-6">
         
         {/* Carte Profil */}
         <div className="bg-white p-11 rounded-[20px] shadow-md  flex flex-col items-center text-center">
