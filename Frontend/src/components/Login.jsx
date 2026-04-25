@@ -51,9 +51,6 @@ export default function Login() {
       : "polygon(0 0, 100% 0, 90% 100%, 0 100%)";
   };
 
-  /* ─────────────────────────────────────────────
-     MOBILE LAYOUT — image plein écran + carte blanche qui remonte par-dessus
-  ───────────────────────────────────────────── */
   if (isMobile) {
     return (
       <div className="min-h-screen flex flex-col font-sans bg-[#FDE9DC] relative">
@@ -208,9 +205,6 @@ export default function Login() {
     );
   }
 
-  /* ─────────────────────────────────────────────
-     TABLETTE + DESKTOP — identique à l'original, rien de touché
-  ───────────────────────────────────────────── */
   return (
     <div className="min-h-screen flex justify-center items-center font-sans relative bg-[#FDE9DC] overflow-hidden">
 
