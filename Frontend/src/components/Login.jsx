@@ -145,21 +145,21 @@ export default function Login() {
             {showInscription ? (
               role === "client" ? (
                 <>
-                  <input type="text" placeholder="Nom" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="text" placeholder="Prénom" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="email" placeholder="Email" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="password" placeholder="Mot de passe" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="tel" placeholder="Numéro de tél." className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="text" placeholder="Adresse" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
+                  <input type="text" placeholder="Nom" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="text" placeholder="Prénom" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="email" placeholder="Email" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="password" placeholder="Mot de passe" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="tel" placeholder="Numéro de tél." className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="text" placeholder="Adresse" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
                 </>
               ) : (
                 <>
-                  <input type="text" placeholder="Nom du Restaurant" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="text" placeholder="Adresse du restaurant" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="email" placeholder="Email pro" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="password" placeholder="Mot de passe" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="tel" placeholder="Téléphone du restaurant" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                  <input type="text" placeholder="Numéro de Registre du commerce" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
+                  <input type="text" placeholder="Nom du Restaurant" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="text" placeholder="Adresse du restaurant" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="email" placeholder="Email pro" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="password" placeholder="Mot de passe" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="tel" placeholder="Téléphone du restaurant" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                  <input type="text" placeholder="Numéro de Registre du commerce" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
                   <div className="w-full relative">
                     <input type="file" id="file-upload-mobile" className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
                     <label htmlFor="file-upload-mobile" className="text-[#951418] block p-3 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer text-sm">
@@ -170,8 +170,8 @@ export default function Login() {
               )
             ) : (
               <>
-                <input type="email" placeholder="Email" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
-                <input type="password" placeholder="Mot de passe" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm" />
+                <input type="email" placeholder="Email" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                <input type="password" placeholder="Mot de passe" className="w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
               </>
             )}
           </div>
@@ -347,7 +347,7 @@ export default function Login() {
                     <input type="tel" placeholder="Téléphone du restaurant" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
                     <input type="text" placeholder="Numéro de Registre du commerce" className="w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
                     <div className="w-[85%] relative">
-                      <input type="file" id="file-upload" className="opacity-0 absolute inset-0 w-full h-full cursor-pointer focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" />
+                      <input type="file" id="file-upload" className="opacity-0 absolute inset-0 w-full h-full cursor-pointer " />
                       <label htmlFor="file-upload" className="text-[#951418] block p-2 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer">
                         Télécharger document officiel
                       </label>
