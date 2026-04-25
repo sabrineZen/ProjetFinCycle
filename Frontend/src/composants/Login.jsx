@@ -186,11 +186,11 @@ export default function Login() {
           <div className="flex w-full gap-3 mb-4">
             <button
               onClick={() => setShowInscription(!showInscription)}
-              className="flex-1 bg-[#951418] p-3 rounded-3xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md text-sm"
+              className="flex-1 bg-[#951418] p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md text-sm"
             >
               {showInscription ? "Annuler" : "Inscrire"}
             </button>
-            <button className="flex-1 bg-[#FF7031] p-3 rounded-3xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md text-sm">
+            <button className="flex-1 bg-[#FF7031] p-2 rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md text-sm">
               {showInscription ? "S'inscrire" : "Se connecter"}
             </button>
           </div>
