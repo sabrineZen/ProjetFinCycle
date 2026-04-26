@@ -8,6 +8,13 @@ import './index.css';
 
 import Home from './pages/ClientPage/ClientHome.jsx';
 import CategoriesPage from './pages/ClientPage/CategoriesPage.jsx';
+import AdminDashboard from './pages/AdminPage/AdminDashboard.jsx';
+import ValidationPage from './pages/AdminPage/ValidationPage.jsx';
+import UtilisateursPage from './pages/AdminPage/UtilisateursPage.jsx';
+import RestaurantsPage from './pages/AdminPage/RestaurantsPage.jsx';
+import PlatsPage from './pages/AdminPage/PlatsPage.jsx';
+import CategoriesAdminPage from './pages/AdminPage/CategoriesAdminPage.jsx';
+import StatistiquesPage from './pages/AdminPage/StatistiquesPage.jsx';
 
 
 function App() {
@@ -21,6 +28,13 @@ function App() {
         {/*le route en bas avec l element categoriespage il va servir comme page des catégories */}
         {/*donc navigate je dis bon tu vas dans cette adresse et route verfiei dans cette adresse queceuqe il ya et il affiche le contenue */}
         <Route path="/categoriesPage" element={<CategoriesPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/validation" element={<ValidationPage />} />
+        <Route path="/admin/utilisateurs" element={<UtilisateursPage />} />
+        <Route path="/admin/restaurants" element={<RestaurantsPage />} />
+        <Route path="/admin/plats" element={<PlatsPage />} />
+        <Route path="/admin/categories" element={<CategoriesAdminPage />} />
+        <Route path="/admin/statistiques" element={<StatistiquesPage />} />
         <Route path="/" element={
       <><div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
               <h1 className="text-6xl font-bold text-purple-600 drop-shadow-lg">
