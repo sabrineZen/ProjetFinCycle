@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import img1 from "../../assets/img1.jpg";
 import img2 from "../../assets/img2.jpg";
@@ -73,13 +73,13 @@ export default function Login() {
               className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition"
               onClick={prevImage}
             >
-              <ChevronLeft size={18} />
+              <FaChevronLeft size={18} />
             </div>
             <div
               className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition"
               onClick={nextImage}
             >
-              <ChevronRight size={18} />
+              <FaChevronRight size={18} />
             </div>
           </div>
         </div>
@@ -263,13 +263,13 @@ export default function Login() {
               className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition"
               onClick={prevImage}
             >
-              <ChevronLeft size={18} />
+              <FaChevronLeft size={18} />
             </div>
             <div
               className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition"
               onClick={nextImage}
             >
-              <ChevronRight size={18} />
+              <FaChevronRight size={18} />
             </div>
           </div>
         </motion.div>
