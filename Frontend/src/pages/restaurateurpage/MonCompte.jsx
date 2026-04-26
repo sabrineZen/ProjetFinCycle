@@ -4,7 +4,7 @@ import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-re
 import Profil from './moncompte/Profil'; 
 import Securite from './moncompte/Securite'; 
 import Notifications from './moncompte/Notifications';
-import Abonnement from './moncompte/Abonnement'; 
+import Abonnement from './Abonnement'; 
 
 const MonCompte = () => {
   const [activeTab, setActiveTab] = useState('Profil');
