@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Download } from 'lucide-react';
+import { FaUser, FaDownload } from 'react-icons/fa';
 
 const Profil = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const Profil = () => {
         {/* HEADER */}
         <div className="flex items-center gap-2 mb-6 pb-5">
           <div className="p-1 text-[#951418]">
-            <User size={35} strokeWidth={2} />
+            <FaUser size={35} />
           </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-regular text-[#951418]">
             Informations personnelles
@@ -125,7 +125,7 @@ const Profil = () => {
       {/* BUTTON */}
       <div className="flex justify-end mt-2">
         <button className="bg-[#FF843D] text-white px-6 md:px-8 py-3 md:py-4 rounded-[18px] font-regular text-lg md:text-xl flex items-center gap-3 shadow-sm shadow-[#FF843D] hover:scale-[1.03] active:scale-[0.98] transition-all">
-          <Download size={26} />
+          <FaDownload size={26} />
           Sauvegarder
         </button>
       </div>
