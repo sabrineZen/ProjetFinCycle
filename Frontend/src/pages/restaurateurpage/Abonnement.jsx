@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshCw, AlertTriangle, Info, Trash2 } from 'lucide-react';
+import { FaSyncAlt, FaExclamationTriangle, FaInfoCircle, FaTrashAlt } from 'react-icons/fa';
 
 const Abonnement = () => {
   const plans = [
@@ -86,7 +86,7 @@ const Abonnement = () => {
       <div className="bg-white p-5 sm:p-8 rounded-[20px] shadow-md">
 
         <div className="flex items-center gap-2 mb-6 sm:mb-8">
-          <RefreshCw className="text-[#951418]" size={24} />
+          <FaSyncAlt className="text-[#951418]" size={24} />
           <h2 className="text-xl sm:text-3xl text-[#951418]">
             Changer de plan
           </h2>
@@ -141,7 +141,7 @@ const Abonnement = () => {
       <div className="bg-white p-5 sm:p-10 rounded-[20px] shadow-md">
 
         <div className="flex items-center gap-3 mb-6 sm:mb-8">
-          <AlertTriangle className="text-[#951418]" size={28} />
+          <FaExclamationTriangle className="text-[#951418]" size={28} />
           <h2 className="text-xl sm:text-3xl text-[#951418]">
             Zone de danger
           </h2>
@@ -161,7 +161,7 @@ const Abonnement = () => {
             </div>
 
             <button className="bg-[#FF843D] text-white px-5 py-2 rounded-xl flex items-center gap-2 text-sm">
-              <Info size={18} />
+              <FaInfoCircle size={18} />
               Résilier
             </button>
           </div>
@@ -179,7 +179,7 @@ const Abonnement = () => {
             </div>
 
             <button className="bg-[#FF843D] text-white px-5 py-2 rounded-xl flex items-center gap-2 text-sm">
-              <Trash2 size={18} />
+              <FaTrashAlt size={18} />
               Supprimer
             </button>
 

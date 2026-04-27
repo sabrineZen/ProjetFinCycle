@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Image as ImageIcon, AlertCircle, Plus, Edit2 } from 'lucide-react';
+import { FaTimes, FaImage, FaExclamationCircle, FaPlus, FaEdit } from 'react-icons/fa';
 
 const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
   if (!isOpen) return null;
@@ -24,7 +24,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
             onClick={onClose}
             className="w-10 h-10 flex items-center justify-center bg-[#FF7D31] rounded-full text-white hover:bg-red-600 transition-colors"
           >
-            <X size={24}  />
+            <FaTimes size={24} />
           </button>
         </div>
 
@@ -37,7 +37,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
                ) : (
                  <>
                   <div className="p-4 bg-white rounded-2xl text-[#FF843D] shadow-sm group-hover:scale-110 transition-transform">
-                    <ImageIcon size={32} />
+                    <FaImage size={32} />
                   </div>
                   <span className="text-[#951418] font-regular">Télécharger une image</span>
                  </>
@@ -105,13 +105,13 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               onClick={onClose}
               className="flex-1 bg-[#FFE3CE] text-[#951418] py-4 rounded-[22px] font-regular flex items-center justify-center gap-2 shadow-xl hover:scale-105 transition-transform"
             >
-              <AlertCircle size={22} /> Annuler
+              <FaExclamationCircle size={22} /> Annuler
             </button>
             <button 
               type="submit"
               className="flex-[1.5] bg-[#FF843D] text-white py-4 rounded-[22px] font-regular flex items-center justify-center gap-2 shadow-xl  hover:scale-105 transition-transform"
             >
-              {isEditing ? <Edit2 size={24} /> : <Plus size={24} strokeWidth={3} />}
+              {isEditing ? <FaEdit size={24} /> : <FaPlus size={24} />}
               {isEditing ? "Enregistrer" : "Ajouter le plat"}
             </button>
           </div>

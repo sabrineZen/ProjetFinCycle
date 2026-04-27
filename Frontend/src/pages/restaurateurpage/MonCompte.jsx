@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-react';
+import { FaUser, FaShieldAlt, FaBell, FaCreditCard, FaCamera, FaCog } from 'react-icons/fa';
 
 import Profil from './moncompte/Profil'; 
 import Securite from './moncompte/Securite'; 
@@ -10,10 +10,10 @@ const MonCompte = () => {
   const [activeTab, setActiveTab] = useState('Profil');
 
   const menuItems = [
-    { id: 'Profil', icon: <User size={22} />, label: 'Profil' },
-    { id: 'Securite', icon: <ShieldCheck size={22} />, label: 'Sécurité' },
-    { id: 'Notifications', icon: <Bell size={22} />, label: 'Notifications' },
-    { id: 'Abonnement', icon: <CreditCard size={22} />, label: 'Abonnement' },
+    { id: 'Profil', icon: <FaUser size={22} />, label: 'Profil' },
+    { id: 'Securite', icon: <FaShieldAlt size={22} />, label: 'Sécurité' },
+    { id: 'Notifications', icon: <FaBell size={22} />, label: 'Notifications' },
+    { id: 'Abonnement', icon: <FaCreditCard size={22} />, label: 'Abonnement' },
   ];
 
   return (
@@ -34,7 +34,7 @@ const MonCompte = () => {
               />
             </div>
             <button className="absolute -right-2 -bottom-2 bg-[#FF843D] text-white p-2.5 rounded-2xl shadow-md border-4 border-white">
-              <Camera size={18} />
+              <FaCamera size={18} />
             </button>
           </div>
 
@@ -44,7 +44,7 @@ const MonCompte = () => {
           </p>
 
           <div className="bg-[#FFE3CE] px-3.5 py-3 rounded-2xl flex items-center gap-3 mb-10 shadow-sm">
-            <Settings size={20} className="text-[#8B2C21]" />
+            <FaCog size={20} className="text-[#8B2C21]" />
             <span className="text-[#951418] text-[12px] uppercase">
               Compte vérifié
             </span>

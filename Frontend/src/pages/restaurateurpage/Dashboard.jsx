@@ -1,14 +1,14 @@
 import React from 'react';
-import { DollarSign, ClipboardList, Star, Clock, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { FaDollarSign, FaClipboardList, FaStar, FaClock, FaChevronRight, FaEllipsisH } from 'react-icons/fa';
 
 // --- DONNÉES SIMULÉES (MOCK DATA) ---
 // Ces données remplacent ta future base de données pour l'instant.
 
 const statsCards = [
-  { id: 1, label: 'Vente du jour', value: '36 700 DA', icon: <DollarSign size={24} />, color: 'text-blue-600', bg: 'bg-blue-50' },
-  { id: 2, label: 'Commandes', value: '24', icon: <ClipboardList size={24} />, color: 'text-red-600', bg: 'bg-red-50' },
-  { id: 3, label: 'Note Moyenne', value: '4.7/5', icon: <Star size={24} />, color: 'text-yellow-500', bg: 'bg-yellow-50' },
-  { id: 4, label: 'Temps moyenne', value: '28 min', icon: <Clock size={24} />, color: 'text-purple-600', bg: 'bg-purple-50' },
+  { id: 1, label: 'Vente du jour', value: '36 700 DA', icon: <FaDollarSign size={24} />, color: 'text-blue-600', bg: 'bg-blue-50' },
+  { id: 2, label: 'Commandes', value: '24', icon: <FaClipboardList size={24} />, color: 'text-red-600', bg: 'bg-red-50' },
+  { id: 3, label: 'Note Moyenne', value: '4.7/5', icon: <FaStar size={24} />, color: 'text-yellow-500', bg: 'bg-yellow-50' },
+  { id: 4, label: 'Temps moyenne', value: '28 min', icon: <FaClock size={24} />, color: 'text-purple-600', bg: 'bg-purple-50' },
 ];
 
 const topPlats = [
@@ -101,7 +101,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-3xl">Ventes de la semaine</h3>
             <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold  shadow-lg shadow-orange-100 hover:scale-105 transition-all">
-              Cette semaine <ChevronRight size={19} />
+              Cette semaine <FaChevronRight size={19} />
             </button>
           </div>
           
@@ -117,7 +117,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-2xl font-regular">Top Plats</h3>
             <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-md shadow-orange-100 hover:scale-105 transition-all">
-              Voir Tout <ChevronRight size={18} />
+              Voir Tout <FaChevronRight size={18} />
             </button>
           </div>
 
@@ -154,7 +154,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
         <div className="flex items-center justify-between mb-10">
           <h3 className="text-3xl ">Commandes récentes</h3>
           <button className="flex items-center gap-2 bg-[#FF843D] text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg shadow-orange-100 hover:scale-105 transition-all">
-            Toutes les commandes <ChevronRight size={18} />
+            Toutes les commandes <FaChevronRight size={18} />
           </button>
         </div>
 
@@ -187,7 +187,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
                   <td className="py-4 font-semibold text-xs md:text-sm">{commande.heure}</td>
                   <td className="py-6 text-center">
                     <button className="p-2  hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                      <MoreHorizontal size={20} />
+                      <FaEllipsisH size={20} />
                     </button>
                   </td>
                 </tr>

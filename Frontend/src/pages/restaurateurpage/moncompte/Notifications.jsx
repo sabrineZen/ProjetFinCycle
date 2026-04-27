@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, Download } from 'lucide-react';
+import { FaBell, FaDownload } from 'react-icons/fa';
 
 const Notifications = () => {
   const [prefs, setPrefs] = useState({
@@ -32,7 +32,7 @@ const Notifications = () => {
 
         {/* HEADER */}
         <div className="flex items-center gap-3 mb-6">
-          <Bell className="text-[#951418]" size={28} />
+          <FaBell className="text-[#951418]" size={28} />
           <h2 className="text-xl sm:text-3xl text-[#951418]">
             Notifications
           </h2>
@@ -88,7 +88,7 @@ const Notifications = () => {
       {/* BUTTON */}
       <div className="flex justify-end">
         <button className="bg-[#FF843D] text-white px-6 sm:px-10 py-3 sm:py-4 rounded-2xl flex items-center gap-2 text-sm sm:text-xl hover:scale-105 transition-all">
-          <Download size={20} />
+          <FaDownload size={20} />
           Sauvegarder
         </button>
       </div>
