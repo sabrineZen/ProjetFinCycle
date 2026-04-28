@@ -80,7 +80,7 @@ const MesPlats = () => {
           onClick={handleAdd}
           className="bg-[#FF843D] text-white px-6 py-4 rounded-[20px] font-regular flex items-center gap-2 shadow-lg hover:scale-105 transition-all w-full sm:w-auto justify-center"
         >
-          <Plus size={22} strokeWidth={3} />
+          <FaPlus size={22} strokeWidth={3}/>
           Ajouter un plat
         </button>
       </div>
@@ -194,7 +194,7 @@ const MesPlats = () => {
             className="flex flex-col items-center justify-center gap-3 p-6 text-[#951418]"
           >
             <div className="w-16 h-16 bg-[#FF843D] rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <Plus size={32} strokeWidth={3} />
+              <FaPlus size={32} strokeWidth={3} />
             </div>
 
             <span className="font-regular text-lg">
