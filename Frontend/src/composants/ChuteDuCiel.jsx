@@ -1,23 +1,21 @@
 import { motion } from "framer-motion";
 
-// Dans ton fichier ChuteDuCiel.jsx
 const ChuteDuCiel = ({ children, delay = 0 }) => (
   <motion.div
-    initial={{ opacity: 0, y: -120, rotateX: 25, scale: 0.9 }}
+    initial={{ opacity: 0, y: -80, rotateX: 20, scale: 0.95 }}
     whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-    
-    // CHANGE CECI : once: false permet de rejouer l'animation à chaque passage
-    viewport={{ once: false, amount: 0.2 }} 
-    
+    viewport={{ once: false, amount: 0.2 }}
     transition={{
-      duration: 0.8,
-      delay: delay,
+      duration: 0.7,
+      delay,
       type: "spring",
-      stiffness: 50,
-      damping: 15
+      stiffness: 60,
+      damping: 16,
     }}
+    style={{ transformPerspective: 1000 }}
   >
     {children}
   </motion.div>
 );
+
 export default ChuteDuCiel;

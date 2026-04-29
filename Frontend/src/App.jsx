@@ -9,8 +9,8 @@ import Home from './pages/ClientPage/ClientHome.jsx';
 import CategoriesPage from './pages/ClientPage/CategoriesPage.jsx';
 import ProfilPage from './pages/ClientPage/ProfilPage.jsx'
 import AllCategories from './pages/ClientPage/CategoriesAll.jsx';
-import LundingPage from './pages/ClientPage/lunding-page';
-import LandingPage from './pages/ClientPage/lunding-page'
+import LundingPage from './pages/ClientPage/lunding-page.jsx';
+import LandingPage from './pages/ClientPage/lunding-page.jsx'
 
 function App() {
   const [count, setCount] = useState(0)

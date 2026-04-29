@@ -77,4 +77,4 @@ function ProfilPage(){
 
     )
 }
-export default ProfilPage
+export default ProfilPage ;

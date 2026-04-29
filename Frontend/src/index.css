@@ -1,22 +1,27 @@
 @import "tailwindcss";
+
 @theme {
   --color-secondary: #8B2A1B;
   --color-fond: #FFF9F5;
   --color-accent: #EFAF9B;
   --color-tri: #EBC0A6;
-  --color-button:#FF9D4A;
-  --color-valider:#FF6900;
-  --color-bordure:#E5E7EB;
-}
-/* cacher scrollbar */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  --color-button: #FF9D4A;
+  --color-valider: #FF6900;
+  --color-bordure: #E5E7EB;
+
+  /* ── Couleurs du projet ── */
+  --color-orange: #FF6B2B;
+  --color-orange-dark: #E85A1A;
+  --color-orange-pale: #FDF6F0;
+  --color-dark: #1A1208;
+  --color-cream: #FDF6F0;
 }
 
-.bg-test {
-  @apply bg-red-500 text-white p-4;
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes shine {
+  0%   { background-position: -100% 0; }
+  40%  { background-position: 200% 0; }
+  100% { background-position: 200% 0; }
 }
