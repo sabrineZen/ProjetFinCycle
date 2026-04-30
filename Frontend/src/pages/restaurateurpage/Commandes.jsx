@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import {
+
   Search, Bell, Clock, CheckCircle2, Truck,
   AlertCircle, ChevronDown, ChevronUp, AlertTriangle
 } from 'lucide-react';
+
+  FaSearch, FaBell, FaClock, FaCheckCircle, FaTruck,
+  FaExclamationCircle, FaChevronDown, FaChevronUp, FaExclamationTriangle
+} from 'react-icons/fa';
+
 
 const Commandes = () => {
   const [filter, setFilter] = useState('Tous');
@@ -12,11 +18,19 @@ const Commandes = () => {
 
   // ✅ STATE MODIFIABLE
   const [commandesList, setCommandesList] = useState([
+
     { id: "#0045", client: "GHANOU Y.", heure: "12:30", prix: "4100 DA", status: "Nouvelle", badge: "Nouveau!", icon: <Bell className="text-[#951418]" /> },
     { id: "#0046", client: "AHMED Y.", heure: "12:30", prix: "3200 DA", status: "En cours", icon: <Clock className="text-[#951418]" /> },
     { id: "#0047", client: "WASSIM Y.", heure: "12:35", prix: "3600 DA", status: "Pret", icon: <CheckCircle2 className="text-[#951418]" /> },
     { id: "#0048", client: "OUSSAMA Y.", heure: "12:36", prix: "5500 DA", status: "Livré", icon: <Truck className="text-[#951418]" /> },
     { id: "#0049", client: "DIANA Y.", heure: "12:45", prix: "2600 DA", status: "Annulé", icon: <AlertCircle className="text-[#951418]" /> },
+
+    { id: "#0045", client: "GHANOU Y.", heure: "12:30", prix: "4100 DA", status: "Nouvelle", badge: "Nouveau!", icon: <FaBell className="text-[#951418]" /> },
+    { id: "#0046", client: "AHMED Y.", heure: "12:30", prix: "3200 DA", status: "En cours", icon: <FaClock className="text-[#951418]" /> },
+    { id: "#0047", client: "WASSIM Y.", heure: "12:35", prix: "3600 DA", status: "Pret", icon: <FaCheckCircle className="text-[#951418]" /> },
+    { id: "#0048", client: "OUSSAMA Y.", heure: "12:36", prix: "5500 DA", status: "Livré", icon: <FaTruck className="text-[#951418]" /> },
+    { id: "#0049", client: "DIANA Y.", heure: "12:45", prix: "2600 DA", status: "Annulé", icon: <FaExclamationCircle className="text-[#951418]" /> },
+
   ]);
 
   // 🔥 ANNULATION
@@ -104,7 +118,11 @@ const Commandes = () => {
             <button
               key={cat.id}
               onClick={() => { setFilter(cat.id); setExpandedId(null); }}
+
               className={`px-3 sm:px-4 py-2 rounded-xl border border-[#C0A0A0] text-xs sm:text-sm flex items-center gap-2 ${
+
+              className={`px-3 sm:px-4 py-2 rounded-xl border text-xs sm:text-sm flex items-center gap-2 ${
+
                 filter === cat.id
                   ? 'bg-[#FF843D] text-white'
                   : 'bg-[#FFE3CE]/40 text-[#8B2C21]'
@@ -119,13 +137,21 @@ const Commandes = () => {
         </div>
 
         <div className="relative w-full">
+
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#951418]" size={18} />
+
+          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[#951418]" size={18} />
+
           <input
             type="text"
             placeholder="ID ou client .."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+
             className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none focus:ring-1 focus:ring-[#FF843D]"
+
+            className="w-full bg-[#FFE3CE] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none"
+
           />
         </div>
       </div>
@@ -193,7 +219,11 @@ const Commandes = () => {
                   {cmd.prix}
                 </span>
 
+
                 {expandedId === cmd.id ? <ChevronUp /> : <ChevronDown />}
+
+                {expandedId === cmd.id ? <FaChevronUp /> : <FaChevronDown />}
+
               </div>
 
             </div>
@@ -233,7 +263,11 @@ const Commandes = () => {
                     onClick={() => handleCancel(cmd.id)}
                     className="bg-[#FFF4EC] text-[#951418] py-2 border border-[#951418] rounded-xl flex-1 flex items-center justify-center gap-2 hover:scale-103 transition-all"
                   >
+
                     <AlertTriangle size={18} /> Annulé
+
+                    <FaExclamationTriangle size={18} /> Annulé
+
                   </button>
 
                 </div>
