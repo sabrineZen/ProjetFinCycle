@@ -81,7 +81,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
       {/* 2. SECTION : Cartes de Statistiques Clés */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statsCards.map((stat) => (
-          <div key={stat.id} className="bg-white p-7 rounded-[20px] shadow-md  flex items-center gap-5 transition-transform hover:translate-y-[-5px]">
+          <div key={stat.id} className="bg-white p-7 rounded-[20px] shadow-md  flex items-center gap-5 transition-transform hover:-translate-y-1.25">
             <div className={`p-4 rounded-3xl ${stat.bg} ${stat.color}`}>
               {stat.icon}
             </div>
@@ -97,7 +97,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
         {/* A. Graphique Ventes de la semaine (Prend 2/3 de l'espace sur grand écran) */}
-        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md  relative min-h-[400px]">
+        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md  relative min-h-100">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-3xl">Ventes de la semaine</h3>
             <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold  shadow-lg shadow-orange-100 hover:scale-105 transition-all">

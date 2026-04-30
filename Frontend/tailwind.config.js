@@ -4,4 +4,10 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+    extend: {
+   
+    }
+  }
+  plugins: [
+    
+  ]

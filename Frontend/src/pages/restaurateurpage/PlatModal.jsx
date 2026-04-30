@@ -5,7 +5,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-5 animate-in fade-in duration-300 text-[#951418]">
+    <div className="fixed inset-0 z-999 flex items-center justify-center p-5 animate-in fade-in duration-300 text-[#951418]">
       {/* Overlay flou */}
       <div 
         className="absolute inset-0 bg-black/30 backdrop-blur-[6px]" 
@@ -49,7 +49,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <input 
                 type="text" 
                 defaultValue={isEditing ? currentPlat?.nom : ""}
-                className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
+                className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
                 placeholder="Ex: Pizza Fruits de Mer" 
               />
             </div>
@@ -59,7 +59,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <textarea 
                 rows="2" 
                 defaultValue={isEditing ? currentPlat?.description : ""}
-                className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
+                className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
                 placeholder="Ingrédients..."
               ></textarea>
             </div>
@@ -70,14 +70,14 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
                 <input 
                   type="number" 
                   defaultValue={isEditing ? currentPlat?.prix.replace(" DA", "") : ""}
-                  className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
+                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-md font-regular text-[#951418]  ml-2">Catégorie</label>
                 <select 
                   defaultValue={isEditing ? currentPlat?.categorie : "Pizza"}
-                  className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none "
+                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none "
                 >
                   <option >Pizza</option>
                   <option>Burger</option>

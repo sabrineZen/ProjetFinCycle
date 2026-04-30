@@ -187,7 +187,7 @@ const MesPlats = () => {
             </div>
           </div>
         ))}
-        <div className="bg-white w-full sm:w-[230px] h-[280px] mt-8 rounded-2xl flex items-center justify-center shadow-md hover: transition-all">
+        <div className="bg-white w-full sm:w-57.5 h-70 mt-8 rounded-2xl flex items-center justify-center shadow-md hover: transition-all">
 
           <button
             onClick={handleAdd}

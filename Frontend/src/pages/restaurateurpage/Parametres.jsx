@@ -18,7 +18,7 @@ const MonCompte = () => {
     <div className="flex flex-col lg:flex-row gap-10 animate-in fade-in duration-500 p-2 bg-[#FCF8F5] min-h-screen w-full">
 
       {/* SIDEBAR → en haut sur mobile, à gauche sur desktop */}
-      <div className="w-full lg:w-[280px] flex-shrink-0 space-y-8 order-1 lg:order-1">
+      <div className="w-full lg:w-70 shrink-0 space-y-8 order-1 lg:order-1">
 
         {/* CARD PROFIL */}
         <div className="bg-white p-10 rounded-[20px] shadow-md border border-gray-50 flex flex-col items-center">
@@ -80,7 +80,7 @@ const MonCompte = () => {
       </div>
 
       {/* CONTENU → passe en dessous sur mobile */}
-      <div className="flex-1 order-2 lg:order-2 min-h-[700px]">
+      <div className="flex-1 order-2 lg:order-2 min-h-175">
         {activeTab === 'Securite' && <Securite />}
         {activeTab === 'Notifications' && <Notifications />}
       </div>

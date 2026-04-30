@@ -125,7 +125,7 @@ const Commandes = () => {
             placeholder="ID ou client .."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none focus:ring-1 focus:ring-[#FF843D] outline-none"
+            className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none focus:ring-1 focus:ring-[#FF843D]"
           />
         </div>
       </div>

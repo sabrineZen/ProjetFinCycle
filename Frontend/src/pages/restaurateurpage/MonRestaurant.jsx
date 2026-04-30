@@ -6,7 +6,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
     <div className="flex flex-col lg:flex-row gap-12 pb-20">
       
       {/* --- COLONNE GAUCHE (Profil & Infos rapides) --- */}
-      <div className="w-full lg:w-[280px] space-y-6">
+      <div className="w-full lg:w-70 space-y-6">
         
         {/* Carte Profil */}
         <div className="bg-white p-11 rounded-[20px] shadow-md  flex flex-col items-center text-center">
@@ -75,7 +75,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
 
             <div className="space-y-2">
               <label className="text-xl font-regular text-[#951418] ml-2">Nom du restaurant</label>
-              <input type="text" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
+              <input type="text" className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
             </div>
 
             <div className="w-full relative">
@@ -88,22 +88,22 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Numéro registre de commerce</label>
-                 <input type="text" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="Numéro de registre de commerce" />
+                 <input type="text" className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="Numéro de registre de commerce" />
                </div>
 
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Email</label>
-                 <input type="email" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz " />
+                 <input type="email" className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz " />
                </div>
 
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Telephone</label>
-                 <input type="tel" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="+213 ... " />
+                 <input type="tel" className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="+213 ... " />
                </div>
 
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Adresse</label>
-                 <input type="text" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
+                 <input type="text" className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
                </div>
 
             </div>
