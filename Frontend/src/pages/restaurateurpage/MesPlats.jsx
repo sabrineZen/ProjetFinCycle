@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+
+import { Plus, Search, Eye, EyeOff, Edit2, Trash2 } from 'lucide-react';
+
 import { FaPlus, FaSearch, FaEye, FaEyeSlash, FaEdit, FaTrashAlt } from 'react-icons/fa';
+
 import PlatModal from './PlatModal';
 
 const MesPlats = () => {
@@ -80,7 +84,11 @@ const MesPlats = () => {
           onClick={handleAdd}
           className="bg-[#FF843D] text-white px-6 py-4 rounded-[20px] font-regular flex items-center gap-2 shadow-lg hover:scale-105 transition-all w-full sm:w-auto justify-center"
         >
+
+          <Plus size={22} strokeWidth={3} />
+
           <FaPlus size={22} strokeWidth={3}/>
+
           Ajouter un plat
         </button>
       </div>
@@ -108,17 +116,29 @@ const MesPlats = () => {
               onClick={handleDeleteCategory}
               className="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors flex items-center gap-2 text-xs md:text-sm"
             >
+
+              <Trash2 size={14} /> Supprimer
+
               <FaTrashAlt size={14} /> Supprimer
+
             </button>
           )}
         </div>
 
         <div className="relative w-full md:max-w-md">
+
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#951418]" size={20} />
+          <input
+            type="text"
+            placeholder="Rechercher..."
+            className="w-full bg-[#FFF7F4] rounded-2xl py-3 pl-12 text-[#951418] border border-[#C0A0A0] focus:ring-1 focus:ring-[#FF843D] outline-none"
+
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#951418]" size={20} />
           <input
             type="text"
             placeholder="Rechercher..."
             className="w-full bg-[#FFE3CE] rounded-2xl py-3 pl-12 text-[#951418] focus:ring-2 focus:ring-[#FF843D] outline-none"
+
           />
         </div>
       </div>
@@ -166,35 +186,55 @@ const MesPlats = () => {
                   onClick={() => handleToggleStatus(plat.id)}
                   className="flex-1 bg-[#FF843D] text-white py-3 rounded-2xl text-xs flex items-center justify-center gap-2"
                 >
+
+                  {plat.disponible ? <EyeOff size={19} /> : <Eye size={19} />}
+
                   {plat.disponible ? <FaEyeSlash size={19} /> : <FaEye size={19} />}
+
                 </button>
 
                 <button
                   onClick={() => handleEdit(plat)}
                   className="bg-[#FF843D] text-white p-3 rounded-2xl"
                 >
+
+                  <Edit2 size={18} />
+
                   <FaEdit size={18} />
+
                 </button>
 
                 <button
                   onClick={() => handleDelete(plat.id)}
                   className="bg-red-500 text-white p-3 rounded-2xl"
                 >
+
+                  <Trash2 size={18} />
+
                   <FaTrashAlt size={18} />
+
                 </button>
 
               </div>
             </div>
           </div>
         ))}
+
+        <div className="bg-white w-full sm:w-57.5 h-70 mt-8 rounded-2xl flex items-center justify-center shadow-md hover: transition-all">
+
         <div className="bg-white w-full sm:w-[230px] h-[280px] mt-8 rounded-2xl flex items-center justify-center shadow-md hover: transition-all">
+
 
           <button
             onClick={handleAdd}
             className="flex flex-col items-center justify-center gap-3 p-6 text-[#951418]"
           >
             <div className="w-16 h-16 bg-[#FF843D] rounded-2xl flex items-center justify-center text-white shadow-lg">
+
+              <Plus size={32} strokeWidth={3} />
+
               <FaPlus size={32} strokeWidth={3} />
+
             </div>
 
             <span className="font-regular text-lg">
