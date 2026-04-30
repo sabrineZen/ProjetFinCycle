@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
-import { FaUser, FaShieldAlt, FaBell, FaCreditCard, FaCamera, FaCog } from 'react-icons/fa';
+import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-react';
 
-import Profil from './moncompte/Profil'; 
-import Securite from './moncompte/Securite'; 
-import Notifications from './moncompte/Notifications';
-import Abonnement from './Abonnement'; 
+ 
+import Securite from './Parametres/Securite'; 
+import Notifications from './Parametres/Notifications';
 
-const MonCompte = () => {
-  const [activeTab, setActiveTab] = useState('Profil');
+
+const Parametre = () => {
+  const [activeTab, setActiveTab] = useState('Securite');
 
   const menuItems = [
-    { id: 'Profil', icon: <FaUser size={22} />, label: 'Profil' },
-    { id: 'Securite', icon: <FaShieldAlt size={22} />, label: 'Sécurité' },
-    { id: 'Notifications', icon: <FaBell size={22} />, label: 'Notifications' },
-    { id: 'Abonnement', icon: <FaCreditCard size={22} />, label: 'Abonnement' },
+    { id: 'Securite', icon: <ShieldCheck size={22} />, label: 'Sécurité' },
+    { id: 'Notifications', icon: <Bell size={22} />, label: 'Notifications' }    
   ];
 
   return (
     <div className="flex flex-col lg:flex-row gap-10 animate-in fade-in duration-500 p-2 bg-[#FCF8F5] min-h-screen w-full">
 
       {/* SIDEBAR → en haut sur mobile, à gauche sur desktop */}
-      <div className="w-full lg:w-[280px] flex-shrink-0 space-y-8 order-1 lg:order-1">
+      <div className="w-full lg:w-70 shrink-0 space-y-8 order-1 lg:order-1">
 
         {/* CARD PROFIL */}
         <div className="bg-white p-10 rounded-[20px] shadow-md border border-gray-50 flex flex-col items-center">
@@ -34,7 +32,7 @@ const MonCompte = () => {
               />
             </div>
             <button className="absolute -right-2 -bottom-2 bg-[#FF843D] text-white p-2.5 rounded-2xl shadow-md border-4 border-white">
-              <FaCamera size={18} />
+              <Camera size={18} />
             </button>
           </div>
 
@@ -44,7 +42,7 @@ const MonCompte = () => {
           </p>
 
           <div className="bg-[#FFE3CE] px-3.5 py-3 rounded-2xl flex items-center gap-3 mb-10 shadow-sm">
-            <FaCog size={20} className="text-[#8B2C21]" />
+            <Settings size={20} className="text-[#8B2C21]" />
             <span className="text-[#951418] text-[12px] uppercase">
               Compte vérifié
             </span>
@@ -82,15 +80,13 @@ const MonCompte = () => {
       </div>
 
       {/* CONTENU → passe en dessous sur mobile */}
-      <div className="flex-1 order-2 lg:order-2 min-h-[700px]">
-        {activeTab === 'Profil' && <Profil />}
+      <div className="flex-1 order-2 lg:order-2 min-h-175">
         {activeTab === 'Securite' && <Securite />}
         {activeTab === 'Notifications' && <Notifications />}
-        {activeTab === 'Abonnement' && <Abonnement />}
       </div>
 
     </div>
   );
 };
 
-export default MonCompte;
+export default Parametre;

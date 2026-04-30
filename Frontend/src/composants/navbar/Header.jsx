@@ -10,7 +10,7 @@ const Header = ({ title, onMenuClick }) => {
   });
 
   return (
-    <header className="fixed top-0 left-0 w-full h-20 md:h-24 bg-[#FFF4EC] flex items-center justify-between px-4 md:px-10 border-b border-gray-100 z-50 font-sans shadow-md shadow-gray-300">
+    <header className="fixed top-0 left-0 w-full h-20 md:h-23 bg-[#FFF4EC] flex items-center justify-between px-4 md:px-10 border-b border-gray-100 z-50 font-sans shadow-md shadow-gray-300">
       
       {/* ZONE GAUCHE : Bouton Burger + Titre Desktop */}
       <div className="flex-1 flex items-center">
@@ -32,9 +32,9 @@ const Header = ({ title, onMenuClick }) => {
       </div>
 
       {/* ZONE CENTRE : Logo Centré */}
-      <div className="flex-1 flex justify-center items-center gap-3 md:gap-5 min-w-[120px] md:min-w-[200px]">
+      <div className="flex-1 flex justify-center items-center gap-3 md:gap-5 min-w-30 md:min-w-50">
         <div className="text-[#951418]">
-          <UtensilsCrossed size={40} className="md:size-[60px]" strokeWidth={1} />
+          <UtensilsCrossed size={40} className="md:size-15" strokeWidth={1} />
         </div>
 
         <div className="hidden lg:flex flex-col text-left">
@@ -50,7 +50,7 @@ const Header = ({ title, onMenuClick }) => {
       {/* ZONE DROITE : Notifications + Profil */}
       <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
         <button className="relative p-2 text-[#951418] hover:text-[#B23B2B] transition-colors">
-          <Bell size={28} className="md:size-[38px]" strokeWidth={1.5} />
+          <Bell size={28} className="md:size-9.5" strokeWidth={1.5} />
           <span className="absolute top-1 right-1 md:top-2 md:right-2.5 w-2 h-2 md:w-2.5 md:h-2.5 bg-[#B23B2B] rounded-full border-2 border-white"></span>
         </button>
 
