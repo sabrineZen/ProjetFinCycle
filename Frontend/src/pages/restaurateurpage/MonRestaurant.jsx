@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, MapPin, Phone, Clock, Info, Truck, Save } from 'lucide-react';
+import { Camera, MapPin, Phone, Clock, Info, Truck, Save, Mail } from 'lucide-react';
 
 const MonRestaurant = ({ estActif, setEstActif }) => {
   return (
@@ -22,7 +22,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
           </div>
           
           <h2 className="mt-4 text-2xl font-regular text-[#951418]">Chez les Berbers</h2>
-          <p className="text-[#951418]/70 font-regular">Pizza</p>
+          <p className="text-[#951418]/70 font-regular text-sm">Numéro registre de commerce</p>
 
           {/* Badge Statut Dynamique */}
           <div className={`mt-4 px-6 py-3 rounded-[14px] flex items-center gap-2 border ${
@@ -53,9 +53,10 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
             <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
               <Phone className="text-[#951418]" size={20} /> 0791876979
             </div>
-            <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
-              <Clock className="text-[#951418]" size={20} /> 8:00 - 23:00
-            </div>
+           <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
+            <Mail className="text-[#951418]" size={20} />
+            <span>contact@exemple.com</span>
+           </div>
           </div>
         </div>
       </div>
@@ -71,71 +72,45 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
           </div>
           
           <div className="grid grid-cols-1 gap-6">
+
             <div className="space-y-2">
               <label className="text-xl font-regular text-[#951418] ml-2">Nom du restaurant</label>
-              <input type="text" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
+              <input type="text" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
             </div>
-            <div className="space-y-2">
-              <label className="text-xl font-regular  text-[#951418] ml-2">Description</label>
-              <textarea rows="4" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-3xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="Décrivez votre restaurant..."></textarea>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div className="w-full relative">
+                    <input type="file" id="file-upload-mobile" className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
+                    <label htmlFor="file-upload-mobile" className="text-[#951418] block p-3 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer text-sm">
+                      Télécharger document officiel
+                    </label>
+             </div>
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                <div className="space-y-2">
-                 <label className="text-xl font-regular text-[#951418] ml-2">Catégorie</label>
-                 <select className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 appearance-none focus:ring-2 focus:ring-[#FF843D] transition-all outline-none">
-                    <option >Pizza</option>
-                    <option>Burger</option>
-                    <option>Salade</option>
-                    <option>Desserts</option>
-                    <option>Boissons</option>
-                 </select>
+                 <label className="text-xl font-regular text-[#951418] ml-2">Numéro registre de commerce</label>
+                 <input type="text" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="Numéro de registre de commerce" />
                </div>
+
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Email</label>
-                 <input type="email" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz " />
+                 <input type="email" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz " />
                </div>
+
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Telephone</label>
-                 <input type="tel" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="+213 ... " />
+                 <input type="tel" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="+213 ... " />
                </div>
+
                <div className="space-y-2">
                  <label className="text-xl font-regular text-[#951418] ml-2">Adresse</label>
-                 <input type="text" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
+                 <input type="text" className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" />
                </div>
+
             </div>
           </div>
         </div>
 
-        {/* Section Horaires & Livraison */}
-        <div className="bg-white p-10 rounded-[20px] shadow-md ">
-          <div className="flex items-center gap-3 mb-8">
-            <Clock className="text-[#8B2C21]" />
-            <h3 className="text-2xl font-bold text-[#8B2C21]">Horaires & Livraison</h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-             <div className="space-y-2">
-               <label className="text-lg font-regular text-[#951418]/70 ml-2">Heure d'ouverture</label>
-               <input type="time" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz" />
-             </div>
-             <div className="space-y-2">
-               <label className="text-lg font-regular text-[#951418]/70 ml-2">Heure de fermeture</label>
-               <input type="time" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="contact@berbers.dz" />
-             </div>
-             <div className="space-y-2">
-               <label className="text-lg font-regular text-[#951418]/70 ml-2">Délai livraison (min)</label>
-               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" placeholder="30" />
-             </div>
-             <div className="space-y-2">
-               <label className="text-lg font-regular text-[#951418]/70 ml-2">Commande min(DA)</label>
-               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
-             </div>
-             <div className="space-y-2">
-               <label className="text-lg font-regular text-[#951418]/70 ml-2">Frais de livraison(DA)</label>
-               <input type="number" className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"  />
-             </div>
-          </div>
-        </div>
+       
 
         {/* Bouton Sauvegarder (Fixé en bas à droite ou en fin de page) */}
         <div className="flex justify-end">

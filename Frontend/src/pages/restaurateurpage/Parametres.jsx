@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-react';
 
-import Profil from './moncompte/Profil'; 
-import Securite from './moncompte/Securite'; 
-import Notifications from './moncompte/Notifications';
-import Abonnement from './moncompte/Abonnement'; 
+ 
+import Securite from './les_parametres/Securite'; 
+import Notifications from './les_parametres/Notifications';
+
 
 const MonCompte = () => {
-  const [activeTab, setActiveTab] = useState('Profil');
+  const [activeTab, setActiveTab] = useState('Securite');
 
   const menuItems = [
-    { id: 'Profil', icon: <User size={22} />, label: 'Profil' },
     { id: 'Securite', icon: <ShieldCheck size={22} />, label: 'Sécurité' },
-    { id: 'Notifications', icon: <Bell size={22} />, label: 'Notifications' },
-    { id: 'Abonnement', icon: <CreditCard size={22} />, label: 'Abonnement' },
+    { id: 'Notifications', icon: <Bell size={22} />, label: 'Notifications' }    
   ];
 
   return (
@@ -83,10 +81,8 @@ const MonCompte = () => {
 
       {/* CONTENU → passe en dessous sur mobile */}
       <div className="flex-1 order-2 lg:order-2 min-h-[700px]">
-        {activeTab === 'Profil' && <Profil />}
         {activeTab === 'Securite' && <Securite />}
         {activeTab === 'Notifications' && <Notifications />}
-        {activeTab === 'Abonnement' && <Abonnement />}
       </div>
 
     </div>

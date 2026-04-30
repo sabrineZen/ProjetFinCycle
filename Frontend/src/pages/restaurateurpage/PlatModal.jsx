@@ -31,7 +31,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
         {/* Formulaire Scrollable */}
         <div className="px-10 overflow-y-auto custom-scrollbar flex-1">
           <form className="space-y-6 pb-6">
-            <div className="h-44 w-full bg-[#FFE3CE] rounded-[25px]  border-2 border-[#C0A0A0] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-orange-50 transition-colors group overflow-hidden">
+            <div className="h-44 w-full bg-[#FFF7F4] rounded-[25px]  border-2 border-[#C0A0A0] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-orange-50 transition-colors group overflow-hidden">
                {isEditing && currentPlat?.image ? (
                  <img src={currentPlat.image} className="w-full h-full object-cover" alt="preview" />
                ) : (
@@ -49,7 +49,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <input 
                 type="text" 
                 defaultValue={isEditing ? currentPlat?.nom : ""}
-                className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+                className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
                 placeholder="Ex: Pizza Fruits de Mer" 
               />
             </div>
@@ -59,7 +59,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <textarea 
                 rows="2" 
                 defaultValue={isEditing ? currentPlat?.description : ""}
-                className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+                className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
                 placeholder="Ingrédients..."
               ></textarea>
             </div>
@@ -70,14 +70,14 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
                 <input 
                   type="number" 
                   defaultValue={isEditing ? currentPlat?.prix.replace(" DA", "") : ""}
-                  className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+                  className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-md font-regular text-[#951418]  ml-2">Catégorie</label>
                 <select 
                   defaultValue={isEditing ? currentPlat?.categorie : "Pizza"}
-                  className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none "
+                  className="w-full bg-[#FFF7F4] border-1 border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none "
                 >
                   <option >Pizza</option>
                   <option>Burger</option>

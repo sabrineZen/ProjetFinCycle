@@ -104,7 +104,7 @@ const Commandes = () => {
             <button
               key={cat.id}
               onClick={() => { setFilter(cat.id); setExpandedId(null); }}
-              className={`px-3 sm:px-4 py-2 rounded-xl border text-xs sm:text-sm flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-2 rounded-xl border border-[#C0A0A0] text-xs sm:text-sm flex items-center gap-2 ${
                 filter === cat.id
                   ? 'bg-[#FF843D] text-white'
                   : 'bg-[#FFE3CE]/40 text-[#8B2C21]'
@@ -125,7 +125,7 @@ const Commandes = () => {
             placeholder="ID ou client .."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#FFE3CE] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none"
+            className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl py-3 pl-10 pr-3 text-sm sm:text-base text-[#951418] outline-none focus:ring-1 focus:ring-[#FF843D] outline-none"
           />
         </div>
       </div>

@@ -118,7 +118,7 @@ const MesPlats = () => {
           <input
             type="text"
             placeholder="Rechercher..."
-            className="w-full bg-[#FFE3CE] rounded-2xl py-3 pl-12 text-[#951418] focus:ring-2 focus:ring-[#FF843D] outline-none"
+            className="w-full bg-[#FFF7F4] rounded-2xl py-3 pl-12 text-[#951418] border border-[#C0A0A0] focus:ring-1 focus:ring-[#FF843D] outline-none"
           />
         </div>
       </div>

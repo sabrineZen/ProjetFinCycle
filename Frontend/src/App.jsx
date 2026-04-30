@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Sidebar from './composants/navbar/Sidebar';
 import Header from './composants/navbar/Header';
-import Dashboard from './pages/Dashboard'; 
-import MonRestaurant from './pages/MonRestaurant';
-import MesPlats from './pages/MesPlats';
-import Commandes from './pages/Commandes';
-import MonCompte from './pages/MonCompte';
+import Dashboard from './pages/restaurateurpage/Dashboard'; 
+import MonRestaurant from './pages/restaurateurpage/MonRestaurant';
+import MesPlats from './pages/restaurateurpage/MesPlats';
+import Commandes from './pages/restaurateurpage/Commandes';
+import MonCompte from './pages/restaurateurpage/Parametres';
 
 function App() {
   // 1. ÉTAT POUR LA NAVIGATION

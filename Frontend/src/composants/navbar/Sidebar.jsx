@@ -8,7 +8,7 @@ const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
     { id: 'restaurant', icon: <UtensilsCrossed size={22} />, label: 'Mon restaurant' },
     { id: 'plats', icon: <Soup size={22} />, label: 'Mes plats' },
     { id: 'commandes', icon: <ClipboardList size={22} />, label: 'Commandes' },
-    { id: 'compte', icon: <UserCircle size={22} />, label: 'Mon compte' },
+    { id: 'compte', icon: <UserCircle size={22} />, label: 'Paramètres' },
   ];
 
   return (
