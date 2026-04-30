@@ -1,19 +1,11 @@
 import React from 'react';
-
-import { X, Image as ImageIcon, AlertCircle, Plus, Edit2 } from 'lucide-react';
-
 import { FaTimes, FaImage, FaExclamationCircle, FaPlus, FaEdit } from 'react-icons/fa';
-
 
 const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
   if (!isOpen) return null;
 
   return (
-
-    <div className="fixed inset-0 z-999 flex items-center justify-center p-5 animate-in fade-in duration-300 text-[#951418]">
-
     <div className="fixed inset-0 z-[999] flex items-center justify-center p-5 animate-in fade-in duration-300 text-[#951418]">
-
       {/* Overlay flou */}
       <div 
         className="absolute inset-0 bg-black/30 backdrop-blur-[6px]" 
@@ -32,32 +24,20 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
             onClick={onClose}
             className="w-10 h-10 flex items-center justify-center bg-[#FF7D31] rounded-full text-white hover:bg-red-600 transition-colors"
           >
-
-            <X size={24}  />
-
             <FaTimes size={24} />
-
           </button>
         </div>
 
         {/* Formulaire Scrollable */}
         <div className="px-10 overflow-y-auto custom-scrollbar flex-1">
           <form className="space-y-6 pb-6">
-
-            <div className="h-44 w-full bg-[#FFF7F4] rounded-[25px]  border-2 border-[#C0A0A0] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-orange-50 transition-colors group overflow-hidden">
-
             <div className="h-44 w-full bg-[#FFE3CE] rounded-[25px]  border-2 border-[#C0A0A0] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-orange-50 transition-colors group overflow-hidden">
-
                {isEditing && currentPlat?.image ? (
                  <img src={currentPlat.image} className="w-full h-full object-cover" alt="preview" />
                ) : (
                  <>
                   <div className="p-4 bg-white rounded-2xl text-[#FF843D] shadow-sm group-hover:scale-110 transition-transform">
-
-                    <ImageIcon size={32} />
-
                     <FaImage size={32} />
-
                   </div>
                   <span className="text-[#951418] font-regular">Télécharger une image</span>
                  </>
@@ -69,11 +49,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <input 
                 type="text" 
                 defaultValue={isEditing ? currentPlat?.nom : ""}
-
-                className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
-
                 className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
-
                 placeholder="Ex: Pizza Fruits de Mer" 
               />
             </div>
@@ -83,11 +59,7 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               <textarea 
                 rows="2" 
                 defaultValue={isEditing ? currentPlat?.description : ""}
-
-                className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
-
                 className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
-
                 placeholder="Ingrédients..."
               ></textarea>
             </div>
@@ -98,22 +70,14 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
                 <input 
                   type="number" 
                   defaultValue={isEditing ? currentPlat?.prix.replace(" DA", "") : ""}
-
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
-
                   className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
-
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-md font-regular text-[#951418]  ml-2">Catégorie</label>
                 <select 
                   defaultValue={isEditing ? currentPlat?.categorie : "Pizza"}
-
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none "
-
                   className="w-full bg-[#FFE3CE] border-1 border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none "
-
                 >
                   <option >Pizza</option>
                   <option>Burger</option>
@@ -141,21 +105,13 @@ const PlatModal = ({ isOpen, onClose, isEditing, currentPlat }) => {
               onClick={onClose}
               className="flex-1 bg-[#FFE3CE] text-[#951418] py-4 rounded-[22px] font-regular flex items-center justify-center gap-2 shadow-xl hover:scale-105 transition-transform"
             >
-
-              <AlertCircle size={22} /> Annuler
-
               <FaExclamationCircle size={22} /> Annuler
-
             </button>
             <button 
               type="submit"
               className="flex-[1.5] bg-[#FF843D] text-white py-4 rounded-[22px] font-regular flex items-center justify-center gap-2 shadow-xl  hover:scale-105 transition-transform"
             >
-
-              {isEditing ? <Edit2 size={24} /> : <Plus size={24} strokeWidth={3} />}
-
               {isEditing ? <FaEdit size={24} /> : <FaPlus size={24} />}
-
               {isEditing ? "Enregistrer" : "Ajouter le plat"}
             </button>
           </div>
