@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaShieldAlt, FaFingerprint, FaDownload } from 'react-icons/fa';
+import { ShieldCheck, Fingerprint, Download } from 'lucide-react';
 
 const Securite = () => {
   return (
@@ -8,7 +8,7 @@ const Securite = () => {
       {/* --- SECTION : CHANGEMENT DE MOT DE PASSE --- */}
       <div className="bg-white p-8 rounded-[20px] shadow-md ">
         <div className="flex items-center gap-4 mb-6 pb-5">
-          <FaShieldAlt className="text-[#951418]" size={35} />
+          <ShieldCheck className="text-[#951418]" size={35} />
           <h2 className="text-3xl font-regular text-[#951418]">Changer le mot de passe</h2>
         </div>
 
@@ -19,7 +19,7 @@ const Securite = () => {
             <input 
               type="password" 
               placeholder="••••••••"
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border bg-[#FFF7F4] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 
@@ -29,7 +29,7 @@ const Securite = () => {
             <input 
               type="password" 
               placeholder="••••••••"
-              className="w-full  border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+              className="w-full  border bg-[#FFF7F4] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
 
@@ -39,7 +39,7 @@ const Securite = () => {
             <input 
               type="password" 
               placeholder="••••••••"
-             className="w-full border-1 bg-[#FFE3CE] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-2 focus:ring-[#FF843D] transition-all outline-none" 
+             className="w-full border bg-[#FFF7F4] border-[#C0A0A0] rounded-xl py-3 px-8 font-regular text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none" 
             />
           </div>
         </div>
@@ -49,7 +49,7 @@ const Securite = () => {
       <div className="bg-white p-8 rounded-[20px] shadow-md   flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="bg-[#FF843D] p-4 rounded-2xl shadow-xl shadow-orange-100">
-            <FaFingerprint className="text-white" size={33} />
+            <Fingerprint className="text-white" size={33} />
           </div>
           <div>
             <h3 className="text-[#951418] font-regular text-2xl">Authentification à deux facteurs</h3>
@@ -64,7 +64,7 @@ const Securite = () => {
       {/* --- BOUTON DE SAUVEGARDE FINAL --- */}
       <div className="flex justify-end mt-1">
         <button className="bg-[#FF843D] text-white px-10 py-4 rounded-2xl font-regular text-xl flex items-center gap-2 shadow-sm shadow-[#FF843D] hover:scale-105 active:scale-95 transition-all ">
-          <FaDownload size={26} />
+          <Download size={26} />
           Sauvegarder les préférences
         </button>
       </div>

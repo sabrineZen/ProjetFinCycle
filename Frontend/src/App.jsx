@@ -10,7 +10,7 @@ import Dashboard from './pages/restaurateurpage/Dashboard.jsx';
 import MonRestaurant from './pages/restaurateurpage/MonRestaurant.jsx';
 import MesPlats from './pages/restaurateurpage/MesPlats.jsx';
 import Commandes from './pages/restaurateurpage/Commandes.jsx';
-import MonCompte from './pages/restaurateurpage/MonCompte.jsx';
+import Parametre from './pages/restaurateurpage/Parametre.jsx';
 
 // Auth & Client
 import Login from "./pages/loginpage/Login";
@@ -42,7 +42,7 @@ const RestaurateurLayout = () => {
       case 'restaurant': return 'Mon restaurant';
       case 'plats': return 'Mes plats';
       case 'commandes': return 'Commandes';
-      case 'compte': return 'Mon compte';
+      case 'Parametre': return 'Parametre';
       default: return 'RestoPro';
     }
   };
@@ -61,12 +61,12 @@ const RestaurateurLayout = () => {
           isOpen={isMenuOpen}
           setIsOpen={setIsMenuOpen}
         />
-        <main className="flex-1 pt-24 lg:pt-32 lg:ml-[340px] px-4 md:px-10 pb-10">
+        <main className="flex-1 pt-24 lg:pt-32 lg:ml-85 px-4 md:px-10 pb-10">
           {activePage === 'dashboard' && <Dashboard estActif={restaurantActif} setEstActif={setRestaurantActif} />}
           {activePage === 'restaurant' && <MonRestaurant estActif={restaurantActif} setEstActif={setRestaurantActif} />}
           {activePage === "plats" && <MesPlats />}
           {activePage === "commandes" && <Commandes />}
-          {activePage === "compte" && <MonCompte />}
+          {activePage === "Parametre" && <Parametre />}
         </main>
       </div>
     </div>
