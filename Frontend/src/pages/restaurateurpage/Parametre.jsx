@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-react';
 
  
-import Securite from './parametres/Securite'; 
-import Notifications from './parametres/Notifications';
+import Securite from './Parametres/Securite'; 
+import Notifications from './Parametres/Notifications';
 
 
 const MonCompte = () => {
