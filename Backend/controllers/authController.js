@@ -8,13 +8,21 @@ const login = async (req, res) => {
         const { email, motDePasse } = req.body;
 
         const utilisateur = await Utilisateur.findOne({ where: { email } });
-        if (!utilisateur) {
-            return res.status(404).json({ message: "Email introuvable ❌" });
-        }
+        if (!utilisateur) return res.status(404).json({ message: "Email introuvable ❌" });
 
         const isMatch = await bcrypt.compare(motDePasse, utilisateur.motDePasse);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Mot de passe incorrect ❌" });
+        if (!isMatch) return res.status(401).json({ message: "Mot de passe incorrect ❌" });
+
+        // ✅ Récupère le nom
+        let nom = "";
+        if (utilisateur.role === "restaurateur") {
+            const resto = await Restaurateur.findOne({ where: { utilisateurId: utilisateur.id } });
+            nom = resto ? resto.nomRestaurant : "";
+        } else if (utilisateur.role === "client") {
+            const client = await Client.findOne({ where: { utilisateurId: utilisateur.id } });
+            nom = client ? `${client.prenom} ${client.nom}` : "";
+        } else if (utilisateur.role === "admin") {
+            nom = "Admin";
         }
 
         const token = jwt.sign(
@@ -23,7 +31,7 @@ const login = async (req, res) => {
             { expiresIn: "7d" }
         );
 
-        res.json({ token, role: utilisateur.role });
+        res.json({ token, role: utilisateur.role, nom }); // ✅ nom ajouté
 
     } catch (err) {
         res.status(500).json({ message: err.message });

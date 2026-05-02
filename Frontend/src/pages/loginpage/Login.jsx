@@ -63,8 +63,8 @@ export default function Login() {
       const res = await api.post("/auth/login", formData);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
+      localStorage.setItem("nom", res.data.nom); // ✅ nom ajouté
 
-      // ✅ Redirection correcte selon le rôle
       if (res.data.role === "client") navigate("/homeClient");
       else if (res.data.role === "restaurateur") navigate("/restaurateur");
       else if (res.data.role === "admin") navigate("/admin/dashboard");
@@ -111,13 +111,9 @@ export default function Login() {
   };
 
   const handleSubmit = () => {
-    if (!showInscription) {
-      handleLogin();
-    } else if (role === "client") {
-      handleRegisterClient();
-    } else {
-      handleRegisterRestaurateur();
-    }
+    if (!showInscription) handleLogin();
+    else if (role === "client") handleRegisterClient();
+    else handleRegisterRestaurateur();
   };
 
   const slowTransition = { type: "tween", duration: 1.1, ease: "easeInOut" };
@@ -178,21 +174,21 @@ export default function Login() {
             {showInscription ? (
               role === "client" ? (
                 <>
-                  <input type="text" name="nom" placeholder="Nom" onChange={handleChange} className={inputClass} />
-                  <input type="text" name="prenom" placeholder="Prénom" onChange={handleChange} className={inputClass} />
-                  <input type="email" name="email" placeholder="Email" onChange={handleChange} className={inputClass} />
-                  <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} className={inputClass} />
-                  <input type="tel" name="telephone" placeholder="Numéro de tél." onChange={handleChange} className={inputClass} />
-                  <input type="text" name="adresse" placeholder="Adresse" onChange={handleChange} className={inputClass} />
+                  <input type="text" name="nom" placeholder="Nom" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="text" name="prenom" placeholder="Prénom" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="email" name="email" placeholder="Email" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="tel" name="telephone" placeholder="Numéro de tél." onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="text" name="adresse" placeholder="Adresse" onChange={handleChange} autoComplete="off" className={inputClass} />
                 </>
               ) : (
                 <>
-                  <input type="text" name="nomRestaurant" placeholder="Nom du Restaurant" onChange={handleChange} className={inputClass} />
-                  <input type="text" name="adresseRestaurant" placeholder="Adresse du restaurant" onChange={handleChange} className={inputClass} />
-                  <input type="email" name="email" placeholder="Email pro" onChange={handleChange} className={inputClass} />
-                  <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} className={inputClass} />
-                  <input type="tel" name="telephone" placeholder="Téléphone du restaurant" onChange={handleChange} className={inputClass} />
-                  <input type="text" name="numeroRegistre" placeholder="Numéro de Registre du commerce" onChange={handleChange} className={inputClass} />
+                  <input type="text" name="nomRestaurant" placeholder="Nom du Restaurant" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="text" name="adresseRestaurant" placeholder="Adresse du restaurant" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="email" name="email" placeholder="Email pro" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="tel" name="telephone" placeholder="Téléphone du restaurant" onChange={handleChange} autoComplete="off" className={inputClass} />
+                  <input type="text" name="numeroRegistre" placeholder="Numéro de Registre du commerce" onChange={handleChange} autoComplete="off" className={inputClass} />
                   <div className="w-full relative">
                     <input type="file" id="file-upload-mobile" onChange={handleFile} className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
                     <label htmlFor="file-upload-mobile" className="text-[#951418] block p-3 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer text-sm">
@@ -203,8 +199,8 @@ export default function Login() {
               )
             ) : (
               <>
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} className={inputClass} />
-                <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} className={inputClass} />
+                <input type="email" name="email" placeholder="Email" onChange={handleChange} autoComplete="off" className={inputClass} />
+                <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} autoComplete="off" className={inputClass} />
               </>
             )}
           </div>
@@ -305,21 +301,21 @@ export default function Login() {
               <div className="w-full flex flex-col items-center gap-2">
                 {role === "client" ? (
                   <>
-                    <input type="text" name="nom" placeholder="Nom" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="text" name="prenom" placeholder="Prénom" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="email" name="email" placeholder="Email" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="tel" name="telephone" placeholder="Numéro de tél." onChange={handleChange} className={inputClassDesktop} />
-                    <input type="text" name="adresse" placeholder="Adresse" onChange={handleChange} className={inputClassDesktop} />
+                    <input type="text" name="nom" placeholder="Nom" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="text" name="prenom" placeholder="Prénom" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="email" name="email" placeholder="Email" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="tel" name="telephone" placeholder="Numéro de tél." onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="text" name="adresse" placeholder="Adresse" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
                   </>
                 ) : (
                   <>
-                    <input type="text" name="nomRestaurant" placeholder="Nom du Restaurant" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="text" name="adresseRestaurant" placeholder="Adresse du restaurant" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="email" name="email" placeholder="Email pro" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="tel" name="telephone" placeholder="Téléphone du restaurant" onChange={handleChange} className={inputClassDesktop} />
-                    <input type="text" name="numeroRegistre" placeholder="Numéro de Registre du commerce" onChange={handleChange} className={inputClassDesktop} />
+                    <input type="text" name="nomRestaurant" placeholder="Nom du Restaurant" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="text" name="adresseRestaurant" placeholder="Adresse du restaurant" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="email" name="email" placeholder="Email pro" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="tel" name="telephone" placeholder="Téléphone du restaurant" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                    <input type="text" name="numeroRegistre" placeholder="Numéro de Registre du commerce" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
                     <div className="w-[85%] relative">
                       <input type="file" id="file-upload" onChange={handleFile} className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
                       <label htmlFor="file-upload" className="text-[#951418] block p-2 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer">
@@ -331,8 +327,8 @@ export default function Login() {
               </div>
             ) : (
               <>
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} className={inputClassDesktop} />
-                <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} className={inputClassDesktop} />
+                <input type="email" name="email" placeholder="Email" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
+                <input type="password" name="motDePasse" placeholder="Mot de passe" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
               </>
             )}
           </div>
