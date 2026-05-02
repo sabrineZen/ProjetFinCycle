@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-react';
-
+import api from '../../api';
  
 import Securite from './Parametres/Securite'; 
 import Notifications from './Parametres/Notifications';
@@ -8,7 +8,21 @@ import Notifications from './Parametres/Notifications';
 
 const MonCompte = () => {
   const [activeTab, setActiveTab] = useState('Securite');
-
+  const [profil, setProfil] = useState({
+    nomRestaurant: '',
+    email: ''
+  });
+  useEffect(() => {
+    const fetchProfil = async () => {
+      try {
+        const { data } = await api.get('/restaurateurs/profil');
+        setProfil(data);
+      } catch (error) {
+        console.error('Erreur chargement profil:', error);
+      }
+    };
+    fetchProfil();
+  }, []);
   const menuItems = [
     { id: 'Securite', icon: <ShieldCheck size={22} />, label: 'Sécurité' },
     { id: 'Notifications', icon: <Bell size={22} />, label: 'Notifications' }    
@@ -36,9 +50,13 @@ const MonCompte = () => {
             </button>
           </div>
 
-          <h3 className="text-[28px] text-[#951418] mb-1 text-center">Ghanou Yns</h3>
+          {/* ← Nom du restaurant depuis la BDD */}
+          <h3 className="text-[28px] text-[#951418] mb-1 text-center">
+            {profil.nomRestaurant || 'Chargement...'}
+          </h3>
+          {/* ← Email depuis la BDD */}
           <p className="text-gray-400 text-sm mb-6 text-center truncate w-full">
-            younsighanou43@gmail.com
+            {profil.email || 'Chargement...'}
           </p>
 
           <div className="bg-[#FFE3CE] px-3.5 py-3 rounded-2xl flex items-center gap-3 mb-10 shadow-sm">

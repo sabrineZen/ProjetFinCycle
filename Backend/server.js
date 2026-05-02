@@ -52,3 +52,4 @@ sequelize.authenticate()
   .catch(err => {
     console.error("❌ Erreur de connexion :", err);
   });
+  app.use('/uploads', express.static('uploads'));

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Search, Eye, EyeOff, Edit2, Trash2 } from 'lucide-react';
 import PlatModal from './PlatModal';
 
@@ -12,11 +12,16 @@ const MesPlats = () => {
     'Tous', 'Burger', 'Pizza', 'Salade', 'Desserts', 'Boissons'
   ]);
 
-  const [platsData, setPlatsData] = useState([
-    { id: 1, nom: "Burger", description: "Steak haché, chedar fondu, salade...", prix: "1500 DA", categorie: "Burger", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500", disponible: true },
-    { id: 2, nom: "Pizza", description: "Sauce tomate, mozzarella, basilic...", prix: "1000 DA", categorie: "Pizza", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500", disponible: true },
-    { id: 3, nom: "Salade César", description: "Romaine, parmesan, croutons...", prix: "1000 DA", categorie: "Salade", image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=500", disponible: false },
-  ]);
+  const [platsData, setPlatsData] = useState([]);
+  const URL_API = "http://localhost:5000/api/plats";
+
+  // 1. Charger les plats au démarrage
+  useEffect(() => {
+    fetch(URL_API)
+      .then(res => res.json())
+      .then(data => setPlatsData(data))
+      .catch(err => console.error("Erreur de chargement:", err));
+  }, []);
 
   const platsFiltrés = filter === 'Tous'
     ? platsData
@@ -32,27 +37,79 @@ const MesPlats = () => {
     }
   };
 
-  const handleToggleStatus = (id) => {
-    setPlatsData(prev =>
-      prev.map(plat =>
-        plat.id === id ? { ...plat, disponible: !plat.disponible } : plat
-      )
-    );
+  // 2. Mettre à jour le statut (Disponible/Indisponible)
+  const handleToggleStatus = async (id) => {
+    const platToUpdate = platsData.find(p => p.id === id);
+    if (!platToUpdate) return;
+
+    try {
+      const newStatus = !platToUpdate.disponible;
+      await fetch(`${URL_API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ disponible: newStatus })
+      });
+      
+      setPlatsData(prev =>
+        prev.map(plat =>
+          plat.id === id ? { ...plat, disponible: newStatus } : plat
+        )
+      );
+    } catch (err) {
+      console.error("Erreur lors de la modification du statut:", err);
+    }
   };
 
-  const handleDelete = (id) => {
+  // 3. Supprimer un plat
+  const handleDelete = async (id) => {
     if (window.confirm("Supprimer ce plat ?")) {
-      setPlatsData(prev => prev.filter(p => p.id !== id));
+      try {
+        await fetch(`${URL_API}/${id}`, { method: 'DELETE' });
+        setPlatsData(prev => prev.filter(p => p.id !== id));
+      } catch (err) {
+        console.error("Erreur lors de la suppression:", err);
+      }
     }
   };
 
-  const handleSavePlat = (platData) => {
-    if (isEditing) {
-      setPlatsData(prev => prev.map(p => p.id === platData.id ? platData : p));
-    } else {
-      setPlatsData(prev => [...prev, { ...platData, id: Date.now() }]);
+  // 4. Ajouter ou Modifier un plat (🌟 NOUVEAU : Utilisation de FormData)
+  const handleSavePlat = async (platData) => {
+    try {
+      // Création de l'enveloppe spéciale pour mélanger texte et image
+      const formData = new FormData();
+      formData.append('nom', platData.nom);
+      formData.append('description', platData.description);
+      formData.append('prix', platData.prix);
+      formData.append('categorie', platData.categorie);
+      formData.append('disponible', platData.disponible);
+      
+      // On ajoute l'image seulement si elle existe
+      if (platData.image) {
+        formData.append('image', platData.image);
+      }
+
+      if (isEditing) {
+        // Modification
+        const res = await fetch(`${URL_API}/${platData.id}`, {
+          method: 'PUT',
+          // Attention : Ne pas mettre de Content-Type avec FormData, le navigateur s'en charge !
+          body: formData
+        });
+        const platModifie = await res.json();
+        setPlatsData(prev => prev.map(p => p.id === platModifie.id ? platModifie : p));
+      } else {
+        // Ajout
+        const res = await fetch(URL_API, {
+          method: 'POST',
+          body: formData
+        });
+        const nouveauPlat = await res.json();
+        setPlatsData(prev => [...prev, nouveauPlat]);
+      }
+      setShowModal(false);
+    } catch (err) {
+      console.error("Erreur lors de la sauvegarde:", err);
     }
-    setShowModal(false);
   };
 
   const handleAdd = () => {
@@ -129,7 +186,7 @@ const MesPlats = () => {
         {platsFiltrés.map((plat) => (
           <div key={plat.id} className="bg-white rounded-[25px] overflow-hidden shadow-md flex flex-col">
 
-            <div className="relative h-40 sm:h-44 md:h-50">
+            <div className="relative h-40 sm:h-40 md:h-38">
               <img src={plat.image} className="w-full h-full object-cover" />
 
               <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-bold ${
@@ -146,7 +203,7 @@ const MesPlats = () => {
               <h3 className="text-lg md:text-2xl font-regular text-[#951418]">
                 {plat.nom}
               </h3>
-
+              
               <p className="text-sm text-[#951418]/70 line-clamp-2">
                 {plat.description}
               </p>
@@ -155,18 +212,23 @@ const MesPlats = () => {
                 <span className="font-regular text-[#951418] text-lg">
                   {plat.prix}
                 </span>
-                <span className="bg-[#FFE0C2] px-3 py-1 rounded-xl text-xs">
-                  {plat.categorie}
-                </span>
+                
+                {/* 🌟 NOUVEAU : On affiche la catégorie uniquement si elle n'est pas vide */}
+                {plat.categorie && (
+                  <span className="bg-[#FFE0C2] px-3 py-1 rounded-xl text-xs">
+                    {plat.categorie}
+                  </span>
+                )}
               </div>
 
               <div className="flex gap-2">
 
+                {/* 🌟 NOUVEAU : L'œil est maintenant inversé correctement */}
                 <button
                   onClick={() => handleToggleStatus(plat.id)}
                   className="flex-1 bg-[#FF843D] text-white py-3 rounded-2xl text-xs flex items-center justify-center gap-2"
                 >
-                  {plat.disponible ? <EyeOff size={19} /> : <Eye size={19} />}
+                  {plat.disponible ? <Eye size={19} /> : <EyeOff size={19} />}
                 </button>
 
                 <button
