@@ -47,17 +47,15 @@ export default function Login() {
     return () => clearInterval(interval);
   }, [nextImage, index]);
 
-  // ── Gestion des champs ──
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ── Gestion fichier ──
   const handleFile = (e) => {
     setFormData({ ...formData, documentOfficiel: e.target.files[0] });
   };
 
-  // ── Connexion ──
+  // ── CONNEXION ──
   const handleLogin = async () => {
     setError("");
     setLoading(true);
@@ -66,9 +64,10 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
 
-      if (res.data.role === "client") navigate("/client");
+      // ✅ Redirection correcte selon le rôle
+      if (res.data.role === "client") navigate("/homeClient");
       else if (res.data.role === "restaurateur") navigate("/restaurateur");
-      else if (res.data.role === "admin") navigate("/admin");
+      else if (res.data.role === "admin") navigate("/admin/dashboard");
 
     } catch (err) {
       setError(err.response?.data?.message || "Erreur de connexion ❌");
@@ -77,7 +76,7 @@ export default function Login() {
     }
   };
 
-  // ── Inscription Client ──
+  // ── INSCRIPTION CLIENT ──
   const handleRegisterClient = async () => {
     setError("");
     setLoading(true);
@@ -93,14 +92,13 @@ export default function Login() {
     }
   };
 
-  // ── Inscription Restaurateur ──
+  // ── INSCRIPTION RESTAURATEUR ──
   const handleRegisterRestaurateur = async () => {
     setError("");
     setLoading(true);
     try {
       const data = new FormData();
       Object.keys(formData).forEach((key) => data.append(key, formData[key]));
-
       await api.post("/auth/register/restaurateur", data);
       setShowInscription(false);
       setFormData({});
@@ -112,7 +110,6 @@ export default function Login() {
     }
   };
 
-  // ── Bouton principal ──
   const handleSubmit = () => {
     if (!showInscription) {
       handleLogin();
@@ -139,17 +136,9 @@ export default function Login() {
   if (isMobile) {
     return (
       <div className="min-h-screen flex flex-col font-sans bg-[#FDE9DC] relative">
-
         <div className="w-full relative" style={{ height: "45vh" }}>
-          <motion.img
-            key={index}
-            initial={{ opacity: 0.8 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            src={images[index]}
-            alt="Hero"
-            className="w-full h-full object-cover"
-          />
+          <motion.img key={index} initial={{ opacity: 0.8 }} animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }} src={images[index]} alt="Hero" className="w-full h-full object-cover" />
           <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-3">
             <div className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition" onClick={prevImage}>
               <FaChevronLeft size={18} />
@@ -226,7 +215,6 @@ export default function Login() {
             </div>
           )}
 
-          {/* Erreur */}
           {error && <p className="text-red-500 text-xs text-center mb-2">{error}</p>}
 
           <div className="flex w-full gap-3 mb-4">
@@ -274,7 +262,6 @@ export default function Login() {
         <motion.div layout transition={slowTransition} style={{ zIndex: 20 }} className="flex-[1.2] relative rounded-[40px] overflow-hidden">
           <motion.img key={index} initial={{ opacity: 0.8 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
             src={images[index]} alt="Hero" className="w-full h-full object-cover" style={{ clipPath: getClipPath() }} />
-
           <div className={`absolute bottom-8 flex gap-3 ${showInscription ? "left-12" : "right-12"}`}>
             <div className="bg-[#ff7c48]/60 text-white w-9 h-9 flex items-center justify-center rounded-full cursor-pointer hover:bg-orange-600 shadow-md transition" onClick={prevImage}>
               <FaChevronLeft size={18} />
@@ -356,7 +343,6 @@ export default function Login() {
             </div>
           )}
 
-          {/* Erreur */}
           {error && <p className="text-red-500 text-xs text-center mb-2">{error}</p>}
 
           <div className="flex w-[88%] gap-6 mb-3 mt-1">
