@@ -13,6 +13,7 @@ import img7 from "../../assets/img7.jpg";
 import img8 from "../../assets/img8.jpg";
 import img9 from "../../assets/img9.jpg";
 import img10 from "../../assets/img10.jpg";
+import logo from "../../assets/logo.png";
 
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
@@ -150,7 +151,7 @@ export default function Login() {
 
           <div className="w-full flex flex-col items-center gap-3 mb-4">
             <div className="text-[#951418] font-bold cursor-pointer text-lg" onClick={() => setShowInscription(false)}>
-              <span>P</span>Latigo
+             <img src={logo} alt="Logo" className='w-12 h-12 md:w-15 md:h-14' />
             </div>
             {showInscription && (
               <div className="flex bg-[#FFE2D3] rounded-full p-1 shadow-md">
@@ -253,7 +254,7 @@ export default function Login() {
       />
 
       <motion.div layout transition={slowTransition}
-        className={`relative z-10 bg-[#FFF7F1] w-[950px] h-[580px] rounded-[45px] flex p-2 shadow-2xl ${showInscription ? "flex-row-reverse" : "flex-row"}`}>
+        className={`relative z-10 bg-[#FFF7F1] w-237.5 h-145 rounded-[45px] flex p-2 shadow-2xl ${showInscription ? "flex-row-reverse" : "flex-row"}`}>
 
         <motion.div layout transition={slowTransition} style={{ zIndex: 20 }} className="flex-[1.2] relative rounded-[40px] overflow-hidden">
           <motion.img key={index} initial={{ opacity: 0.8 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
@@ -271,8 +272,8 @@ export default function Login() {
         <motion.div layout transition={slowTransition} style={{ zIndex: 10 }} className="flex-1 p-8 flex flex-col items-center">
 
           <div className="w-full flex justify-between items-center mb-1">
-            <div className="text-[#951418] font-bold ml-2 cursor-pointer" onClick={() => setShowInscription(false)}>
-              <span>P</span>Latigo
+           <div className="ml-2 cursor-pointer" onClick={() => setShowInscription(false)}>
+                <img src={logo} alt="Logo" className="w-12 h-12 object-contain" />
             </div>
             {showInscription && (
               <div className="flex bg-[#FFE2D3] rounded-full p-1 shadow-md">

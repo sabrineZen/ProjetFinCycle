@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const Utilisateur = require('./utilisateurModel');
 const Categorie = require('./categorieModel');
-const Restaurateur = require('./restaurateurModel');
 
 const Plat = sequelize.define('Plat', {
   nom:         { type: DataTypes.STRING, allowNull: false },
@@ -13,8 +13,9 @@ const Plat = sequelize.define('Plat', {
   timestamps: false
 });
 
-Plat.belongsTo(Categorie,    { foreignKey: 'categorieId' });
-Plat.belongsTo(Restaurateur, { foreignKey: 'restaurateurId' });
-Categorie.hasMany(Plat,       { foreignKey: 'categorieId' });
-Restaurateur.hasMany(Plat,    { foreignKey: 'restaurateurId' });
+Plat.belongsTo(Utilisateur, { foreignKey: 'utilisateurId' });
+Utilisateur.hasMany(Plat,   { foreignKey: 'utilisateurId' });
+
+Plat.belongsTo(Categorie, { foreignKey: 'categorieId' });
+Categorie.hasMany(Plat,    { foreignKey: 'categorieId' });
 module.exports = Plat;

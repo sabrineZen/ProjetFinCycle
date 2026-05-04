@@ -11,8 +11,8 @@ const LigneCommande = sequelize.define('LigneCommande', {
   timestamps: false
 });
 
-LigneCommande.belongsTo(Commande, { foreignKey: 'commandeId' });
-LigneCommande.belongsTo(Plat,     { foreignKey: 'platId' });
+LigneCommande.belongsTo(Commande, { foreignKey: 'commandeId' , onDelete: 'CASCADE'});
+LigneCommande.belongsTo(Plat,     { foreignKey: 'platId' , onDelete: 'CASCADE'});
 Commande.hasMany(LigneCommande,   { foreignKey: 'commandeId' });
 Plat.hasMany(LigneCommande,   { foreignKey: 'platId' });
 module.exports = LigneCommande;

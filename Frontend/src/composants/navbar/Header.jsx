@@ -39,7 +39,7 @@ const Header = ({ title, onMenuClick }) => {
       </div>
 
       {/* ZONE CENTRE : Logo Centré */}
-      <div className="flex-1 flex justify-center items-center gap-3 md:gap-2 min-w-[120px] md:min-w-[200px]">
+      <div className="flex-1 flex justify-center items-center gap-3 md:gap-2 min-w-30 md:min-w-50">
         <div >
          <img src={logo} alt="Logo" className='w-12 h-12 md:w-15 md:h-14' />
         </div>
@@ -57,7 +57,7 @@ const Header = ({ title, onMenuClick }) => {
       {/* ZONE DROITE : Notifications + Profil */}
       <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
         <button className="relative p-2 text-[#951418] hover:text-[#B23B2B] transition-colors">
-          <Bell size={28} className="md:size-[38px]" strokeWidth={1.5} />
+          <Bell size={28} className="md:size-9.5" strokeWidth={1.5} />
           <span className="absolute top-1 right-1 md:top-2 md:right-2.5 w-2 h-2 md:w-2.5 md:h-2.5 bg-[#B23B2B] rounded-full border-2 border-white"></span>
         </button>
 
