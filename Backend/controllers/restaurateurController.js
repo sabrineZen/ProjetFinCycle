@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { Restaurateur, Utilisateur } = require('../models/index');
 
 // ── GET PROFIL RESTAURATEUR ──
@@ -55,5 +56,37 @@ const updateProfil = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// ── CHANGER MOT DE PASSE ── ← ajoute cette fonction
+const changePassword = async (req, res) => {
+  try {
+    const { motDePasseActuel, nouveauMotDePasse, confirmerMotDePasse } = req.body;
 
-module.exports = { getProfil, updateProfil };
+    if (!motDePasseActuel || !nouveauMotDePasse || !confirmerMotDePasse) {
+      return res.status(400).json({ message: '❌ Tous les champs sont obligatoires' });
+    }
+
+    if (nouveauMotDePasse !== confirmerMotDePasse) {
+      return res.status(400).json({ message: '❌ Les mots de passe ne correspondent pas' });
+    }
+
+    if (nouveauMotDePasse.length < 6) {
+      return res.status(400).json({ message: '❌ Minimum 6 caractères' });
+    }
+
+    const utilisateur = await Utilisateur.findByPk(req.user.id);
+
+    const isMatch = await bcrypt.compare(motDePasseActuel, utilisateur.motDePasse);
+    if (!isMatch) {
+      return res.status(401).json({ message: '❌ Mot de passe actuel incorrect' });
+    }
+
+    const hash = await bcrypt.hash(nouveauMotDePasse, 10);
+    await utilisateur.update({ motDePasse: hash });
+
+    res.json({ message: '✅ Mot de passe changé avec succès' });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+module.exports = { getProfil, updateProfil , changePassword};
