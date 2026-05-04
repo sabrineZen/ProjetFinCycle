@@ -17,34 +17,25 @@ const Utilisateur = sequelize.define('Utilisateur', {
     type: DataTypes.ENUM('client', 'restaurateur', 'admin'),
     allowNull: false,
     defaultValue: 'client'
-<<<<<<< Updated upstream
   },
 
-  // ── Colonnes Client ──
-  nom:       { type: DataTypes.STRING, allowNull: false},
-  prenom:    { type: DataTypes.STRING, allowNull: false },
-  telephone: { type: DataTypes.STRING, allowNull: false ,unique: true},
-  adresse:   { type: DataTypes.STRING, allowNull: false },
+  // ── Colonnes Client (nullable car absent chez restaurateur/admin) ──
+  nom:       { type: DataTypes.STRING, allowNull: true },
+  prenom:    { type: DataTypes.STRING, allowNull: true },
+  telephone: { type: DataTypes.STRING, allowNull: true, unique: true },
+  adresse:   { type: DataTypes.STRING, allowNull: true },
 
-  // ── Colonnes Restaurateur ──
-  nomRestaurant:      { type: DataTypes.STRING, allowNull: false },
-  adresseRestaurant:  { type: DataTypes.STRING, allowNull: false },
-  numeroRegistre:     { type: DataTypes.STRING, allowNull: false, unique: true },
-  documentOfficiel:   { type: DataTypes.STRING, allowNull: false },
+  // ── Colonnes Restaurateur (nullable car absent chez client/admin) ──
+  nomRestaurant:     { type: DataTypes.STRING, allowNull: true },
+  adresseRestaurant: { type: DataTypes.STRING, allowNull: true },
+  numeroRegistre:    { type: DataTypes.STRING, allowNull: true, unique: true },
+  documentOfficiel:  { type: DataTypes.STRING, allowNull: true },
   statut: {
     type: DataTypes.ENUM('en_attente', 'approuve', 'refuse'),
     allowNull: true,
-    defaultValue: 'en_attente'
+    defaultValue: null
   },
-  // ── Reset mot de passe ──
-  resetToken:  { type: DataTypes.STRING, allowNull: false },
-  resetExpire: { type: DataTypes.DATE,   allowNull: false }
 }, {
-=======
-  }
-},{
-
->>>>>>> Stashed changes
   timestamps: false
 });
 
