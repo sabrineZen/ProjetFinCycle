@@ -1,43 +1,86 @@
 import { useState } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
-import { FaMapMarkerAlt, FaStar, FaUtensils, FaBan, FaTrash, FaCheckCircle } from "react-icons/fa";
+import {
+  FaMapMarkerAlt, FaStar, FaUtensils,
+  FaBan, FaTrash, FaCheckCircle, FaBars
+} from "react-icons/fa";
 
 function RestaurantsPage() {
   const [recherche, setRecherche] = useState("");
   const [categorieFiltre, setCategorieFiltre] = useState("Tous les catégories");
   const [statusFiltre, setStatusFiltre] = useState("Tous les status");
+  const [sidebarOuverte, setSidebarOuverte] = useState(false); // ✅ ajouté
 
   const restaurants = [
-    { id: 1, nom: "Le Petit Bistrot", langue: "Français", proprio: "ghanou", adresse: "123 Rue de la paix , 7500 Toulouse", note: 4.9, commandes: 342, plats: 45, revenus: "$32.450", status: "Actif" },
-    { id: 2, nom: "Chez les berberes", langue: "Français", proprio: "Nordine KH.", adresse: "123 Rue de la paix , 7500 Helloane", note: 4.5, commandes: 342, plats: 45, revenus: "$40.450", status: "Actif" },
-    { id: 3, nom: "Chez wassim", langue: "Français", proprio: "wassim y.", adresse: "123 Rue de la paix , 7500 Toulouse", note: 4.9, commandes: 342, plats: 45, revenus: "$32.450", status: "Actif" },
-    { id: 4, nom: "Hamida dz", langue: "Français", proprio: "ahmed y.", adresse: "123 Rue de la rahma , 7500 Maroc", note: 2.1, commandes: 1000, plats: 45, revenus: "$25.450", status: "Suspendu" },
+    { id: 1, nom: "Le Petit Bistrot", langue: "Français", proprio: "ghanou", adresse: "123 Rue de la paix", note: 4.9, commandes: 342, plats: 45, revenus: "$32.450", status: "Actif" },
+    { id: 2, nom: "Chez les berberes", langue: "Français", proprio: "Nordine KH.", adresse: "Toulouse", note: 4.5, commandes: 342, plats: 45, revenus: "$40.450", status: "Actif" },
   ];
 
   const restaurantsFiltres = restaurants.filter((r) => {
-    const matchRecherche = r.nom.toLowerCase().includes(recherche.toLowerCase());
-    const matchStatus = statusFiltre === "Tous les status" || r.status === statusFiltre;
+    const matchRecherche =
+      r.nom.toLowerCase().includes(recherche.toLowerCase());
+    const matchStatus =
+      statusFiltre === "Tous les status" || r.status === statusFiltre;
     return matchRecherche && matchStatus;
   });
 
   return (
     <div className="flex">
-      <SidebarAdmin />
-      <div className="ml-56 p-8 w-full min-h-screen bg-fond">
 
-        {/* Titre */}
-        <h1 className="text-3xl font-bold text-secondary">Gestion des restaurants</h1>
-        <p className="text-gray-400 mt-1 mb-8">{restaurants.length} restaurant trouvés(s)</p>
+      {/* Overlay mobile */}
+      {sidebarOuverte && (
+        <div
+          className="fixed inset-0 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setSidebarOuverte(false)}
+        />
+      )}
 
-        {/* Barre recherche + filtres */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-bordure mb-6 flex gap-4">
+      {/* Sidebar */}
+      <div className={`
+        fixed top-0 left-0 h-full z-50 transition-transform duration-300
+        lg:translate-x-0 lg:w-56
+        ${sidebarOuverte ? "translate-x-0" : "-translate-x-full"}
+        w-56
+      `}>
+        <SidebarAdmin />
+      </div>
+
+      {/* Topbar mobile */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-bordure flex items-center px-4 z-30">
+        <button onClick={() => setSidebarOuverte(true)}>
+          <FaBars className="text-secondary" />
+        </button>
+        <h1 className="ml-4 font-bold text-secondary">Restaurants</h1>
+      </div>
+
+      {/* Content */}
+      <div className="w-full min-h-screen bg-fond p-4 pt-20 lg:pt-8 lg:ml-56 lg:p-8">
+
+        {/* Header */}
+        <div className="hidden lg:block">
+          <h1 className="text-3xl font-bold text-secondary">
+            Gestion des restaurants
+          </h1>
+          <p className="text-gray-400 mt-1 mb-8">
+            {restaurants.length} restaurant trouvés(s)
+          </p>
+        </div>
+
+        {/* Mobile subtitle */}
+        <p className="text-gray-400 mb-4 lg:hidden">
+          {restaurants.length} restaurants
+        </p>
+
+        {/* Filters */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-bordure mb-6 flex flex-col sm:flex-row gap-3">
           <input
             type="text"
-            placeholder="Recherche par nom ou email"
+            placeholder="Recherche..."
             value={recherche}
             onChange={(e) => setRecherche(e.target.value)}
             className="flex-1 border border-bordure rounded-xl px-4 py-2 text-secondary text-sm outline-none focus:border-button"
           />
+
           <select
             value={categorieFiltre}
             onChange={(e) => setCategorieFiltre(e.target.value)}
@@ -48,6 +91,7 @@ function RestaurantsPage() {
             <option>Japonais</option>
             <option>Italien</option>
           </select>
+
           <select
             value={statusFiltre}
             onChange={(e) => setStatusFiltre(e.target.value)}
@@ -59,8 +103,9 @@ function RestaurantsPage() {
           </select>
         </div>
 
-        {/* Grille restaurants */}
-        <div className="grid grid-cols-2 gap-6">
+        {/* GRID RESPONSIVE */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6">
+
           {restaurantsFiltres.map((r) => (
             <div key={r.id} className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
 
@@ -71,7 +116,12 @@ function RestaurantsPage() {
                   <p className="text-gray-400 text-sm">{r.langue}</p>
                   <p className="text-gray-400 text-sm">Par {r.proprio}</p>
                 </div>
-                <span className={`text-xs px-3 py-1 rounded-full font-medium ${r.status === "Actif" ? "bg-orange-100 text-button" : "bg-orange-200 text-orange-600"}`}>
+
+                <span className={`text-xs px-3 py-1 rounded-full font-medium ${
+                  r.status === "Actif"
+                    ? "bg-orange-100 text-button"
+                    : "bg-orange-200 text-orange-600"
+                }`}>
                   {r.status}
                 </span>
               </div>
@@ -82,10 +132,10 @@ function RestaurantsPage() {
                   <FaMapMarkerAlt className="text-button" /> {r.adresse}
                 </div>
                 <div className="flex items-center gap-2 text-secondary text-sm">
-                  <FaStar className="text-button" /> {r.note} • {r.commandes} commandes
+                  <FaStar className="text-button" /> {r.note} • {r.commandes}
                 </div>
                 <div className="flex items-center gap-2 text-secondary text-sm">
-                  <FaUtensils className="text-button" /> {r.plats} plats
+                  <FaUtensils className="text-button" /> {r.plats}
                 </div>
               </div>
 
@@ -95,24 +145,26 @@ function RestaurantsPage() {
                 <p className="text-button text-xl font-bold">{r.revenus}</p>
               </div>
 
-              {/* Boutons */}
+              {/* Buttons */}
               <div className="flex gap-3">
                 {r.status === "Actif" ? (
-                  <button className="flex-1 bg-button text-white py-2 rounded-xl text-sm font-medium hover:bg-valider transition flex items-center justify-center gap-2">
+                  <button className="flex-1 bg-button text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
                     <FaBan /> Suspendre
                   </button>
                 ) : (
-                  <button className="flex-1 border border-bordure text-secondary py-2 rounded-xl text-sm font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2">
+                  <button className="flex-1 border border-bordure text-secondary py-2 rounded-xl text-sm flex items-center justify-center gap-2">
                     <FaCheckCircle /> Réactiver
                   </button>
                 )}
-                <button className="bg-secondary text-white p-2 rounded-xl hover:opacity-80 transition">
+
+                <button className="bg-secondary text-white p-2 rounded-xl">
                   <FaTrash />
                 </button>
               </div>
 
             </div>
           ))}
+
         </div>
 
       </div>

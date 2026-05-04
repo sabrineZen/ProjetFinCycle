@@ -1,7 +1,10 @@
+import { useState } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
-import { FaUsers, FaStore, FaUtensils, FaEuroSign } from "react-icons/fa";
+import { FaUsers, FaStore, FaUtensils, FaEuroSign, FaBars } from "react-icons/fa";
 
 function AdminDashboard() {
+  const [sidebarOuverte, setSidebarOuverte] = useState(false); // ✅ ajouté
+
   const stats = [
     { titre: "Utilisateurs totaux", valeur: "2,847", evolution: "+12.5%", icon: <FaUsers /> },
     { titre: "Restaurants actifs", valeur: "142", evolution: "+8.2%", icon: <FaStore /> },
@@ -12,30 +15,60 @@ function AdminDashboard() {
   const validations = [
     { nom: "ghano food", proprio: "ghano younsi", pays: "francais", date: "12-03-2026" },
     { nom: "Ahmed food", proprio: "YAHIAOUI Ahmed", pays: "francais", date: "05-05-2026" },
-    { nom: "Wassim food", proprio: "YAHIA Wassim", pays: "francais", date: "20-10-2026" },
-    { nom: "elden ring", proprio: "fromsoftware", pays: "japanese", date: "20-10-2026" },
   ];
 
   const activites = [
     "Nouvel utilisateur inscrit : ahmed yahiaoui",
     "Restaurant \"ghano food\" a été validé",
-    "3 nouveaux plats ajouter par \"wassim food\"",
-    "Commande #1234 complétée avec succes",
-    "Nouvel utilisateur inscrit : arthur morgan",
-    "Restaurant \"elden ring\" a été validé",
   ];
 
   return (
     <div className="flex">
-      <SidebarAdmin />
-      <div className="ml-56 p-8 w-full min-h-screen bg-fond">
 
-        {/* Titre */}
-        <h1 className="text-3xl font-bold text-secondary">Tableau de bord</h1>
-        <p className="text-gray-400 mt-1 mb-8">Vue d'ensemble de votre platforme e-commerce</p>
+      {/* Overlay mobile */}
+      {sidebarOuverte && (
+        <div
+          className="fixed inset-0 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setSidebarOuverte(false)}
+        />
+      )}
 
-        {/* Cards statistiques */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
+      {/* Sidebar responsive */}
+      <div className={`
+        fixed top-0 left-0 h-full z-50 transition-transform duration-300
+        lg:translate-x-0 lg:w-56
+        ${sidebarOuverte ? "translate-x-0" : "-translate-x-full"}
+        w-56
+      `}>
+        <SidebarAdmin />
+      </div>
+
+      {/* Topbar mobile */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-bordure flex items-center px-4 z-30">
+        <button onClick={() => setSidebarOuverte(true)}>
+          <FaBars className="text-secondary" />
+        </button>
+        <h1 className="ml-4 font-bold text-secondary">Dashboard</h1>
+      </div>
+
+      {/* Content */}
+      <div className="w-full min-h-screen bg-fond p-4 pt-20 lg:pt-8 lg:ml-56 lg:p-8">
+
+        {/* Titre desktop */}
+        <div className="hidden lg:block">
+          <h1 className="text-3xl font-bold text-secondary">Tableau de bord</h1>
+          <p className="text-gray-400 mt-1 mb-8">
+            Vue d'ensemble de votre platforme e-commerce
+          </p>
+        </div>
+
+        {/* Titre mobile */}
+        <p className="text-gray-400 mb-4 lg:hidden">
+          Vue d'ensemble du dashboard
+        </p>
+
+        {/* 📊 STATS GRID RESPONSIVE */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
           {stats.map((stat, index) => (
             <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-bordure">
               <div className="flex justify-between items-start">
@@ -48,40 +81,54 @@ function AdminDashboard() {
           ))}
         </div>
 
-        {/* Bas du dashboard */}
-        <div className="grid grid-cols-2 gap-6">
+        {/* BAS SECTION RESPONSIVE */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* En attente de validation */}
+          {/* Validation */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-secondary font-semibold text-lg">En attente de validation</h2>
-              <span className="text-button text-sm cursor-pointer">voir tout</span>
+              <h2 className="text-secondary font-semibold text-lg">
+                En attente de validation
+              </h2>
+              <span className="text-button text-sm">voir tout</span>
             </div>
+
             <div className="flex flex-col gap-3">
               {validations.map((v, index) => (
-                <div key={index} className={`flex justify-between items-center p-3 rounded-xl ${index === 0 ? "border border-button bg-orange-50" : ""}`}>
+                <div
+                  key={index}
+                  className={`flex justify-between items-center p-3 rounded-xl ${
+                    index === 0 ? "border border-button bg-orange-50" : ""
+                  }`}
+                >
                   <div>
                     <p className="font-semibold text-secondary">{v.nom}</p>
                     <p className="text-gray-400 text-sm">{v.proprio}</p>
                     <p className="text-gray-400 text-sm">{v.pays}</p>
                   </div>
+
                   <div className="text-right">
                     <p className="text-gray-400 text-sm">{v.date}</p>
-                    <p className="text-button font-semibold text-sm mt-1 cursor-pointer">Examiner →</p>
+                    <p className="text-button font-semibold text-sm mt-1">
+                      Examiner →
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Activités récentes */}
+          {/* Activités */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <h2 className="text-secondary font-semibold text-lg mb-4">Activités réecentes</h2>
+            <h2 className="text-secondary font-semibold text-lg mb-4">
+              Activités récentes
+            </h2>
+
             <div className="flex flex-col gap-4">
-              {activites.map((activite, index) => (
+              {activites.map((a, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <div className="w-3 h-3 rounded-full bg-button mt-1 flex-shrink-0"></div>
-                  <p className="text-secondary text-sm">{activite}</p>
+                  <div className="w-3 h-3 rounded-full bg-button mt-1 shrink-0"></div>
+                  <p className="text-secondary text-sm">{a}</p>
                 </div>
               ))}
             </div>
