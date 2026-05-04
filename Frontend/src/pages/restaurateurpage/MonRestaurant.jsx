@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Camera, MapPin, Phone, Info, Save, Mail } from 'lucide-react';
 import api from '../../api';
 
@@ -13,6 +13,10 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
   });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [photoUrl, setPhotoUrl] = useState(
+    localStorage.getItem('photo_profil') || "https://cdn.mos.cms.futurecdn.net/HNnPBHRgfDcRwMyPAbGoDR.jpg"
+  );
+  const fileInputRef = useRef(null);
 
   // ── Récupérer le profil au chargement ──
   useEffect(() => {
@@ -32,6 +36,20 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
     fetchProfil();
   }, []);
 
+  // ── Changer la photo ──
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      setPhotoUrl(base64);
+      localStorage.setItem('photo_profil', base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
   // ── Sauvegarder les modifications ──
   const handleSave = async () => {
     try {
@@ -50,29 +68,43 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-12 pb-20">
-      
+
       {/* --- COLONNE GAUCHE --- */}
       <div className="w-full lg:w-70 space-y-6">
-        
+
         {/* Carte Profil */}
         <div className="bg-white p-11 rounded-[20px] shadow-md flex flex-col items-center text-center">
           <div className="relative">
-            <img 
-              src="https://cdn.mos.cms.futurecdn.net/HNnPBHRgfDcRwMyPAbGoDR.jpg"
-              alt="Logo" 
+
+            {/* Input fichier caché */}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+
+            <img
+              src={photoUrl}
+              alt="Logo"
               className="w-28 h-28 rounded-xl object-cover border-4 border-orange-50"
             />
-            <button className="absolute -bottom-2 -right-2 bg-[#FF843D] p-2 rounded-xl text-white shadow-lg">
+
+            {/* Bouton caméra */}
+            <button
+              type="button"
+              onClick={() => fileInputRef.current.click()}
+              className="absolute -bottom-2 -right-2 bg-[#FF843D] p-2 rounded-xl text-white shadow-lg hover:scale-110 transition-all"
+            >
               <Camera size={20} />
             </button>
           </div>
-          
-          {/* ← Nom du restaurant depuis la BDD */}
+
           <h2 className="mt-4 text-2xl font-regular text-[#951418]">
             {profil.nomRestaurant}
           </h2>
 
-          {/* ← Numéro de registre depuis la BDD */}
           <p className="text-[#951418]/70 font-regular text-sm">
             {profil.numeroRegistre}
           </p>
@@ -84,7 +116,8 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
             <span className="font-bold text-sm">{estActif ? 'Restaurant actif' : 'Restaurant inactif'}</span>
           </div>
 
-          <button 
+          <button
+            type="button"
             onClick={() => setEstActif(!estActif)}
             className={`mt-6 w-full py-3 rounded-[14px] font-regular text-white text-sm transition-all shadow-lg ${
               estActif ? 'bg-[#FF843D] shadow-orange-100' : 'bg-green-500 shadow-green-100'
@@ -99,19 +132,16 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
           <h3 className="text-xl font-regular text-[#951418] mb-6">Informations rapides</h3>
           <div className="space-y-4">
 
-            {/* ← Adresse depuis la BDD */}
             <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
               <MapPin className="text-[#951418]" size={20} />
               {profil.adresseRestaurant}
             </div>
 
-            {/* ← Téléphone depuis la BDD */}
             <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
               <Phone className="text-[#951418]" size={20} />
               {profil.telephone}
             </div>
 
-            {/* ← Email depuis la BDD */}
             <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
               <Mail className="text-[#951418]" size={20} />
               <span className="text-[14px]">{profil.email}</span>
@@ -123,13 +153,13 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
 
       {/* --- COLONNE DROITE (Formulaires) --- */}
       <div className="lg:w-2/3 space-y-8">
-        
+
         <div className="bg-white p-10 rounded-[20px] shadow-md">
           <div className="flex items-center gap-3 mb-8">
-            <Info className="text-[#951418]" size={28}/>
+            <Info className="text-[#951418]" size={28} />
             <h3 className="text-3xl font-regular text-[#951418]">Informations générales</h3>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-6">
 
             <div className="space-y-2">
@@ -137,7 +167,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
               <input
                 type="text"
                 value={profil.nomRestaurant}
-                onChange={(e) => setProfil({...profil, nomRestaurant: e.target.value})}
+                onChange={(e) => setProfil({ ...profil, nomRestaurant: e.target.value })}
                 className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
               />
             </div>
@@ -156,7 +186,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
                 <input
                   type="text"
                   value={profil.numeroRegistre}
-                  onChange={(e) => setProfil({...profil, numeroRegistre: e.target.value})}
+                  onChange={(e) => setProfil({ ...profil, numeroRegistre: e.target.value })}
                   className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
                 />
               </div>
@@ -166,7 +196,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
                 <input
                   type="email"
                   value={profil.email}
-                  onChange={(e) => setProfil({...profil, email: e.target.value})}
+                  onChange={(e) => setProfil({ ...profil, email: e.target.value })}
                   className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
                 />
               </div>
@@ -176,7 +206,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
                 <input
                   type="tel"
                   value={profil.telephone}
-                  onChange={(e) => setProfil({...profil, telephone: e.target.value})}
+                  onChange={(e) => setProfil({ ...profil, telephone: e.target.value })}
                   className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
                 />
               </div>
@@ -186,7 +216,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
                 <input
                   type="text"
                   value={profil.adresseRestaurant}
-                  onChange={(e) => setProfil({...profil, adresseRestaurant: e.target.value})}
+                  onChange={(e) => setProfil({ ...profil, adresseRestaurant: e.target.value })}
                   className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
                 />
               </div>
@@ -206,6 +236,7 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
         {/* Bouton Sauvegarder */}
         <div className="flex justify-end">
           <button
+            type="button"
             onClick={handleSave}
             className="bg-[#FF843D] text-white px-10 py-5 rounded-3xl font-regular shadow-lg shadow-orange-100 hover:scale-105 transition-all flex items-center gap-3"
           >

@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, ShieldCheck, Bell, CreditCard, Camera, Settings } from 'lucide-react';
 import api from '../../api';
  
@@ -12,6 +12,12 @@ const MonCompte = () => {
     nomRestaurant: '',
     email: ''
   });
+
+  // ← AJOUT : lire la photo depuis localStorage
+  const [photoUrl, setPhotoUrl] = useState(
+    localStorage.getItem('photo_profil') || "https://cdn.mos.cms.futurecdn.net/HNnPBHRgfDcRwMyPAbGoDR.jpg"
+  );
+
   useEffect(() => {
     const fetchProfil = async () => {
       try {
@@ -22,7 +28,12 @@ const MonCompte = () => {
       }
     };
     fetchProfil();
+
+    // ← AJOUT : mettre à jour la photo à chaque fois que la page se charge
+    const photo = localStorage.getItem('photo_profil');
+    if (photo) setPhotoUrl(photo);
   }, []);
+
   const menuItems = [
     { id: 'Securite', icon: <ShieldCheck size={22} />, label: 'Sécurité' },
     { id: 'Notifications', icon: <Bell size={22} />, label: 'Notifications' }    
@@ -31,30 +42,24 @@ const MonCompte = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-10 animate-in fade-in duration-500 p-2 bg-[#FCF8F5] min-h-screen w-full">
 
-      {/* SIDEBAR → en haut sur mobile, à gauche sur desktop */}
       <div className="w-full lg:w-70 shrink-0 space-y-8 order-1 lg:order-1">
 
-        {/* CARD PROFIL */}
         <div className="bg-white p-10 rounded-[20px] shadow-md border border-gray-50 flex flex-col items-center">
           
           <div className="relative mb-6">
             <div className="w-28 h-28 rounded-[20px] overflow-hidden border-4 border-[#FFE8D6] shadow-sm">
+              {/* ← CHANGEMENT : src={photoUrl} au lieu de l'URL fixe */}
               <img 
-                src="https://cdn.mos.cms.futurecdn.net/HNnPBHRgfDcRwMyPAbGoDR.jpg" 
+                src={photoUrl}
                 alt="Profile Avatar" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <button className="absolute -right-2 -bottom-2 bg-[#FF843D] text-white p-2.5 rounded-2xl shadow-md border-4 border-white">
-              <Camera size={18} />
-            </button>
           </div>
 
-          {/* ← Nom du restaurant depuis la BDD */}
           <h3 className="text-[28px] text-[#951418] mb-1 text-center">
             {profil.nomRestaurant || 'Chargement...'}
           </h3>
-          {/* ← Email depuis la BDD */}
           <p className="text-gray-400 text-sm mb-6 text-center truncate w-full">
             {profil.email || 'Chargement...'}
           </p>
@@ -78,7 +83,6 @@ const MonCompte = () => {
           </div>
         </div>
 
-        {/* MENU */}
         <div className="bg-white p-4 rounded-[20px] shadow-md">
           {menuItems.map((item) => (
             <button
@@ -97,7 +101,6 @@ const MonCompte = () => {
         </div>
       </div>
 
-      {/* CONTENU → passe en dessous sur mobile */}
       <div className="flex-1 order-2 lg:order-2 min-h-175">
         {activeTab === 'Securite' && <Securite />}
         {activeTab === 'Notifications' && <Notifications />}
