@@ -1,62 +1,39 @@
-const bcrypt = require('bcrypt');
-const { Restaurateur, Utilisateur } = require('../models/index');
+const bcrypt = require('bcryptjs');
+const { Utilisateur } = require('../models/index');
 
-// ── GET PROFIL RESTAURATEUR ──
+// ── GET PROFIL ──
 const getProfil = async (req, res) => {
   try {
-    const restaurateur = await Restaurateur.findOne({
-      where: { utilisateurId: req.user.id },
-      include: [{ model: Utilisateur, attributes: ['email'] }]
+    const utilisateur = await Utilisateur.findByPk(req.user.id, {
+      attributes: ['nomRestaurant', 'numeroRegistre', 'adresseRestaurant', 'telephone', 'email', 'documentOfficiel', 'statut']
     });
 
-    if (!restaurateur) {
-      return res.status(404).json({ message: 'Restaurateur introuvable' });
-    }
+    if (!utilisateur) return res.status(404).json({ message: 'Introuvable' });
 
-    res.json({
-      nomRestaurant:     restaurateur.nomRestaurant,
-      numeroRegistre:    restaurateur.numeroRegistre,
-      adresseRestaurant: restaurateur.adresseRestaurant,
-      telephone:         restaurateur.telephone,
-      email:             restaurateur.Utilisateur.email,
-      documentOfficiel:  restaurateur.documentOfficiel,
-      statut:            restaurateur.statut
-    });
-
+    res.json(utilisateur);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// ── UPDATE PROFIL RESTAURATEUR ──
+// ── UPDATE PROFIL ──
 const updateProfil = async (req, res) => {
   try {
     const { nomRestaurant, adresseRestaurant, telephone, email } = req.body;
 
-    const restaurateur = await Restaurateur.findOne({
-      where: { utilisateurId: req.user.id }
-    });
-
-    if (!restaurateur) {
-      return res.status(404).json({ message: 'Restaurateur introuvable' });
-    }
-
-    // Mettre à jour le restaurateur
-    await restaurateur.update({ nomRestaurant, adresseRestaurant, telephone });
-
-    // Mettre à jour l'email dans Utilisateur
     await Utilisateur.update(
-      { email },
+      { nomRestaurant, adresseRestaurant, telephone, email },
       { where: { id: req.user.id } }
     );
 
     res.json({ message: '✅ Profil mis à jour avec succès' });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-// ── CHANGER MOT DE PASSE ── ← ajoute cette fonction
+// ── CHANGER MOT DE PASSE ──
+// Utilise uniquement motDePasse qui existe déjà dans la BDD
+// Aucune nouvelle colonne ajoutée !
 const changePassword = async (req, res) => {
   try {
     const { motDePasseActuel, nouveauMotDePasse, confirmerMotDePasse } = req.body;
@@ -64,29 +41,28 @@ const changePassword = async (req, res) => {
     if (!motDePasseActuel || !nouveauMotDePasse || !confirmerMotDePasse) {
       return res.status(400).json({ message: '❌ Tous les champs sont obligatoires' });
     }
-
     if (nouveauMotDePasse !== confirmerMotDePasse) {
       return res.status(400).json({ message: '❌ Les mots de passe ne correspondent pas' });
     }
-
     if (nouveauMotDePasse.length < 6) {
       return res.status(400).json({ message: '❌ Minimum 6 caractères' });
     }
 
+    // Récupérer motDePasse existant dans la BDD
     const utilisateur = await Utilisateur.findByPk(req.user.id);
 
+    // Vérifier l'ancien mot de passe
     const isMatch = await bcrypt.compare(motDePasseActuel, utilisateur.motDePasse);
-    if (!isMatch) {
-      return res.status(401).json({ message: '❌ Mot de passe actuel incorrect' });
-    }
+    if (!isMatch) return res.status(401).json({ message: '❌ Mot de passe actuel incorrect' });
 
+    // Hasher et mettre à jour dans la même colonne motDePasse
     const hash = await bcrypt.hash(nouveauMotDePasse, 10);
     await utilisateur.update({ motDePasse: hash });
 
     res.json({ message: '✅ Mot de passe changé avec succès' });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-module.exports = { getProfil, updateProfil , changePassword};
+
+module.exports = { getProfil, updateProfil , changePassword };

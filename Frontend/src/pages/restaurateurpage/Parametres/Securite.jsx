@@ -96,22 +96,6 @@ const Securite = () => {
         </div>
       </div>
 
-      {/* --- SECTION : AUTHENTIFICATION 2FA --- */}
-      <div className="bg-white p-8 rounded-[20px] shadow-md flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <div className="bg-[#FF843D] p-4 rounded-2xl shadow-xl shadow-orange-100">
-            <Fingerprint size={28} color="white" />
-          </div>
-          <div>
-            <h3 className="text-[#951418] font-regular text-2xl">Authentification à deux facteurs</h3>
-            <p className="text-[#951418] text-sm font-regular">Ajouter une couche de sécurité supplémentaire à votre compte</p>
-          </div>
-        </div>
-        <button className="bg-[#FF843D] text-white px-9 py-3 rounded-2xl font-regular text-lg shadow-sm shadow-[#FF843D] hover:scale-105 transition-transform">
-          Activé
-        </button>
-      </div>
-
       {/* --- BOUTON DE SAUVEGARDE FINAL --- */}
       <div className="flex justify-end mt-1">
         <button

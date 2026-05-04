@@ -36,9 +36,10 @@ app.get("/", (req, res) => {
   res.send("hello world 🚀");
 });
 
+app.use('/uploads', express.static('uploads')); // ← ici avant listen
+
 const PORT = process.env.PORT || 5000;
 
-// ── Connexion DB puis démarrage ──
 sequelize.authenticate()
   .then(() => {
     console.log("✅ Base de données connectée");
@@ -52,4 +53,3 @@ sequelize.authenticate()
   .catch(err => {
     console.error("❌ Erreur de connexion :", err);
   });
-  app.use('/uploads', express.static('uploads'));
