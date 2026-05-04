@@ -23,7 +23,7 @@ const login = async (req, res) => {
 
     if (utilisateur.role === 'restaurateur' && utilisateur.statut === 'refuse')
       return res.status(403).json({ message: '❌ Compte refusé' });
-*/
+
     const token = jwt.sign(
       { id: utilisateur.id, role: utilisateur.role },
       process.env.JWT_SECRET,
