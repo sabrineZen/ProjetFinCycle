@@ -17,6 +17,7 @@ const Utilisateur = sequelize.define('Utilisateur', {
     type: DataTypes.ENUM('client', 'restaurateur', 'admin'),
     allowNull: false,
     defaultValue: 'client'
+<<<<<<< Updated upstream
   },
 
   // ── Colonnes Client ──
@@ -39,6 +40,11 @@ const Utilisateur = sequelize.define('Utilisateur', {
   resetToken:  { type: DataTypes.STRING, allowNull: false },
   resetExpire: { type: DataTypes.DATE,   allowNull: false }
 }, {
+=======
+  }
+},{
+
+>>>>>>> Stashed changes
   timestamps: false
 });
 
