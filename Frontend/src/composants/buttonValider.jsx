@@ -1,6 +1,14 @@
-function ValiderButton() {
+import React from "react";
+
+function ValiderButton({ onClick }) {
     return (
-        <button className=" rounded-[10px] bg-valider w-89 h-12 text-white cursor-pointer">proceder au paiement</button>
-    )
- }
+        <button 
+            onClick={onClick}
+            className="w-full h-full rounded-[15px] bg-[#FF6B2B] text-white font-black uppercase text-[11px] tracking-widest cursor-pointer transition-all hover:bg-[#e85a1a] hover:shadow-lg hover:shadow-orange-200 active:scale-95"
+        >
+            Paiement
+        </button>
+    );
+}
+
 export default ValiderButton;

@@ -1,23 +1,36 @@
+import { motion } from "framer-motion";
+
 function CategoryCard({ couleur, category, hoverClass, onClick }) {
   return (
-    <div
+    <motion.div
       onClick={onClick}
-      className={`shadow-lg p-4 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] rounded-[30px] flex justify-center items-center flex-col flex-shrink-0 cursor-pointer ${hoverClass}`}
+      whileHover={{ y: -8, scale: 1.02 }}
+      whileTap={{ scale: 0.95 }}
+      /* MODIFICATION DES TAILLES (w et h) :
+         - Mobile : 180px
+         - Tablettes : 200px
+         - Desktop : 220px 
+      */
+      className={`relative p-3 w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] md:w-[220px] md:h-[220px] rounded-[25px] flex justify-center items-center flex-col flex-shrink-0 cursor-pointer overflow-hidden transition-all duration-500 ${hoverClass}`}
       style={{ background: couleur }}
     >
-      <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-white flex items-center justify-center overflow-hidden">
-        {/*dans le back image: "http://localhost:5000/uploads/pizza.png" */}
+      {/* --- CERCLE IMAGE PLUS PETIT --- */}
+      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-white flex items-center justify-center overflow-hidden group">
         <img
           src={category.image || "/default.png"}
           alt={category.name}
-          className="w-full h-full object-cover rounded-full"
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />
       </div>
 
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mt-6 text-secondary text-center">
+      {/* --- TITRE AJUSTÉ --- */}
+      <h2 className="text-sm sm:text-base md:text-lg font-bold mt-4 text-white text-center uppercase tracking-tight">
         {category.name}
       </h2>
-    </div>
+
+      {/* --- EFFET DE BRILLANCE --- */}
+      <div className="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
+    </motion.div>
   );
 }
 

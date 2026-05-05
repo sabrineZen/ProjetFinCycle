@@ -1,109 +1,126 @@
 import { useState } from "react";
-import { FaHistory, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { FaHistory, FaShoppingCart, FaTrash, FaTimes, FaArrowLeft, FaPlus, FaMinus } from "react-icons/fa";
 import AnnulerButton from "./buttonAnnuler";
 import ValiderButton from "./buttonValider";
 import HistoriqueAchats from "./historique";
 
-function Panier() {
-  const [montrerHistorique, setMontrerHistorique] = useState(false);
+function Panier({ produits, setPanier, onClose }) {
+  const [vueActuelle, setVueActuelle] = useState("panier");
 
-  const [produits, setProduits] = useState([
-    { id: 1, name: "Pizza", prix: 150, quantite: 1 },
-    { id: 2, name: "Burger", prix: 80, quantite: 1 },
-    { id: 3, name: "Pâtes", prix: 200, quantite: 1 },
-    { id: 4, name: "Salade", prix: 120, quantite: 1 },
-  ]);
+  // --- LOGIQUE DE REGROUPEMENT ---
+  // On transforme la liste plate en une liste d'objets avec une propriété 'quantite'
+  const produitsRegroupes = produits.reduce((acc, produit) => {
+    const existant = acc.find((item) => item.id === produit.id);
+    if (existant) {
+      existant.quantite += 1;
+    } else {
+      acc.push({ ...produit, quantite: 1 });
+    }
+    return acc;
+  }, []);
 
-  const sousTotal = produits.reduce((total, p) => total + p.prix * p.quantite, 0);
-  const livraison = sousTotal > 100 ? 0 : 10;
+  const sousTotal = produits.reduce((total, produit) => total + produit.prix, 0);
+  const livraison = sousTotal > 100 || produits.length === 0 ? 0 : 10;
   const prixTotal = sousTotal + livraison;
 
-  const augmenterQuantite = (id) =>
-    setProduits((prev) => prev.map((p) => p.id === id ? { ...p, quantite: p.quantite + 1 } : p));
+  // Fonctions pour modifier la quantité directement depuis le panier
+  const ajouterUn = (id) => {
+    const produitOriginal = produits.find(p => p.id === id);
+    setPanier([...produits, { ...produitOriginal, instanceId: Date.now() + Math.random() }]);
+  };
 
-  const diminuerQuantite = (id) =>
-    setProduits((prev) => prev.map((p) => p.id === id && p.quantite > 1 ? { ...p, quantite: p.quantite - 1 } : p));
-
-  const supprimerProduit = (id) =>
-    setProduits((prev) => prev.filter((p) => p.id !== id));
+  const enleverUn = (id) => {
+    const index = produits.findLastIndex(p => p.id === id);
+    if (index !== -1) {
+      const nouveauPanier = [...produits];
+      nouveauPanier.splice(index, 1);
+      setPanier(nouveauPanier);
+    }
+  };
 
   return (
-    <div className="bg-white shadow-lg p-4 rounded-[20px] w-[95vw] max-w-[800px] h-auto">
-
-      {montrerHistorique ? (
-        //  Historique s'affiche  dans la même div blanche
-        <HistoriqueAchats onClose={() => setMontrerHistorique(false)} />
-      ) : (
-        //  Panier normal
-        <>
-          {/* Header */}
-          <div className="min-h-[80px] px-2 sm:px-6 flex items-center justify-between flex-wrap gap-2">
-            <div className="flex gap-3 items-center">
-              <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-secondary underline decoration-[#FF6900] underline-offset-4">
-                Mon panier
-              </h2>
-            </div>
-            <button
-              className="p-3 rounded-full hover:bg-orange-100 transition"
-              onClick={() => setMontrerHistorique(true)}
-            >
-              <FaHistory className="text-xl sm:text-2xl text-secondary" />
-            </button>
+    <div className="bg-white p-5 md:p-6 w-full flex flex-col shadow-2xl border border-gray-100 rounded-[32px]">
+      
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className="bg-orange-500 p-2 rounded-xl shadow-sm text-white">
+            {vueActuelle === "panier" ? <FaShoppingCart size={18} /> : <FaHistory size={18} />}
           </div>
+          <h2 className="text-lg font-black text-gray-800 uppercase tracking-tight">
+            {vueActuelle === "panier" ? `Panier (${produits.length})` : "Historique"}
+          </h2>
+        </div>
 
-          {/* Produits */}
-          <div className="overflow-y-auto mt-4 pt-2 max-h-[35vh] scrollbar-hide">
-            {produits.map((produit) => (
-              <div
-                key={produit.id}
-                className="w-full flex justify-between p-3 sm:p-4 bg-white rounded-lg mb-4 text-base sm:text-xl font-semibold text-secondary"
-                style={{ boxShadow: "0 0 7px 2px rgba(0,0,0,0.1)" }}
-              >
-                <span className="flex flex-col">
-                  <span>{produit.name}</span>
-                  <span className="text-button">{produit.prix} DA / unité</span>
-                </span>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center border rounded-lg overflow-hidden">
-                    <button className="px-2 py-1 bg-gray-100" onClick={() => diminuerQuantite(produit.id)}>-</button>
-                    <span className="px-3">{produit.quantite}</span>
-                    <button className="px-2 py-1 bg-gray-100" onClick={() => augmenterQuantite(produit.id)}>+</button>
+        <div className="flex items-center gap-2">
+          {vueActuelle === "panier" ? (
+            <button className="p-2 rounded-full hover:bg-orange-50 text-gray-400 hover:text-orange-600 transition-all" onClick={() => setVueActuelle("historique")}>
+              <FaHistory size={20} />
+            </button>
+          ) : (
+            <button className="flex items-center gap-1 p-2 rounded-full hover:bg-gray-100 text-gray-500 font-bold text-xs" onClick={() => setVueActuelle("panier")}>
+              <FaArrowLeft size={14} /> <span>RETOUR</span>
+            </button>
+          )}
+          <button onClick={onClose} className="p-2 bg-gray-100 text-gray-500 rounded-full hover:bg-red-50 hover:text-red-500 transition-all">
+            <FaTimes size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* CONTENU AVEC COMPTEUR */}
+      <div className="flex-1 overflow-y-auto pr-1 scrollbar-hide max-h-[350px] min-h-[200px]">
+        {vueActuelle === "panier" ? (
+          <>
+            {produitsRegroupes.length === 0 ? (
+              <div className="py-12 text-center text-gray-400 italic text-sm">Votre panier est vide</div>
+            ) : (
+              produitsRegroupes.map((produit) => (
+                <div key={produit.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-2xl mb-3 border border-gray-100 group">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-gray-800 text-sm">
+                      {produit.name} <span className="text-orange-500 ml-1">x{produit.quantite}</span>
+                    </span>
+                    <span className="text-orange-600 font-black text-xs">{produit.prix * produit.quantite} DA</span>
                   </div>
-                  <span className="text-[#FF6900] font-bold">{produit.prix * produit.quantite} DA</span>
-                  <div
-                    className="bg-[#FEF2F2] h-[40px] w-[40px] rounded-[10px] flex items-center justify-center cursor-pointer"
-                    onClick={() => supprimerProduit(produit.id)}
-                  >
-                    <FaTrash className="text-[#FB2C36]" />
+
+                  {/* CONTROLEUR DE QUANTITÉ */}
+                  <div className="flex items-center gap-2 bg-white rounded-xl p-1 shadow-sm border border-gray-100">
+                    <button 
+                      onClick={() => enleverUn(produit.id)}
+                      className="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                      {produit.quantite > 1 ? <FaMinus size={10} /> : <FaTrash size={10} />}
+                    </button>
+                    <span className="text-xs font-bold w-4 text-center">{produit.quantite}</span>
+                    <button 
+                      onClick={() => ajouterUn(produit.id)}
+                      className="p-1.5 text-gray-400 hover:text-orange-500 transition-colors"
+                    >
+                      <FaPlus size={10} />
+                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))
+            )}
+          </>
+        ) : (
+          <HistoriqueAchats />
+        )}
+      </div>
 
-          {/* Totaux */}
-          <div className="h-0.5 w-full bg-[#D5D1CE] mt-4"></div>
-          <div className="flex justify-between pt-3">
-            <span className="text-secondary">Sous-total</span>
-            <span>{sousTotal} DA</span>
+      {/* FOOTER */}
+      {vueActuelle === "panier" && (
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="flex justify-between items-center mb-6">
+            <span className="text-sm font-black text-gray-400 uppercase">Total</span>
+            <span className="text-2xl font-black text-orange-600 tracking-tighter">{prixTotal} DA</span>
           </div>
-          <div className="flex justify-between pt-3">
-            <span className="text-secondary">Livraison</span>
-            <span className="text-[#8BAF50]">{livraison === 0 ? "Gratuite" : livraison + " DA"}</span>
-          </div>
-          <div className="h-0.5 w-full bg-[#D5D1CE] my-4"></div>
-          <div className="flex justify-between font-bold text-xl">
-            <span className="text-secondary">Total</span>
-            <span className="text-[#FF6900]">{prixTotal} DA</span>
-          </div>
-
-          {/* Boutons */}
-          <div className="flex gap-4 pt-4 flex-wrap">
+          <div className="grid grid-cols-2 gap-3 h-12">
             <AnnulerButton />
             <ValiderButton />
           </div>
-        </>
+        </div>
       )}
     </div>
   );

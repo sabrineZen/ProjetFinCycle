@@ -1,151 +1,179 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Composants
 import NavbarHome from "../../composants/navbarHome";
-import CardInfo from "../../composants/cardInfo";
 import CategoryCard from "../../composants/categoryCard";
-import { categories as categoriesData } from "../../data/categories";
 import PlatPopular from "../../composants/platPopular";
 import RestaurantPopular from "../../composants/retaurantPopular";
 import Footer from "../../composants/footer";
 import Panier from "../../composants/panier";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { FaTruck } from "react-icons/fa";
-import { FaChartLine } from "react-icons/fa";
-import { FaMedal } from "react-icons/fa";
-import { HiTranslate } from "react-icons/hi";
-import Recherche from "../../composants/rechercheInput";
-import HistoriqueAchats from "../../composants/historique";
+import LuxuryInfiniteCircle from "../../composants/LuxuryInfiniteCircle";
+
+// Data
+import { categories as categoriesData } from "../../data/categories";
 
 function Home() {
   const navigate = useNavigate();
+  
+  // ─── ÉTATS ───
   const [montrerPanier, setMontrerPanier] = useState(false);
-  const [panier, setPanier] = useState([
-    { id: 1, name: "Pizza Margherita", prix: 102 },
-    { id: 2, name: "Burger Classique", prix: 10 },
-    { id: 3, name: "Pizza Margherita", prix: 12 },
-    { id: 4, name: "Pizza carre", prix: 12 },
+  const [texteRecherche, setTexteRecherche] = useState("");
+  const [panier, setPanier] = useState([]);
+  const [plats, setPlats] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [chargement, setChargement] = useState(true);
 
-  ]);
+  // ─── CHARGEMENT DES DONNÉES (Simulation API) ───
+  useEffect(() => {
+    const loadData = async () => {
+      setChargement(true);
+      setTimeout(() => {
+        setPlats([
+          { id: 1, name: "Burger Gourmet", prix: 13.50, image: "/burger.png" },
+          { id: 2, name: "Pizza Royale", prix: 15.00, image: "/pizza.png" },
+          { id: 3, name: "Sushi Mix", prix: 18.00, image: "/sushi.png" },
+          { id: 4, name: "Tacos XL", prix: 12.00, image: "/tacos.png" },
+        ]);
+        setRestaurants([
+          { id: 1, name: "Maison Opera", image: "/resto1.jpg" },
+          { id: 2, name: "Le Palace", image: "/resto2.jpg" },
+          { id: 3, name: "L'Ardoise", image: "/resto3.jpg" },
+        ]);
+        setChargement(false);
+      }, 800);
+    };
+    loadData();
+  }, []);
 
-  const categories = categoriesData;
+  const ajouterAuPanier = (plat) => {
+    setPanier((prev) => [...prev, { ...plat, instanceId: Date.now() }]);
+  };
 
-  const plats = [
-    { id: 1, name: "Pizza" },
-    { id: 2, name: "Burger" },
-    { id: 3, name: "Sushi" },
-    { id: 4, name: "Tacos" },
-    { id: 5, name: "Pâtes" },
-  ];
-
-  const restaurantsPopulaires = [
-    { id: 1, name: "Pizza Margherita" },
-    { id: 2, name: "Burger Classique" },
-    { id: 3, name: "Sushi California Roll" },
-    { id: 4, name: "Sushi California Roll" },
-  ];
-
-  const [texte, setTexte] = useState("");
-  const platsFiltres = plats.filter((p) =>
-    p.name.toLowerCase().includes(texte.toLowerCase())
-  );
-  const affichagePlats = texte.trim() ? platsFiltres : plats;
+  const platsFiltrés = texteRecherche.trim() 
+    ? plats.filter((p) => p.name.toLowerCase().includes(texteRecherche.toLowerCase()))
+    : plats;
 
   return (
-    <div className="flex justify-center flex-col">
-      {/* Navbar */}
-      <NavbarHome />
+    <div className="flex flex-col bg-[#FFF9F5] min-h-screen overflow-x-hidden font-sans">
+      
+      {/* ─── NAVBAR ─── */}
+      <NavbarHome 
+        panierCount={panier.length}
+        onTogglePanier={() => setMontrerPanier(!montrerPanier)} 
+        plats={plats}
+        setTexteRecherche={setTexteRecherche}
+        montrerPanier={montrerPanier}
+      />
 
-      {/* Barre panier + profil */}
-      <div className="fixed top-4 sm:top-6 right-4 sm:right-8 md:right-20 flex items-center gap-3 sm:gap-6 z-50">
-        <Recherche produits={plats} setProduitsFiltres={setTexte} />
-        <button
-            className={`p-3 rounded-full transition ${
-                montrerPanier ? "bg-orange-100" : "hover:bg-orange-100"
-            }`}
-            onClick={() => setMontrerPanier(!montrerPanier)}
+      {/* ─── PANIER FLOTTANT ─── */}
+      <AnimatePresence>
+        {montrerPanier && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setMontrerPanier(false)} 
+              className="fixed inset-0 z-[250] bg-black/5 backdrop-blur-[4px]" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, y: -20, scale: 0.95 }} 
+              animate={{ opacity: 1, y: 0, scale: 1 }} 
+              exit={{ opacity: 0, y: -20, scale: 0.95 }} 
+              className="fixed top-[100px] right-4 md:right-16 z-[300] w-full max-w-[420px]"
             >
-            <FaShoppingCart className="text-2xl text-secondary" />
-        </button>
-        <div className="p-2 sm:p-3 rounded-full hover:bg-orange-100 transition" onClick={() => navigate("/profil")}>{/*j'ai ajouter pour passer vers page profil*/}
-          <FaUser className="text-xl sm:text-2xl text-secondary" />
-        </div>
-        <div className=" hover:bg-orange-100 transition rounded-full p-2 sm:p-3 ">
-          <HiTranslate className="text-xl sm:text-2xl text-secondary cursor-pointer" />
-        </div>
-      </div>
+              <div className="bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden border border-white/50">
+                <Panier 
+                  produits={panier} 
+                  setPanier={setPanier} 
+                  onClose={() => setMontrerPanier(false)} 
+                />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-      {/* Panier */}
-      {montrerPanier && (
-        <div className="fixed top-16 sm:top-20 right-2 sm:right-10 z-50">
-          <Panier produits={panier} />
-        </div>
-      )}
+      <main className="w-full pt-28 md:pt-36">
+        
+        {/* ─── SECTION : NOS UNIVERS (Infinite Circle) ─── */}
+        <section id="univers" className="pb-16 px-4 md:px-20 max-w-[1600px] mx-auto">
+          <header className="flex justify-between items-end mb-12">
+            <div>
+              <p className="text-[#FE7D32] text-xs font-bold uppercase tracking-[4px] mb-2">Explorer par thème</p>
+              <h2 className="text-4xl md:text-5xl font-black text-secondary uppercase tracking-tighter">
+                Nos <span className="text-[#FE7D32]">Univers</span>
+              </h2>
+            </div>
+            
+          </header>
 
-      {/* Cards infos */}
-      <div className="flex flex-col sm:flex-row flex-wrap gap-6 mt-32 sm:mt-40 md:mt-45 justify-center items-center px-4">
-        <CardInfo icon={<FaMedal className="text-xl sm:text-2xl text-white" />} hoverClass="hover:bg-gray-200" titre="Restaurants pertinaires" valeur="120" couleur="linear-gradient(to top right, #FF8339, #FF7629)" />
-        <CardInfo icon={<FaChartLine className="text-xl sm:text-2xl text-white" />} hoverClass="hover:bg-gray-200" titre="Commandes par jour" valeur="10K" couleur="linear-gradient(to top right, #10B981, #059669)" />
-        <CardInfo icon={<FaTruck className="text-xl sm:text-2xl text-white" />} hoverClass="hover:bg-gray-200" titre="Livraison moyenne" valeur="75" couleur="linear-gradient(to top right, #FFAC4A, #FF9544)" />
-      </div>
+          <div className="h-[450px] flex items-center justify-center">
+            <LuxuryInfiniteCircle 
+              data={categoriesData} 
+              itemWidth={300} 
+              renderItem={(cat, isCenter) => (
+                <div className={`transition-all duration-500 ease-out ${isCenter ? "scale-110 z-40 drop-shadow-2xl" : "opacity-40 scale-90 blur-[1px]"}`}>
+                  <CategoryCard
+                    category={cat}
+                    couleur={cat.couleur}
+                    // CORRECTION ICI : On envoie l'objet 'cat' complet au state
+                    onClick={() => {
+                        if(isCenter) {
+                            navigate("/categoriesPage", { state: cat });
+                        }
+                    }}
+                  />
+                </div>
+              )}
+            />
+          </div>
+        </section>
 
-      {/* Section catégories */}
-      <div className="flex flex-row flex-wrap justify-between items-center pt-10 px-4 sm:px-6">
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-secondary mt-6 sm:mt-10 pb-2 pt-6 sm:pt-15">Nos catégories</h2>
-          <p className="text-base sm:text-xl font-light text-secondary mt-1">explorez nos differents categories de plats</p>
-        </div>
-        <div
-          className="cursor-pointer pr-2 sm:pr-10 pt-6 sm:pt-20 text-button text-base sm:text-xl"
-          onClick={() => navigate("/CategoriesAll")} 
-        >{/*j'ai ajouter pour passer vers page catégorie*/}
-          voir tout
-        </div>
-      </div>
+        {/* ─── SECTION : PLATS POPULAIRES ─── */}
+        <section id="plats-populaires" className="py-16 px-4 md:px-20 max-w-[1600px] mx-auto">
+          <header className="mb-10">
+            <h2 className="text-4xl font-black text-secondary uppercase tracking-tighter">
+              Plats <span className="text-[#FE7D32]">Populaires</span>
+            </h2>
+          </header>
+          
+          {chargement ? (
+            <div className="flex justify-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FE7D32]" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+              {platsFiltrés.map((plat) => (
+                <PlatPopular 
+                  key={plat.id} 
+                  plat={plat} 
+                  onAjouter={() => ajouterAuPanier(plat)} 
+                />
+              ))}
+            </div>
+          )}
+        </section>
 
-      <div className="flex space-x-4 p-4 pt-10 gap-5 overflow-x-auto scrollbar-hide">
-        {categories.map((cat) => (
-          <CategoryCard
-            key={cat.id}
-            hoverClass="hover:scale-107 transition-transform duration-300"
-            category={cat}
-            couleur={cat.couleur}
-            onClick={() => navigate("/categoriesPage", { state: cat })}
-          />
-        ))}
-      </div>
+        {/* ─── SECTION : RESTAURANTS POPULAIRES ─── */}
+        <section id="partenaires" className="py-16 px-4 md:px-20 max-w-[1600px] mx-auto mb-20">
+          <h2 className="text-4xl font-black text-secondary mb-10 uppercase tracking-tighter">
+            Restaurants <span className="text-[#FE7D32]">Populaires</span>
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {restaurants.map((res) => (
+              <RestaurantPopular key={res.id} restaurant={res} />
+            ))}
+          </div>
+        </section>
 
-      {/* Plats populaires */}
-      <div className="px-4 sm:px-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-secondary mt-10 pb-2 pt-4">
-          plats <span className="text-[#FE7D32]">Populaires</span>
-        </h2>
-        <p className="text-base sm:text-xl font-light text-secondary mt-1">découvrez nos plats les plus commandés</p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4 pt-8">
-        {affichagePlats.map((plat) => (
-          <PlatPopular key={plat.id} plat={plat} hoverClass="hover:scale-107 transition-transform duration-300" />
-        ))}
-      </div>
-
-      {/* Restaurants populaires */}
-      <div className="px-4 sm:px-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-secondary mt-10 pb-2 pt-4">
-          Restaurants <span className="text-[#FE7D32]">Populaires</span>
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4 pt-8">
-        {restaurantsPopulaires.map((restaurant) => (
-          <RestaurantPopular
-            key={restaurant.id}
-            hoverClass="hover:scale-107 transition-transform duration-300"
-            restaurant={restaurant}
-          />
-        ))}
-      </div>
+      </main>
 
       <Footer />
     </div>
   );
 }
+
 export default Home;

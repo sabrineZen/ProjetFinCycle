@@ -80,7 +80,7 @@ const MonCompte = () => {
       </div>
 
       {/* CONTENU → passe en dessous sur mobile */}
-      <div className="flex-1 order-2 lg:order-2 min-h-175">
+      <div className="flex-1 order-2 lg:order-2 min-h-screen">
         {activeTab === 'Securite' && <Securite />}
         {activeTab === 'Notifications' && <Notifications />}
       </div>

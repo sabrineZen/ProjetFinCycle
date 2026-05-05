@@ -1,66 +1,63 @@
-import { useState } from "react";
-import { FaShoppingCart, FaClock, FaBox } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaBox, FaChevronRight } from "react-icons/fa";
 
-function HistoriqueAchats({ onClose }) {
+function HistoriqueAchats() {
+  // Simulation de données plus réalistes
   const [achats] = useState([
-    { id: 1, prix: 150 },
-    { id: 2, prix: 80 },
-    { id: 3, prix: 200 },
-    { id: 4, prix: 120 },
-    { id: 5, prix: 60 },
-    { id: 6, prix: 90 },
+    { id: 101, prix: 1550, date: "04 Mai 2026", articles: 3 },
+    { id: 102, prix: 850, date: "02 Mai 2026", articles: 1 },
+    { id: 103, prix: 2400, date: "28 Avr 2026", articles: 5 },
+    { id: 104, prix: 1200, date: "25 Avr 2026", articles: 2 },
   ]);
 
-  const now = new Date();
-  const dateStr = now.toLocaleDateString([], { day: "2-digit", month: "short", year: "numeric" });
-  const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
   return (
-    //  Pas de div bg-white ici, on utilise celle du Panier
-    <>
-      {/* Header */}
-      <div className="h-auto min-h-[80px] pl-2 sm:pl-4 pr-2 sm:pr-4 flex items-center justify-between flex-wrap gap-2">
-        <div className="flex flex-row gap-3 items-center">
-          <FaClock className="text-xl sm:text-2xl text-secondary mt-1" />
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-secondary underline decoration-[#FF6900] underline-offset-4">
-            Historique des achats
-          </h2>
+    <div className="flex flex-col gap-4 py-2">
+      {achats.length === 0 ? (
+        <div className="py-12 text-center">
+          <p className="text-gray-400 italic text-sm">Aucun achat récent</p>
         </div>
-        <button
-          className="p-3 rounded-full hover:bg-orange-100 transition"
-          onClick={onClose}
-        >
-          <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
-        </button>
-      </div>
-
-      {/* Liste des achats */}
-      <div className="w-full mt-6 border-2 border-bordure rounded-[10px] p-2 flex flex-col gap-4 overflow-y-auto scrollbar-hide max-h-[60vh]">
-        {achats.map((achat, index) => (
-          <div key={achat.id} className="bg-[#F9FAFB] rounded-[10px] p-3 shadow-sm">
-            <div className="w-full flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center gap-3">
-                <div className="w-[45px] h-[45px] bg-[#FFF3E5] rounded-[10px] flex items-center justify-center font-bold flex-shrink-0">
-                  <FaBox className="text-[#FF6900] text-xl" />
+      ) : (
+        achats.map((achat, index) => (
+          <div 
+            key={achat.id} 
+            className="group bg-gray-50 hover:bg-white hover:shadow-md border border-gray-100 rounded-2xl p-4 transition-all duration-300 cursor-pointer"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                {/* Icône stylisée */}
+                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:bg-orange-500 transition-colors duration-300">
+                  <FaBox className="text-orange-500 group-hover:text-white transition-colors" size={18} />
                 </div>
-                <div className="flex flex-col text-base sm:text-lg font-semibold">
-                  <span className="text-[#951418]">Achat #{index + 1}</span>
-                  <span className="text-[13px] font-normal text-[#AFB0B3]">
-                    Date: {dateStr} {timeStr}
+
+                <div className="flex flex-col">
+                  <span className="text-sm font-black text-gray-800 uppercase tracking-tight">
+                    Commande #{achat.id}
+                  </span>
+                  <span className="text-[11px] text-gray-400 font-medium">
+                    {achat.date} • {achat.articles} article{achat.articles > 1 ? 's' : ''}
                   </span>
                 </div>
               </div>
-              <span className="text-[13px] text-[#55A661] bg-[#F0FDF4] px-3 py-1 rounded-full">
-                Livré
-              </span>
+
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Livré
+                </span>
+                <span className="text-sm font-black text-[#8B2A1B]">
+                  {achat.prix} DA
+                </span>
+              </div>
             </div>
-            <div className="mt-2 text-right font-semibold text-[#951418]">
-              Total payé: {achat.prix} DA
+
+            {/* Petit indicateur de détail au survol */}
+            <div className="mt-3 pt-3 border-t border-dashed border-gray-200 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
+               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Voir les détails</span>
+               <FaChevronRight className="text-gray-300" size={10} />
             </div>
           </div>
-        ))}
-      </div>
-    </>
+        ))
+      )}
+    </div>
   );
 }
 

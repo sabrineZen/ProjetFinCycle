@@ -34,17 +34,7 @@ function Parametre(){
              </div>
             </div>
              
-            <div className="pb-4 border-b border-gray-200">{/*partie paiement */}
-                <div className="flex items-center gap-2 mb-3">
-                    <MdAddCard className="text-[#FF6900] text-xl"/>
-                    <p className="font-bold" style={{ color: '#8B2A1B' }}>Paiement</p>
-                </div>
-                <div className="bg-[#FFF0E8] rounded-xl p-4">
-                    <p className="font-semibold text-[#8B2A1B]">Cartes Enregistré</p>
-                     <p className="text-gray-500 text-sm"> Aucune carte Enregistré</p>
-                    <button className="mt-2 bg-[#FF6900] text-white px-4 py-2 rounded-lg">+ Ajouter une Carte</button>
-                </div>
-            </div>
+            
 
             <div className="pb-4 border-b border-gray-200">{/*partie Compte*/}
                 <div className="flex items-center gap-2 mb-3">
@@ -62,3 +52,4 @@ function Parametre(){
     )
 }
 export default Parametre
+/* si por admine ca */
