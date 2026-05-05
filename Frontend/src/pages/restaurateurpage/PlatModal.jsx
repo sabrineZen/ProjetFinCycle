@@ -10,6 +10,16 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
   const [image, setImage] = useState('');
   const [imagePreview, setImagePreview] = useState(null); // 🌟 NOUVEAU : État pour l'aperçu de l'image
   const [disponible, setDisponible] = useState(true);
+  const [categoriesList, setCategoriesList] = useState([]);
+  // Ajoute ce useEffect pour charger les catégories
+  useEffect(() => {
+    fetch('http://localhost:5000/api/categories')
+      .then(res => res.json())
+      .then(data => {
+        setCategoriesList(data);
+    })
+    .catch(err => console.error('Erreur chargement catégories:', err));
+  }, []);
 
   // 2. Pré-remplir le formulaire si on modifie, ou le vider si on ajoute
   useEffect(() => {
@@ -18,7 +28,7 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
         setNom(currentPlat.nom || '');
         setDescription(currentPlat.description || '');
         setPrix(currentPlat.prix ? currentPlat.prix.replace(" DA", "") : '');
-        setCategorie(currentPlat.categorie || 'Pizza');
+        setCategorie(currentPlat.categorieId || '');
         setImage(currentPlat.image || '');
         setImagePreview(currentPlat.image || null); // 🌟 NOUVEAU : Affiche l'image existante si on modifie
         setDisponible(currentPlat.disponible !== undefined ? currentPlat.disponible : true);
@@ -26,7 +36,7 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
         setNom('');
         setDescription('');
         setPrix('');
-        setCategorie('Pizza');
+        setCategorie(categoriesList[0]?.id || '');
         setImage(''); // 🌟 NOUVEAU : On vide le vrai fichier
         setImagePreview(null); // 🌟 NOUVEAU : On vide l'aperçu
         setDisponible(true);
@@ -55,7 +65,7 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
       nom,
       description,
       prix: `${prix} DA`, // On remet le " DA"
-      categorie,
+      categorieId: categorie,
       image,
       disponible
     };
@@ -152,16 +162,20 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
               </div>
               <div className="space-y-2">
                 <label className="text-md font-regular text-[#951418]  ml-2">Catégorie</label>
-                <select 
+                <select
                   value={categorie}
                   onChange={(e) => setCategorie(e.target.value)}
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none "
+                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-2xl p-4 appearance-none text-[#951418] focus:ring-1 focus:ring-[#FF843D] transition-all outline-none"
                 >
-                  <option value="Pizza">Pizza</option>
-                  <option value="Burger">Burger</option>
-                  <option value="Salade">Salade</option>
-                  <option value="Desserts">Desserts</option>
-                  <option value="Boissons">Boissons</option>
+                  {categoriesList.length === 0 ? (
+                    <option value="">Chargement...</option>
+                  ) : (
+                    categoriesList.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.nom}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
             </div>
