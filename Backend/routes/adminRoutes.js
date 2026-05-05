@@ -1,40 +1,17 @@
 const express = require('express');
-const router  = express.Router();
-const multer  = require('multer');
-const path    = require('path');
+const router = express.Router();
+const adminController = require('../controllers/adminController');
 
-// ── Config multer ──
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename:    (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
-});
-const upload = multer({ storage });
+// Routes Utilisateurs
+router.get('/utilisateurs', adminController.getUtilisateurs);
+router.delete('/utilisateurs/:id', adminController.supprimerUtilisateur);
 
-const {
-  getUtilisateurs,
-  supprimerUtilisateur,
-  getPlats,
-  supprimerPlat,
-  toggleDisponibilite,
-  getCategories,
-  ajouterCategorie,
-  modifierCategorie,
-  supprimerCategorie,
-} = require('../controllers/adminController');
+// Route pour valider un restaurateur (PUT)
+router.put('/utilisateurs/:id/valider', adminController.validerRestaurateur);
 
-// ── Utilisateurs ──
-router.get('/utilisateurs',        getUtilisateurs);
-router.delete('/utilisateurs/:id', supprimerUtilisateur);
-
-// ── Plats ──
-router.get('/plats',                     getPlats);
-router.delete('/plats/:id',              supprimerPlat);
-router.patch('/plats/:id/disponibilite', toggleDisponibilite);
-
-// ── Catégories ──
-router.get('/categories',        getCategories);
-router.post('/categories',       upload.single('image'), ajouterCategorie);
-router.put('/categories/:id',    upload.single('image'), modifierCategorie);
-router.delete('/categories/:id', supprimerCategorie);
+// Routes Plats & Catégories
+router.get('/plats', adminController.getPlats);
+router.delete('/plats/:id', adminController.supprimerPlat);
+router.get('/categories', adminController.getCategories);
 
 module.exports = router;

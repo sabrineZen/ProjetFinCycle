@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path"); // 1. Ajoute cet import
 const { sequelize } = require('./models/index');
 
 dotenv.config();
@@ -36,13 +37,15 @@ app.get("/", (req, res) => {
   res.send("hello world 🚀");
 });
 
-app.use('/uploads', express.static('uploads')); // ← ici avant listen
+// 2. MODIFICATION ICI : Utilise path.join pour plus de sécurité
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 5000;
 
 sequelize.authenticate()
   .then(() => {
     console.log("✅ Base de données connectée");
+    // Utilise alter: true avec prudence en production, mais parfait pour le développement
     return sequelize.sync({ alter: true });
   })
   .then(() => {
