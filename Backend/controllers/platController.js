@@ -14,14 +14,10 @@ const getAllPlats = async (req, res) => {
 const createPlat = async (req, res) => {
   try {
     const { nom, description, prix, categorie, disponible } = req.body;
-    
-    // Si une image a été envoyée, on crée son lien complet pour la base de données
-    let imageUrl = null;
-    if (req.file) {
-      imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
-    }
 
-    // Le FormData envoie du texte, on doit convertir "disponible" en vrai booléen
+    // ✅ On stocke seulement le filename, pas l'URL complète
+    const image = req.file ? req.file.filename : null;
+
     const estDisponible = disponible === 'true' || disponible === true;
 
     const nouveauPlat = await Plat.create({
@@ -29,7 +25,7 @@ const createPlat = async (req, res) => {
       description,
       prix,
       categorie,
-      image: imageUrl,
+      image,          // ← juste "pizza.jpg"
       disponible: estDisponible
     });
 
@@ -46,26 +42,14 @@ const updatePlat = async (req, res) => {
     const { nom, description, prix, categorie, disponible } = req.body;
 
     const plat = await Plat.findByPk(id);
-    if (!plat) {
-      return res.status(404).json({ message: "Plat introuvable" });
-    }
+    if (!plat) return res.status(404).json({ message: "Plat introuvable" });
 
     const estDisponible = disponible === 'true' || disponible === true;
 
-    // On garde l'ancienne image par défaut, sauf si on en upload une nouvelle
-    let imageUrl = plat.image;
-    if (req.file) {
-      imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
-    }
+    // ✅ Pareil ici
+    const image = req.file ? req.file.filename : plat.image;
 
-    await plat.update({ 
-      nom, 
-      description, 
-      prix, 
-      categorie, 
-      image: imageUrl, 
-      disponible: estDisponible 
-    });
+    await plat.update({ nom, description, prix, categorie, image, disponible: estDisponible });
 
     res.json(plat);
   } catch (err) {
