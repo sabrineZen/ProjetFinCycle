@@ -1,4 +1,47 @@
-const { Utilisateur, Commande, Plat, Categorie, LigneCommande } = require('../models/index');
+const { Utilisateur, Commande, Plat, Categorie } = require('../models/index');
+
+// ─────────────────────────────────────────
+//  STATISTIQUES DASHBOARD (LA NOUVELLE FONCTION)
+// ─────────────────────────────────────────
+
+const getDashboardStats = async (req, res) => {
+  try {
+    const [nbUtilisateurs, nbRestaurants, nbPlats] = await Promise.all([
+      // On compte TOUS les utilisateurs pour ne plus avoir 0
+      Utilisateur.count({ 
+    where: { 
+      role: ['client', 'restaurateur'] 
+    } 
+  }), 
+      // On compte tous les restaurateurs (même ceux en attente pour le moment)
+      Utilisateur.count({ where: { role: 'restaurateur' } }),
+      Plat.count()
+    ]);
+
+    // On récupère les restos en attente SANS utiliser createdAt
+    const enAttente = await Utilisateur.findAll({
+      where: { role: 'restaurateur', statut: 'en_attente' },
+      limit: 5,
+      // Suppression de l'ORDER BY createdAt qui faisait planter le code
+    });
+
+    res.json({
+      utilisateurs: nbUtilisateurs,
+      restaurants: nbRestaurants,
+      plats: nbPlats,
+      revenus: 0, 
+      enAttente: enAttente.map(v => ({
+        id: v.id,
+        nom: v.nomRestaurant || "Sans nom",
+        proprio: `${v.prenom || ''} ${v.nom || ''}`.trim() || "Inconnu",
+        date: "Récemment" // Texte simple car la colonne date manque
+      }))
+    });
+  } catch (error) {
+    console.error("Erreur Stats Dashboard:", error);
+    res.status(500).json({ message: 'Erreur lors du calcul des statistiques' });
+  }
+};
 
 // ─────────────────────────────────────────
 //  UTILISATEURS & VALIDATION
@@ -29,7 +72,7 @@ const getUtilisateurs = async (req, res) => {
              : data.nomRestaurant || 'Sans nom',
         telephone: data.telephone || null,
         nombreCommandes: data.role === 'client' ? commandes.length : null,
-        totalDepenses: data.role === 'client' ? `$${totalDepenses.toFixed(2)}` : null,
+        totalDepenses: data.role === 'client' ? `${totalDepenses.toFixed(2)} DA` : null,
         adresseRestaurant: data.adresseRestaurant || null,
         statut: data.statut || null,
       };
@@ -40,11 +83,10 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
-// --- FONCTION DE VALIDATION AJOUTÉE ---
 const validerRestaurateur = async (req, res) => {
   try {
     const { id } = req.params;
-    const { action } = req.body; // 'approuve' ou 'refuse'
+    const { action } = req.body; 
 
     const restaurant = await Utilisateur.findOne({ where: { id, role: 'restaurateur' } });
     if (!restaurant) return res.status(404).json({ message: 'Restaurant non trouvé' });
@@ -71,27 +113,18 @@ const supprimerUtilisateur = async (req, res) => {
 };
 
 // ─────────────────────────────────────────
-//  PLATS & CATÉGORIES (CORRIGÉ)
+//  PLATS & CATÉGORIES
 // ─────────────────────────────────────────
 
 const getPlats = async (req, res) => {
   try {
     const plats = await Plat.findAll({
       include: [
-        { 
-          model: Utilisateur, 
-          attributes: ['nomRestaurant'],
-          required: false // N'échoue pas si le resto est supprimé
-        },
-        { 
-          model: Categorie, 
-          attributes: ['nom'],
-          required: false // N'échoue pas si pas de catégorie
-        }
+        { model: Utilisateur, attributes: ['nomRestaurant'], required: false },
+        { model: Categorie, attributes: ['nom'], required: false }
       ]
     });
 
-    // IMPORTANT : On formate les données ici pour éviter que le Frontend ne plante
     const formattedPlats = plats.map(p => {
       const data = p.toJSON();
       return {
@@ -100,7 +133,6 @@ const getPlats = async (req, res) => {
         prix: data.prix,
         description: data.description,
         image: data.image,
-        // On vérifie si l'objet existe avant d'accéder au nom
         restaurant: data.Utilisateur ? data.Utilisateur.nomRestaurant : "Restaurant inconnu",
         categorie: data.Categorie ? data.Categorie.nom : "Non classé"
       };
@@ -108,7 +140,6 @@ const getPlats = async (req, res) => {
 
     res.json(formattedPlats);
   } catch (error) { 
-    console.error("Erreur getPlats:", error);
     res.status(500).json({ message: 'Erreur lors de la récupération des plats' }); 
   }
 };
@@ -136,9 +167,13 @@ const getCategories = async (req, res) => {
   }
 };
 
+// ─────────────────────────────────────────
+//  EXPORTATIONS (CRUCIAL)
+// ─────────────────────────────────────────
 module.exports = {
+  getDashboardStats, // <--- BIEN AJOUTÉ ICI
   getUtilisateurs,
-  validerRestaurateur, // Exporté
+  validerRestaurateur,
   supprimerUtilisateur,
   getPlats,
   supprimerPlat,

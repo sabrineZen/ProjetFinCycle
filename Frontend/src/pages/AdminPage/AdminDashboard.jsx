@@ -1,21 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
 import { FaUsers, FaStore, FaUtensils, FaEuroSign, FaBars } from "react-icons/fa";
 
 function AdminDashboard() {
-  const [sidebarOuverte, setSidebarOuverte] = useState(false); // ✅ ajouté
+  const [sidebarOuverte, setSidebarOuverte] = useState(false);
+  const [data, setData] = useState(null);
+  const [chargement, setChargement] = useState(true);
 
-  const stats = [
-    { titre: "Utilisateurs totaux", valeur: "2,847", evolution: "+12.5%", icon: <FaUsers /> },
-    { titre: "Restaurants actifs", valeur: "142", evolution: "+8.2%", icon: <FaStore /> },
-    { titre: "Plats disponibles", valeur: "3,847", evolution: "+24.5%", icon: <FaUtensils /> },
-    { titre: "Revenus ce mois", valeur: "€ 22,847", evolution: "+12.5%", icon: <FaEuroSign /> },
+  // ── Récupération des statistiques depuis le Backend ──
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/stats-dashboard", {
+          headers: { 
+            Authorization: `Bearer ${localStorage.getItem("token")}` 
+          }
+        });
+        if (!res.ok) throw new Error("Erreur lors de la récupération des stats");
+        const result = await res.json();
+        setData(result);
+      } catch (err) {
+        console.error("Erreur dashboard:", err);
+      } finally {
+        setChargement(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  // ── Configuration des cartes de statistiques ──
+  const statsAffichees = [
+    { 
+      titre: "Utilisateurs totaux", 
+      valeur: data?.utilisateurs || 0, 
+      evolution: "+12.5%", 
+      icon: <FaUsers /> 
+    },
+    { 
+      titre: "Restaurants actifs", 
+      valeur: data?.restaurants || 0, 
+      evolution: "+8.2%", 
+      icon: <FaStore /> 
+    },
+    { 
+      titre: "Plats disponibles", 
+      valeur: data?.plats || 0, 
+      evolution: "+24.5%", 
+      icon: <FaUtensils /> 
+    },
+    { 
+      titre: "Revenus ce mois", 
+      valeur: `${data?.revenus || 0} DA`, 
+      evolution: "+12.5%", 
+      icon: <FaEuroSign /> 
+    },
   ];
 
-  const validations = [
-    { nom: "ghano food", proprio: "ghano younsi", pays: "francais", date: "12-03-2026" },
-    { nom: "Ahmed food", proprio: "YAHIAOUI Ahmed", pays: "francais", date: "05-05-2026" },
-  ];
+  // ── Données pour la section validation ──
+  const validations = data?.enAttente || [];
 
   const activites = [
     "Nouvel utilisateur inscrit : ahmed yahiaoui",
@@ -24,7 +66,6 @@ function AdminDashboard() {
 
   return (
     <div className="flex">
-
       {/* Overlay mobile */}
       {sidebarOuverte && (
         <div
@@ -53,88 +94,89 @@ function AdminDashboard() {
 
       {/* Content */}
       <div className="w-full min-h-screen bg-fond p-4 pt-20 lg:pt-8 lg:ml-56 lg:p-8">
-
+        
         {/* Titre desktop */}
         <div className="hidden lg:block">
           <h1 className="text-3xl font-bold text-secondary">Tableau de bord</h1>
           <p className="text-gray-400 mt-1 mb-8">
-            Vue d'ensemble de votre platforme e-commerce
+            Vue d'ensemble de votre plateforme e-commerce
           </p>
         </div>
 
-        {/* Titre mobile */}
-        <p className="text-gray-400 mb-4 lg:hidden">
-          Vue d'ensemble du dashboard
-        </p>
+        {chargement ? (
+          <p className="text-center py-10 text-gray-400">Chargement des statistiques...</p>
+        ) : (
+          <>
+            {/* 📊 STATS GRID */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+              {statsAffichees.map((stat, index) => (
+                <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-bordure">
+                  <div className="flex justify-between items-start">
+                    <p className="text-secondary text-sm font-medium">{stat.titre}</p>
+                    <span className="text-secondary text-xl">{stat.icon}</span>
+                  </div>
+                  <p className="text-3xl font-bold text-secondary mt-2">{stat.valeur}</p>
+                  <p className="text-green-500 text-sm mt-1">{stat.evolution}</p>
+                </div>
+              ))}
+            </div>
 
-        {/* 📊 STATS GRID RESPONSIVE */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-bordure">
-              <div className="flex justify-between items-start">
-                <p className="text-secondary text-sm font-medium">{stat.titre}</p>
-                <span className="text-secondary text-xl">{stat.icon}</span>
+            {/* BAS SECTION */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Section Validation */}
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-secondary font-semibold text-lg">
+                    En attente de validation
+                  </h2>
+                  <button className="text-button text-sm">voir tout</button>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {validations.length > 0 ? (
+                    validations.map((v, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center p-3 rounded-xl border border-bordure hover:bg-orange-50 transition-colors"
+                      >
+                        <div>
+                          <p className="font-semibold text-secondary">{v.nom}</p>
+                          <p className="text-gray-400 text-sm">{v.proprio}</p>
+                          <p className="text-gray-400 text-sm">{v.pays}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-gray-400 text-sm">{v.date}</p>
+                          <button className="text-button font-semibold text-sm mt-1">
+                            Examiner →
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-400 text-sm">Aucun restaurant en attente.</p>
+                  )}
+                </div>
               </div>
-              <p className="text-3xl font-bold text-secondary mt-2">{stat.valeur}</p>
-              <p className="text-green-500 text-sm mt-1">{stat.evolution}</p>
-            </div>
-          ))}
-        </div>
 
-        {/* BAS SECTION RESPONSIVE */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-          {/* Validation */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-secondary font-semibold text-lg">
-                En attente de validation
-              </h2>
-              <span className="text-button text-sm">voir tout</span>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              {validations.map((v, index) => (
-                <div
-                  key={index}
-                  className={`flex justify-between items-center p-3 rounded-xl ${
-                    index === 0 ? "border border-button bg-orange-50" : ""
-                  }`}
-                >
-                  <div>
-                    <p className="font-semibold text-secondary">{v.nom}</p>
-                    <p className="text-gray-400 text-sm">{v.proprio}</p>
-                    <p className="text-gray-400 text-sm">{v.pays}</p>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="text-gray-400 text-sm">{v.date}</p>
-                    <p className="text-button font-semibold text-sm mt-1">
-                      Examiner →
-                    </p>
-                  </div>
+              {/* Section Activités */}
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
+                <h2 className="text-secondary font-semibold text-lg mb-4">
+                  Activités récentes
+                </h2>
+                <div className="flex flex-col gap-4">
+                  {activites.map((a, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="w-3 h-3 rounded-full bg-button mt-1 shrink-0"></div>
+                      <p className="text-secondary text-sm">{a}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
             </div>
-          </div>
-
-          {/* Activités */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <h2 className="text-secondary font-semibold text-lg mb-4">
-              Activités récentes
-            </h2>
-
-            <div className="flex flex-col gap-4">
-              {activites.map((a, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-3 h-3 rounded-full bg-button mt-1 shrink-0"></div>
-                  <p className="text-secondary text-sm">{a}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

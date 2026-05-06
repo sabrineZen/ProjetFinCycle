@@ -13,11 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 // ── LA SOLUTION RADICALE POUR LES IMAGES ──
-// On utilise path.resolve et process.cwd() pour pointer vers le dossier physique
 const uploadsPath = path.resolve(process.cwd(), 'uploads');
 app.use('/uploads', express.static(uploadsPath));
 
-// Petit message dans la console pour vérifier le chemin au démarrage
 console.log("📂 Dossier des images détecté ici :", uploadsPath);
 
 // ── Modèles ──
@@ -27,7 +25,7 @@ require('./models/index');
 const authRoutes         = require('./routes/authRoutes');
 const clientRoutes       = require('./routes/clientRoutes');
 const restaurateurRoutes = require('./routes/restaurateurRoutes');
-const adminRoutes        = require('./routes/adminRoutes');
+const adminRoutes         = require('./routes/adminRoutes');
 const categorieRoutes    = require('./routes/categorieRoutes');
 const platRoutes         = require('./routes/platRoutes');
 const panierRoutes       = require('./routes/panierRoutes');
@@ -49,10 +47,12 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
+// ── Synchronisation Sécurisée ──
 sequelize.authenticate()
   .then(() => {
     console.log("✅ Base de données connectée");
-    return sequelize.sync({ alter: true });
+    // ON ENLÈVE { alter: true } ICI POUR ÉVITER L'ERREUR DES 64 CLÉS
+    return sequelize.sync(); 
   })
   .then(() => {
     app.listen(PORT, () => {
@@ -60,5 +60,5 @@ sequelize.authenticate()
     });
   })
   .catch(err => {
-    console.error("❌ Erreur de connexion :", err);
+    console.error("❌ Erreur de connexion ou de synchronisation :", err);
   });

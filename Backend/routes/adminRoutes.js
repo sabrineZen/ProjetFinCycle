@@ -13,5 +13,6 @@ router.put('/utilisateurs/:id/valider', adminController.validerRestaurateur);
 router.get('/plats', adminController.getPlats);
 router.delete('/plats/:id', adminController.supprimerPlat);
 router.get('/categories', adminController.getCategories);
+router.get('/stats-dashboard', adminController.getDashboardStats);
 
 module.exports = router;
