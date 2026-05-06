@@ -22,6 +22,7 @@ const categorieRoutes    = require('./routes/categorieRoutes');
 const platRoutes         = require('./routes/platRoutes');
 const panierRoutes       = require('./routes/panierRoutes');
 const commandeRoutes     = require('./routes/commandeRoutes');
+const utilisateurRoutes = require('./routes/utilisateurRoutes');
 
 app.use('/api/auth',          authRoutes);
 app.use('/api/clients',       clientRoutes);
@@ -31,6 +32,7 @@ app.use('/api/categories',    categorieRoutes);
 app.use('/api/plats',         platRoutes);
 app.use('/api/panier',        panierRoutes);
 app.use('/api/commandes',     commandeRoutes);
+app.use('/api/utilisateurs', utilisateurRoutes);
 
 // ── Route test ──
 app.get("/", (req, res) => {

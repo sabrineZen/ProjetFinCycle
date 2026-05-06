@@ -200,7 +200,7 @@ const MesPlats = () => {
 
             <div className="relative h-40 sm:h-40 md:h-38">
               <img
-                src={plat.image ? `http://localhost:5000/uploads/${plat.image}` : '/placeholder.png'}
+                src={plat.image || '/placeholder.png'}
                 className="w-full h-full object-cover"
                 onError={(e) => { e.target.src = '/placeholder.png'; }}
               />

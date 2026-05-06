@@ -224,7 +224,7 @@ function PlatsPage() {
                   <p className="text-gray-400 text-xs lg:text-sm mt-2 line-clamp-2">{p.description}</p>
 
                   <div className="flex justify-between items-center mt-3">
-                    <p className="text-button font-bold text-base lg:text-lg">{p.prix.toFixed(2)} €</p>
+                    <p className="text-button font-bold text-base lg:text-lg">{parseFloat(p.prix).toFixed(2)} €</p>
                     <p className="text-gray-400 text-xs lg:text-sm">{p.commandes} commande(s)</p>
                   </div>
 
@@ -317,7 +317,7 @@ function PlatsPage() {
                   <div>
                     <p className="text-gray-400 text-xs mb-1">Prix</p>
                     <p className="text-secondary font-bold text-lg lg:text-xl">
-                      {platSelectionne.prix.toFixed(2)} €
+                      {parseFloat(platSelectionne.prix).toFixed(2)} €
                     </p>
                   </div>
                   <div>
