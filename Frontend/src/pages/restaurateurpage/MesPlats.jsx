@@ -199,11 +199,11 @@ const MesPlats = () => {
           <div key={plat.id} className="bg-white rounded-[25px] overflow-hidden shadow-md flex flex-col">
 
             <div className="relative h-40 sm:h-40 md:h-38">
-              <img
-                src={plat.image ? `http://localhost:5000/uploads/${plat.image}` : '/placeholder.png'}
-                className="w-full h-full object-cover"
-                onError={(e) => { e.target.src = '/placeholder.png'; }}
-              />
+           <img
+              src={plat.image ? plat.image : '/placeholder.png'}
+              className="w-full h-full object-cover"
+              onError={(e) => { e.target.src = '/placeholder.png'; }}
+            />
               <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-bold ${
                 plat.disponible
                   ? 'bg-green-500/20 text-green-600'

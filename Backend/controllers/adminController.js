@@ -71,33 +71,69 @@ const supprimerUtilisateur = async (req, res) => {
 };
 
 // ─────────────────────────────────────────
-//  PLATS & CATÉGORIES
+//  PLATS & CATÉGORIES (CORRIGÉ)
 // ─────────────────────────────────────────
 
 const getPlats = async (req, res) => {
   try {
     const plats = await Plat.findAll({
       include: [
-        { model: Utilisateur, attributes: ['nomRestaurant'] },
-        { model: Categorie, attributes: ['nom'] }
+        { 
+          model: Utilisateur, 
+          attributes: ['nomRestaurant'],
+          required: false // N'échoue pas si le resto est supprimé
+        },
+        { 
+          model: Categorie, 
+          attributes: ['nom'],
+          required: false // N'échoue pas si pas de catégorie
+        }
       ]
     });
-    res.json(plats);
-  } catch (error) { res.status(500).json({ message: 'Erreur' }); }
+
+    // IMPORTANT : On formate les données ici pour éviter que le Frontend ne plante
+    const formattedPlats = plats.map(p => {
+      const data = p.toJSON();
+      return {
+        id: data.id,
+        nom: data.nom,
+        prix: data.prix,
+        description: data.description,
+        image: data.image,
+        // On vérifie si l'objet existe avant d'accéder au nom
+        restaurant: data.Utilisateur ? data.Utilisateur.nomRestaurant : "Restaurant inconnu",
+        categorie: data.Categorie ? data.Categorie.nom : "Non classé"
+      };
+    });
+
+    res.json(formattedPlats);
+  } catch (error) { 
+    console.error("Erreur getPlats:", error);
+    res.status(500).json({ message: 'Erreur lors de la récupération des plats' }); 
+  }
 };
 
 const supprimerPlat = async (req, res) => {
   try {
-    await Plat.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'Plat supprimé' });
-  } catch (error) { res.status(500).json({ message: 'Erreur' }); }
+    const { id } = req.params;
+    const deleted = await Plat.destroy({ where: { id } });
+    if (deleted) {
+      res.json({ message: 'Plat supprimé avec succès' });
+    } else {
+      res.status(404).json({ message: 'Plat non trouvé' });
+    }
+  } catch (error) { 
+    res.status(500).json({ message: 'Erreur lors de la suppression' }); 
+  }
 };
 
 const getCategories = async (req, res) => {
   try {
     const categories = await Categorie.findAll();
     res.json(categories);
-  } catch (error) { res.status(500).json({ message: 'Erreur' }); }
+  } catch (error) { 
+    res.status(500).json({ message: 'Erreur lors de la récupération des catégories' }); 
+  }
 };
 
 module.exports = {
