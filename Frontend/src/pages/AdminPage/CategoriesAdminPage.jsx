@@ -358,7 +358,7 @@ function CategoriesAdminPage() {
 
         {/* Modal ajout */}
         {modalOuvert && (
-          <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="fixed inset-0 bg-black bg-opacity-10 backdrop-blur-md flex items-center justify-center z-50 px-4">
             <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl lg:text-2xl font-bold text-secondary mb-5">Nouvelle catégorie</h2>
               <FormCategorie valeurs={nouvelle} onChange={setNouvelle} />
