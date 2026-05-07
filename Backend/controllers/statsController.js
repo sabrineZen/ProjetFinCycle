@@ -41,34 +41,46 @@ exports.getGlobalStats = async (req, res) => {
       categoriesData = [];
     }
 
-    // 4. Plats Populaires
-    let platsPopulaires = [];
-    try {
-      platsPopulaires = await Plat.findAll({
-        attributes: [
-          'nom',
-          [Sequelize.fn('SUM', Sequelize.col('LigneCommandes.quantite')), 'total_commandes']
-        ],
-        include: [
-          {
-            model: Utilisateur,
-            as: 'restaurateur',
-            attributes: ['nom_restaurant']
-          },
-          {
-            model: LigneCommande,
-            attributes: []
-          }
-        ],
-        group: ['Plat.id', 'restaurateur.id'],
-        order: [[Sequelize.fn('SUM', Sequelize.col('LigneCommandes.quantite')), 'DESC']],
-        limit: 5,
-        raw: true
-      });
-    } catch (e) {
+   // 4. Plats Populaires
+let platsPopulaires = [];
+try {
+  platsPopulaires = await Plat.findAll({
+    attributes: [
+      'nom',
+      [Sequelize.fn('SUM', Sequelize.col('LigneCommandes.quantite')), 'total_commandes']
+    ],
+    include: [
+      {
+        model: Utilisateur,
+        attributes: ['nomRestaurant'],
+        required: false // Pour ne pas bloquer si un resto est supprimé
+      },
+      {
+        model: LigneCommande,
+        attributes: [],
+        required: true // On ne veut que les plats qui ont été commandés
+      }
+    ],
+    group: ['Plat.id', 'Utilisateur.id'], 
+    order: [[Sequelize.literal('total_commandes'), 'DESC']], // Utilise l'alias pour trier
+    limit: 5,
+    raw: true,
+    subQuery: false // TRÈS IMPORTANT pour éviter l'erreur de champ inconnu avec LIMIT
+  });
+} catch (e) {
   console.error("❌ Erreur SQL Plats Populaires :", e.message);
-  platsPopulaires = []; // On laisse vide au lieu de mettre la pizza
+  platsPopulaires = []; 
 }
+
+// ✅ Dans ton res.json (tout en bas du fichier)
+// Assure-toi que le mapping ressemble à ça :
+platsPopulaires: platsPopulaires.map((p, index) => ({
+  rang: index + 1,
+  nom: p.nom,
+  // Vérifie bien le nom exact dans tes logs console (Utilisateur.nomRestaurant ou Utilisateur.nom_restaurant)
+  restaurant: p["Utilisateur.nomRestaurant"] || "N/A", 
+  commandes: parseInt(p.total_commandes) || 0
+}))
 
     // ✅ Réponse JSON finale corrigée
     res.json({
