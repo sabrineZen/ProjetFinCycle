@@ -124,8 +124,8 @@ function ValidationPage() {
 
         {/* Modal de détails */}
         {modalOuvert && restaurantSelectionne && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-            <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-xl">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm bg-opacity-10 flex items-center justify-center z-50 px-4">
+            <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
               <h2 className="text-2xl font-bold text-secondary">{restaurantSelectionne.nom}</h2>
               <div className="mt-4 space-y-3">
                 <p><strong>Propriétaire :</strong> {restaurantSelectionne.nom} {restaurantSelectionne.prenom}</p>

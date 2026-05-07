@@ -28,7 +28,7 @@ function Panier() {
     setProduits((prev) => prev.filter((p) => p.id !== id));
 
   return (
-    <div className="bg-white shadow-lg p-4 rounded-[20px] w-[95vw] max-w-[800px] h-auto">
+    <div className="bg-white shadow-lg p-4 rounded-[20px] w-[95vw] max-w-200 h-auto">
 
       {montrerHistorique ? (
         //  Historique s'affiche  dans la même div blanche
@@ -37,10 +37,10 @@ function Panier() {
         //  Panier normal
         <>
           {/* Header */}
-          <div className="min-h-[80px] px-2 sm:px-6 flex items-center justify-between flex-wrap gap-2">
+          <div className="min-h-20 px-2 sm:px-6 flex items-center justify-between flex-wrap gap-2">
             <div className="flex gap-3 items-center">
               <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-secondary underline decoration-[#FF6900] underline-offset-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-secondary underline decoration-valider underline-offset-4">
                 Mon panier
               </h2>
             </div>
@@ -70,9 +70,9 @@ function Panier() {
                     <span className="px-3">{produit.quantite}</span>
                     <button className="px-2 py-1 bg-gray-100" onClick={() => augmenterQuantite(produit.id)}>+</button>
                   </div>
-                  <span className="text-[#FF6900] font-bold">{produit.prix * produit.quantite} DA</span>
+                  <span className="text-valider font-bold">{produit.prix * produit.quantite} DA</span>
                   <div
-                    className="bg-[#FEF2F2] h-[40px] w-[40px] rounded-[10px] flex items-center justify-center cursor-pointer"
+                    className="bg-[#FEF2F2] h-10 w-10 rounded-[10px] flex items-center justify-center cursor-pointer"
                     onClick={() => supprimerProduit(produit.id)}
                   >
                     <FaTrash className="text-[#FB2C36]" />

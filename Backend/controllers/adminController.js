@@ -1,48 +1,5 @@
-const { Utilisateur, Commande, Plat, Categorie } = require('../models/index');
-
-// ─────────────────────────────────────────
-//  STATISTIQUES DASHBOARD (LA NOUVELLE FONCTION)
-// ─────────────────────────────────────────
-
-const getDashboardStats = async (req, res) => {
-  try {
-    const [nbUtilisateurs, nbRestaurants, nbPlats] = await Promise.all([
-      // On compte TOUS les utilisateurs pour ne plus avoir 0
-      Utilisateur.count({ 
-    where: { 
-      role: ['client', 'restaurateur'] 
-    } 
-  }), 
-      // On compte tous les restaurateurs (même ceux en attente pour le moment)
-      Utilisateur.count({ where: { role: 'restaurateur' } }),
-      Plat.count()
-    ]);
-
-    // On récupère les restos en attente SANS utiliser createdAt
-    const enAttente = await Utilisateur.findAll({
-      where: { role: 'restaurateur', statut: 'en_attente' },
-      limit: 5,
-      // Suppression de l'ORDER BY createdAt qui faisait planter le code
-    });
-
-    res.json({
-      utilisateurs: nbUtilisateurs,
-      restaurants: nbRestaurants,
-      plats: nbPlats,
-      revenus: 0, 
-      enAttente: enAttente.map(v => ({
-        id: v.id,
-        nom: v.nomRestaurant || "Sans nom",
-        proprio: `${v.prenom || ''} ${v.nom || ''}`.trim() || "Inconnu",
-        date: "Récemment" // Texte simple car la colonne date manque
-      }))
-    });
-  } catch (error) {
-    console.error("Erreur Stats Dashboard:", error);
-    res.status(500).json({ message: 'Erreur lors du calcul des statistiques' });
-  }
-};
-
+const { Utilisateur, Commande, Plat, Categorie, LigneCommande } = require('../models/index');
+const { Op } = require('sequelize');
 // ─────────────────────────────────────────
 //  UTILISATEURS & VALIDATION
 // ─────────────────────────────────────────
@@ -72,7 +29,7 @@ const getUtilisateurs = async (req, res) => {
              : data.nomRestaurant || 'Sans nom',
         telephone: data.telephone || null,
         nombreCommandes: data.role === 'client' ? commandes.length : null,
-        totalDepenses: data.role === 'client' ? `${totalDepenses.toFixed(2)} DA` : null,
+        totalDepenses: data.role === 'client' ? `$${totalDepenses.toFixed(2)}` : null,
         adresseRestaurant: data.adresseRestaurant || null,
         statut: data.statut || null,
       };
@@ -83,10 +40,11 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
+// --- FONCTION DE VALIDATION AJOUTÉE ---
 const validerRestaurateur = async (req, res) => {
   try {
     const { id } = req.params;
-    const { action } = req.body; 
+    const { action } = req.body; // 'approuve' ou 'refuse'
 
     const restaurant = await Utilisateur.findOne({ where: { id, role: 'restaurateur' } });
     if (!restaurant) return res.status(404).json({ message: 'Restaurant non trouvé' });
@@ -116,66 +74,177 @@ const supprimerUtilisateur = async (req, res) => {
 //  PLATS & CATÉGORIES
 // ─────────────────────────────────────────
 
+// Après — transformation complète ✅
 const getPlats = async (req, res) => {
   try {
     const plats = await Plat.findAll({
+      attributes: ['id', 'nom', 'description', 'prix', 'image', 'disponible'],
       include: [
-        { model: Utilisateur, attributes: ['nomRestaurant'], required: false },
-        { model: Categorie, attributes: ['nom'], required: false }
+        { model: Utilisateur,   attributes: ['id', 'nomRestaurant'] },
+        { model: Categorie,     attributes: ['id', 'nom'] },
+        { model: LigneCommande, attributes: ['id'], required: false }
       ]
     });
 
-    const formattedPlats = plats.map(p => {
+    const result = plats.map((p) => {
       const data = p.toJSON();
       return {
-        id: data.id,
-        nom: data.nom,
-        prix: data.prix,
-        description: data.description,
-        image: data.image,
-        restaurant: data.Utilisateur ? data.Utilisateur.nomRestaurant : "Restaurant inconnu",
-        categorie: data.Categorie ? data.Categorie.nom : "Non classé"
+        id:           data.id,
+        nom:          data.nom,
+        description:  data.description,
+        prix:         parseFloat(data.prix),
+        image:        data.image
+                        ? `http://localhost:5000/uploads/${data.image}`
+                        : null,
+        disponible:   data.disponible,
+        restaurant:   data.Utilisateur?.nomRestaurant || 'Inconnu',
+        restaurantId: data.Utilisateur?.id            || null,
+        categorie:    data.Categorie?.nom             || 'Sans catégorie',
+        categorieId:  data.Categorie?.id              || null,
+        commandes:    data.LigneCommandes?.length     || 0,
       };
     });
 
-    res.json(formattedPlats);
-  } catch (error) { 
-    res.status(500).json({ message: 'Erreur lors de la récupération des plats' }); 
+    res.json(result);
+  } catch (error) {
+    console.error('Erreur getPlats :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 };
 
 const supprimerPlat = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deleted = await Plat.destroy({ where: { id } });
-    if (deleted) {
-      res.json({ message: 'Plat supprimé avec succès' });
-    } else {
-      res.status(404).json({ message: 'Plat non trouvé' });
-    }
-  } catch (error) { 
-    res.status(500).json({ message: 'Erreur lors de la suppression' }); 
-  }
+    await Plat.destroy({ where: { id: req.params.id } });
+    res.json({ message: 'Plat supprimé' });
+  } catch (error) { res.status(500).json({ message: 'Erreur' }); }
 };
 
 const getCategories = async (req, res) => {
   try {
     const categories = await Categorie.findAll();
     res.json(categories);
-  } catch (error) { 
-    res.status(500).json({ message: 'Erreur lors de la récupération des catégories' }); 
+  } catch (error) { res.status(500).json({ message: 'Erreur' }); }
+};
+
+
+//Toggle disponibilité
+const toggleDisponibilite = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const plat = await Plat.findByPk(id);
+    if (!plat) return res.status(404).json({ message: 'Plat non trouvé' });
+    plat.disponible = !plat.disponible;
+    await plat.save();
+    res.json({ message: 'Disponibilité mise à jour', disponible: plat.disponible });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 };
 
-// ─────────────────────────────────────────
-//  EXPORTATIONS (CRUCIAL)
-// ─────────────────────────────────────────
+
+//dashboard controller
+// Stats globales
+const getStats = async (req, res) => {
+  try {
+    const totalUtilisateurs = await Utilisateur.count({
+      where: { role: 'client' }
+    });
+
+    const totalRestaurants = await Utilisateur.count({
+      where: { role: 'restaurateur', statut: 'approuve' }
+    });
+
+    const totalPlats = await Plat.count({
+      where: { disponible: true }
+    });
+
+    const revenus = await LigneCommande.sum('sousTotal') || 0;
+
+    res.json({ totalUtilisateurs, totalRestaurants, totalPlats, revenus });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+// Restaurateurs en attente
+const getRestaurantsEnAttente = async (req, res) => {
+  try {
+    const enAttente = await Utilisateur.findAll({
+      where: { role: 'restaurateur', statut: 'en_attente' },
+      attributes: ['id', 'nomRestaurant', 'nom', 'prenom', 'email'],
+      // ← supprime order et createdAt
+    });
+    res.json(enAttente);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
+
+// Activités récentes
+// adminController.js — getActivites corrigé
+const getActivites = async (req, res) => {
+  try {
+    const dernierClients = await Utilisateur.findAll({
+      where: { role: 'client' },
+      attributes: ['id', 'nom', 'prenom', 'email'],
+      limit: 5,
+    });
+
+    const derniersApprouves = await Utilisateur.findAll({
+      where: { role: 'restaurateur', statut: 'approuve' },
+      attributes: ['id', 'nomRestaurant'],
+      limit: 5,
+    });
+
+    const derniersRefuses = await Utilisateur.findAll({
+      where: { role: 'restaurateur', statut: 'refuse' },
+      attributes: ['id', 'nomRestaurant'],
+      limit: 3,
+    });
+
+    const derniersEnAttente = await Utilisateur.findAll({
+      where: { role: 'restaurateur', statut: 'en_attente' },
+      attributes: ['id', 'nomRestaurant'],
+      limit: 3,
+    });
+
+    const activites = [
+      ...dernierClients.map(u => ({
+        type: 'inscription',
+        message: `Nouvel utilisateur inscrit : ${u.prenom || ''} ${u.nom || ''}`.trim() || u.email,
+        date: null,
+      })),
+      ...derniersApprouves.map(r => ({
+        type: 'validation',
+        message: `Restaurant "${r.nomRestaurant}" a été approuvé`,
+        date: null,
+      })),
+      ...derniersRefuses.map(r => ({
+        type: 'refus',
+        message: `Restaurant "${r.nomRestaurant}" a été refusé`,
+        date: null,
+      })),
+      ...derniersEnAttente.map(r => ({
+        type: 'attente',
+        message: `Restaurant "${r.nomRestaurant}" attend une validation`,
+        date: null,
+      })),
+    ].slice(0, 8);
+
+    res.json(activites);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};
 module.exports = {
-  getDashboardStats, // <--- BIEN AJOUTÉ ICI
   getUtilisateurs,
-  validerRestaurateur,
+  validerRestaurateur, // Exporté
   supprimerUtilisateur,
   getPlats,
   supprimerPlat,
-  getCategories
+  toggleDisponibilite,
+  getCategories,
+  getStats,
+  getRestaurantsEnAttente,
+  getActivites
 };

@@ -43,11 +43,11 @@ function InfoPersonnelles(){
             <div>
               <label className="text-sm text-orange-600">Adresse</label>
               <div className="flex items-center bg-[#FFF0E8]  rounded-lg px-3 py-2 mt-1">
-               <GrLocation className="text-[#FF6900] text-xl"/>
+               <GrLocation className="text-valider text-xl"/>
                <input type="text" className="outline-none w-full bg-transparent "/>               
               </div>    
             </div>                              
-           <button className="w-full bg-[#FF6900] text-white py-2 rounded-lg hover:bg-orange-600 transition">Enregistrer modification</button>
+           <button className="w-full bg-valider text-white py-2 rounded-lg hover:bg-orange-600 transition">Enregistrer modification</button>
            
         </div>
     )

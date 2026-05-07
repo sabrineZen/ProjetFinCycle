@@ -9,7 +9,7 @@ function Toast({ message, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
   const bg = type === "error" ? "bg-red-500" : type === "warning" ? "bg-orange-500" : "bg-green-500";
   return (
-    <div className={`fixed bottom-5 right-5 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl text-white text-sm shadow-lg ${bg}`}>
+    <div className={`fixed bottom-5 right-5 z-100 flex items-center gap-3 px-5 py-3 rounded-xl text-white text-sm shadow-lg ${bg}`}>
       {message}
       <button onClick={onClose}><FaTimes size={12} /></button>
     </div>
@@ -19,7 +19,7 @@ function Toast({ message, type, onClose }) {
 // ── Modal confirmation suppression ─────────────────────────────────────────────
 function ModalConfirm({ nom, onConfirm, onCancel, loading }) {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
       <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
         <h2 className="text-lg font-bold text-secondary mb-2">Supprimer la catégorie ?</h2>
         <p className="text-gray-400 text-sm mb-5">
@@ -358,8 +358,8 @@ function CategoriesAdminPage() {
 
         {/* Modal ajout */}
         {modalOuvert && (
-          <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-            <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 bg-opacity-10 backdrop-blur-md flex items-center justify-center z-50 px-4">
+            <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl lg:text-2xl font-bold text-secondary mb-5">Nouvelle catégorie</h2>
               <FormCategorie valeurs={nouvelle} onChange={setNouvelle} />
               <div className="flex gap-3 mt-5">
