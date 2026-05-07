@@ -1,22 +1,14 @@
 import { useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
-import Panier from "./panier";
-import { FaClock } from "react-icons/fa";
+import { FaShoppingCart, FaClock, FaBox } from "react-icons/fa";
 
 function HistoriqueAchats({ onClose }) {
-  const [panier, setPanier] = useState([
-    { id: 1, name: "Pizza Margherita", prix: 150 },
-    { id: 2, name: "Burger Classique", prix: 80 },
-    { id: 3, name: "Burger Classique", prix: 80 },
-  ]);
-
-  const [achats, setAchats] = useState([
-    { id: 1, total: 150 },
-    { id: 2, total: 80 },
-    { id: 3, total: 200 },
-    { id: 4, total: 120 },
-    { id: 5, total: 60 },
-    { id: 6, total: 90 },
+  const [achats] = useState([
+    { id: 1, prix: 150 },
+    { id: 2, prix: 80 },
+    { id: 3, prix: 200 },
+    { id: 4, prix: 120 },
+    { id: 5, prix: 60 },
+    { id: 6, prix: 90 },
   ]);
 
   const now = new Date();
@@ -24,8 +16,8 @@ function HistoriqueAchats({ onClose }) {
   const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <div className="bg-white shadow-lg p-4 rounded-[20px] w-[95vw] max-w-[800px] h-auto">
-      
+    //  Pas de div bg-white ici, on utilise celle du Panier
+    <>
       {/* Header */}
       <div className="h-auto min-h-[80px] pl-2 sm:pl-4 pr-2 sm:pr-4 flex items-center justify-between flex-wrap gap-2">
         <div className="flex flex-row gap-3 items-center">
@@ -34,27 +26,25 @@ function HistoriqueAchats({ onClose }) {
             Historique des achats
           </h2>
         </div>
-        <div className="flex items-center gap-4">
-          <button
-            className="p-3 rounded-full hover:bg-orange-100 transition"
-            onClick={onClose}
-          >
-            <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
-          </button>
-        </div>
+        <button
+          className="p-3 rounded-full hover:bg-orange-100 transition"
+          onClick={onClose}
+        >
+          <FaShoppingCart className="text-xl sm:text-2xl text-secondary" />
+        </button>
       </div>
 
-      {/* Container des achats */}
+      {/* Liste des achats */}
       <div className="w-full mt-6 border-2 border-bordure rounded-[10px] p-2 flex flex-col gap-4 overflow-y-auto scrollbar-hide max-h-[60vh]">
         {achats.map((achat, index) => (
           <div key={achat.id} className="bg-[#F9FAFB] rounded-[10px] p-3 shadow-sm">
             <div className="w-full flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-3">
                 <div className="w-[45px] h-[45px] bg-[#FFF3E5] rounded-[10px] flex items-center justify-center font-bold flex-shrink-0">
-                  {index + 1}
+                  <FaBox className="text-[#FF6900] text-xl" />
                 </div>
                 <div className="flex flex-col text-base sm:text-lg font-semibold">
-                  <span className="text-[#951418]">Achat # {index + 1}</span>
+                  <span className="text-[#951418]">Achat #{index + 1}</span>
                   <span className="text-[13px] font-normal text-[#AFB0B3]">
                     Date: {dateStr} {timeStr}
                   </span>
@@ -64,25 +54,14 @@ function HistoriqueAchats({ onClose }) {
                 Livré
               </span>
             </div>
-
-            <div className="mt-2 flex flex-col gap-2">
-              <div className="bg-white h-[60px] rounded-[5px] flex items-center pl-2 shadow-sm">
-                <div className="h-[45px] w-[45px] bg-green-500 rounded mr-2 flex-shrink-0"></div>
-                Produit 1
-              </div>
-              <div className="bg-white h-[60px] rounded-[5px] flex items-center pl-2 shadow-sm">
-                <div className="h-[45px] w-[45px] bg-green-500 rounded mr-2 flex-shrink-0"></div>
-                Produit 2
-              </div>
-            </div>
-
             <div className="mt-2 text-right font-semibold text-[#951418]">
-              Total payé: {achat.total} DA
+              Total payé: {achat.prix} DA
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
+
 export default HistoriqueAchats;
