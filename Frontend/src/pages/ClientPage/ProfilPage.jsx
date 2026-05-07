@@ -15,7 +15,7 @@ function ProfilPage(){
       <div>
            <div className="flex justify-between items-center shadow-md bg-white rounded-2xl p-4 m-4 ">{/*partie header*/}
             <div className="flex gap-3">
-                <img src="/" className="w-16 h-16 rounded-full bg-gray-300"/>
+                <img src="https://www.pagesjaunes.fr/media/newdam/preset-export-medium/90/fd/6a/00/00/ee/65/fa/bc/40/5fd790fd6a0000ee65fabc40/5fd790fd6a0000ee65fabc41.jpg" className="w-16 h-16 rounded-full bg-gray-300"/>
                 <p className="text-xl font-bold " style={{ color: '#8B2A1B' }}>Sophie martin</p>
             </div>    
             <button className="bg-orange-500 text-white px-4 py-2 rounded-full">Modifier profil</button>
