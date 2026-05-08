@@ -1,9 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaTh, FaClock, FaUser, FaStore, FaUtensils, FaTags, FaChartBar, FaSignOutAlt } from "react-icons/fa";
 import logo from "../assets/logo.png";
 
 function SidebarAdmin() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleDeconnexion = () => {
+    // Optionnel : vider le stockage
+    // localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   const menuItems = [
     { path: "/admin/dashboard", icon: <FaTh />, label: "Tableau de bord" },
@@ -39,7 +46,12 @@ function SidebarAdmin() {
           ))}
         </nav>
       </div>
-      <button className="flex items-center gap-3 px-4 py-3 text-secondary font-medium hover:text-button transition">
+
+      {/* Bouton Déconnexion */}
+      <button 
+        onClick={handleDeconnexion}
+        className="flex items-center gap-3 px-4 py-3 text-secondary font-medium hover:text-button transition"
+      >
         <FaSignOutAlt />
         Déconnexion
       </button>

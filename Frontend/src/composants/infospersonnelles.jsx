@@ -47,7 +47,7 @@ function InfoPersonnelles(){
                <input type="text" className="outline-none w-full bg-transparent "/>               
               </div>    
             </div>                              
-           <button className="w-full bg-valider text-white py-2 rounded-lg hover:bg-orange-600 transition">Enregistrer modification</button>
+           <button className="w-full bg-validerf text-white py-2 rounded-lg hover:bg-orange-600 transition">Enregistrer modification</button>
            
         </div>
     )
