@@ -1,8 +1,13 @@
 import React from 'react';
 import { LayoutDashboard, UtensilsCrossed, Soup, ClipboardList, UserCircle, LogOut, X, Settings } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
-
+  const navigate = useNavigate();
+  const handleDeconnexion = () => {
+    // Optionnel : vider le localStorage/sessionStorage
+    // localStorage.removeItem('token');
+    navigate('/login');
+  };
   const menuItems = [
     { id: 'dashboard', icon: <LayoutDashboard size={22} />, label: 'Tableau de bord' },
     { id: 'restaurant', icon: <UtensilsCrossed size={22} />, label: 'Mon restaurant' },
@@ -76,7 +81,10 @@ const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
             </div>
             
             <div className="pt-6 mt-6 border-t border-gray-100 text-[#8B2C21]">
-              <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-red-50 font-bold text-sm transition-colors">
+              <button 
+                onClick={handleDeconnexion}
+                className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-red-50 font-bold text-sm transition-colors"
+              >
                 <LogOut size={22} />
                 <span>Déconnexion</span>
               </button>

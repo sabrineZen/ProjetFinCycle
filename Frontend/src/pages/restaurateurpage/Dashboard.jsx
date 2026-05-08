@@ -100,9 +100,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
         <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md  relative min-h-100">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-3xl">Ventes de la semaine</h3>
-            <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold  shadow-lg shadow-orange-100 hover:scale-105 transition-all">
-              Cette semaine <ChevronRight size={19} />
-            </button>
+            
           </div>
           
           {/* Faux Graphique (Simulation) */}
@@ -116,9 +114,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
         <div className="bg-white p-8 rounded-[20px] shadow-md ">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-2xl font-regular">Top Plats</h3>
-            <button className="flex items-center gap-2 bg-[#FF843D] text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-md shadow-orange-100 hover:scale-105 transition-all">
-              Voir Tout <ChevronRight size={18} />
-            </button>
+           
           </div>
 
           <div className="space-y-6">

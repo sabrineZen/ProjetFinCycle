@@ -6,9 +6,7 @@ const Notifications = () => {
     nouvelleCommande: true,
     commandePrete: true,
     evaluationClient: true,
-    resumeEmail: true,
-    alerteSMS: true,
-    offresRestoPro: false,
+   
   });
 
   const togglePref = (key) => {
@@ -19,9 +17,7 @@ const Notifications = () => {
     { id: 'nouvelleCommande', title: 'Nouvelle commande', desc: 'Alertes instantanées des commandes' },
     { id: 'commandePrete', title: 'Commande prête', desc: 'Quand la commande est prête à livrer' },
     { id: 'evaluationClient', title: 'Évaluation client', desc: 'Avis et notes des clients' },
-    { id: 'resumeEmail', title: 'Résumé email', desc: 'Rapport quotidien des ventes' },
-    { id: 'alerteSMS', title: 'Alertes SMS', desc: 'Alertes importantes par SMS' },
-    { id: 'offresRestoPro', title: 'Offres RestoPro', desc: 'Promotions et nouveautés' },
+    
   ];
 
   return (

@@ -1,8 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaTh, FaClock, FaUser, FaStore, FaUtensils, FaTags, FaChartBar, FaSignOutAlt } from "react-icons/fa";
+import logo from "../assets/logo.png";
 
 function SidebarAdmin() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleDeconnexion = () => {
+    // Optionnel : vider le stockage
+    // localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   const menuItems = [
     { path: "/admin/dashboard", icon: <FaTh />, label: "Tableau de bord" },
@@ -17,7 +25,10 @@ function SidebarAdmin() {
   return (
     <div className="fixed top-0 left-0 h-screen w-56 bg-fond border-r border-tri flex flex-col justify-between py-6 px-4">
       <div>
-        <h1 className="text-2xl font-bold text-secondary mb-8 px-2">Admin Panel</h1>
+        <div className="flex items-center gap-2 mb-8 px-2">
+          <img src={logo} alt="Logo" className="w-15 h-14 object-contain" />
+          <h1 className="text-xl font-bold text-secondary">Plati<span className="text-button">Go</span></h1>
+        </div>
         <nav className="flex flex-col gap-2">
           {menuItems.map((item) => (
             <Link
@@ -35,7 +46,12 @@ function SidebarAdmin() {
           ))}
         </nav>
       </div>
-      <button className="flex items-center gap-3 px-4 py-3 text-secondary font-medium hover:text-button transition">
+
+      {/* Bouton Déconnexion */}
+      <button 
+        onClick={handleDeconnexion}
+        className="flex items-center gap-3 px-4 py-3 text-secondary font-medium hover:text-button transition"
+      >
         <FaSignOutAlt />
         Déconnexion
       </button>
