@@ -3,7 +3,7 @@ const { Plat } = require('../models');
 //chargement de plat 
 const chargerplats=async(req,res)=>{
     try {
-        const plats=await Plat.findall();
+        const plats=await Plat.findAll();
         res.json(plats);
     }catch (error) {
         res.status(500).json({message:error.message});
