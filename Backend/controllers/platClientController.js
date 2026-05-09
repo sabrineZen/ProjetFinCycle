@@ -1,3 +1,5 @@
+const { Plat } = require('../models');
+
 //chargement de plat 
 const chargerplats=async(req,res)=>{
     try {
