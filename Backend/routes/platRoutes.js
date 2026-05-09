@@ -3,11 +3,11 @@ const router = express.Router();
 module.exports = router;
 //declaration de routes pour les plats
 const {chargerplats,
-        chargerplatsPopulaires,
-        filtrerplats,
-
-}=require('../controllers/platcontroller');
+        platsPopulaires,
+        filtrerplats
+}=require('../controllers/platClientController');
 //chargement de plat
+
 router.get('/chargerplats',chargerplats)
-router.get('/chargerplatsPopulaires',chargerplatsPopulaires)
+router.get('/chargerplatsPopulaires',platsPopulaires)
 router.get('/filtrerplats',filtrerplats)
