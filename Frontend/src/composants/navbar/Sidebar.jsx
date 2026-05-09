@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, UtensilsCrossed, Soup, ClipboardList, UserCircle, LogOut, X } from 'lucide-react';
+import { LayoutDashboard, UtensilsCrossed, Soup, ClipboardList, UserCircle, LogOut, X, Settings } from 'lucide-react';
 
 const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
 
@@ -8,7 +8,7 @@ const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
     { id: 'restaurant', icon: <UtensilsCrossed size={22} />, label: 'Mon restaurant' },
     { id: 'plats', icon: <Soup size={22} />, label: 'Mes plats' },
     { id: 'commandes', icon: <ClipboardList size={22} />, label: 'Commandes' },
-    { id: 'compte', icon: <UserCircle size={22} />, label: 'Mon compte' },
+    { id: 'Parametre', icon: <Settings size={22} />, label: 'Parametre' },
   ];
 
   return (
@@ -16,17 +16,17 @@ const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
       {/* OVERLAY (Fond flou) */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/10 backdrop-blur-sm z-[100] lg:hidden transition-opacity" 
+          className="fixed inset-0 bg-black/10 backdrop-blur-sm z-100 lg:hidden transition-opacity" 
           onClick={() => setIsOpen(false)} 
         />
       )}
 
       {/* ASIDE (Le menu blanc) */}
       <aside className={`
-        fixed z-[105] transition-all duration-300 ease-in-out font-sans
+        fixed z-105 transition-all duration-300 ease-in-out font-sans
         lg:left-8 lg:top-30 lg:w-75 lg:translate-x-0
-        max-lg:top-24 max-lg:left-4 max-lg:w-[280px]
-        ${isOpen ? 'max-lg:translate-x-0' : 'max-lg:-translate-x-[120%]'}
+        max-lg:top-24 max-lg:left-4 max-lg:w-70
+        ${isOpen ? 'max-lg:translate-x-0' : 'max-lg:translate-x-[-120%]'}
       `}>
         
         {/* Badge Statut (Desktop) */}
@@ -49,14 +49,14 @@ const Sidebar = ({ currentPage, setPage, estActif, isOpen, setIsOpen }) => {
           {isOpen && (
             <button 
               onClick={() => setIsOpen(false)}
-              className="lg:hidden absolute -right--3 -top-3 z-[110] p-2 bg-white border border-gray-100 rounded-xl shadow-lg text-[#951418] hover:scale-110 transition-transform"
+              className="lg:hidden absolute -right--3 -top-3 z-110 p-2 bg-white border border-gray-100 rounded-xl shadow-lg text-[#951418] hover:scale-110 transition-transform"
             >
               <X size={18} />
             </button>
           )}
 
           {/* Navigation principale */}
-          <nav className="w-full bg-white flex flex-col p-6 rounded-[32px] shadow-2xl border border-gray-50">
+          <nav className="w-full bg-white flex flex-col p-6 rounded-4xl shadow-2xl border border-gray-50">
             <div className="flex-1 space-y-1">
               {menuItems.map((item) => (
                 <button
