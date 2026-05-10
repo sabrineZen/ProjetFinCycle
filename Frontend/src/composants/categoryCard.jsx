@@ -24,9 +24,12 @@ function CategoryCard({ couleur, category, hoverClass, onClick }) {
       </div>
 
       {/* --- TITRE AJUSTÉ --- */}
-      <h2 className="text-sm sm:text-base md:text-lg font-bold mt-4 text-white text-center uppercase tracking-tight">
-        {category.name}
-      </h2>
+      <h2 
+  className="text-sm sm:text-base md:text-lg font-bold mt-4 text-center uppercase tracking-tight"
+  style={{ color: "#8B2A1B" }} // Ta nouvelle couleur ici
+>
+  {category.name}
+</h2>
 
       {/* --- EFFET DE BRILLANCE --- */}
       <div className="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity duration-300 pointer-events-none" />

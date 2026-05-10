@@ -1,132 +1,110 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBasketShopping } from "react-icons/fa6";
-import { TbReportMoney } from "react-icons/tb";
-import { MdLogout, MdOutlineShoppingBag } from "react-icons/md";
-import { BsPerson } from "react-icons/bs";
-import { IoChevronForward, IoSettingsOutline } from "react-icons/io5";
 import { useState } from "react";
+import { FiUser, FiShoppingBag, FiMapPin, FiSettings, FiLogOut, FiMail, FiPhone, FiEdit2, FiChevronRight } from "react-icons/fi";
+import { LuWallet } from "react-icons/lu"; 
+import { BiBasket } from "react-icons/bi"; 
 
-// Tes composants
+// Tes imports réels
 import InfoPersonnelles from "../../composants/infospersonnelles";
 import MesCommandes from "../../composants/mescommandes";
 import Parametre from "../../composants/paremtre";
 
 function ProfilPage() {
+  // L'état qui gère quelle page est affichée à droite
   const [pageActive, setPageActive] = useState("informations");
 
-  // Configuration des animations
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
-
   const menuItems = [
-    { id: "informations", label: "Informations", icon: BsPerson },
-    { id: "commandes", label: "Mes Commandes", icon: MdOutlineShoppingBag },
-    { id: "parmetres", label: "Paramètres", icon: IoSettingsOutline },
+    { id: "informations", label: "Informations", icon: FiUser },
+    { id: "commandes", label: "mes commandes", icon: FiShoppingBag },
+   
+    { id: "parametres", label: "Paramètres", icon: FiSettings },
   ];
 
+  // Fonction pour afficher le bon composant à droite
+  const renderContent = () => {
+    switch (pageActive) {
+      case "informations":
+        return <InfoPersonnelles />;
+      case "commandes":
+        return <MesCommandes />;
+      case "parametres":
+        return <Parametre />;
+      case "adresses":
+        return <div className="p-4 text-gray-500 italic">Section Adresses en cours de développement...</div>;
+      default:
+        return <InfoPersonnelles />;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#FFF9F5] p-4 md:p-8 font-sans">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#FDF1EB] p-4 md:p-10 font-sans text-[#6D2829]">
+      <div className="max-w-7xl mx-auto space-y-8">
         
-        {/* ── HEADER PROFIL (Adapté Orange/Noir) ── */}
+        {/* ── HEADER PROFIL ── */}
         <motion.div 
-          initial="hidden" animate="visible" variants={containerVariants}
-          className="relative overflow-hidden bg-white rounded-[40px] shadow-[0_15px_40px_rgba(254,125,50,0.08)] border border-white p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6"
+          initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-[32px] p-6 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-sm border border-white"
         >
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="relative group">
-              {/* Gradient subtil orange */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#FE7D32] to-[#FFB385] rounded-full blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" 
-                className="relative w-24 h-24 rounded-full object-cover border-4 border-white shadow-xl"
-                alt="Avatar"
-              />
-            </div>
-            <div className="text-center md:text-left">
-              <h1 className="text-3xl font-black text-[#1A1208] tracking-tighter uppercase">
-                Sophie <span className="text-[#FE7D32]">Martin</span>
-              </h1>
-              <p className="text-gray-400 font-bold tracking-[3px] text-[10px] uppercase mt-1">Membre Gourmet Premium</p>
-            </div>
+          <div className="flex items-center gap-5">
+            <img 
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" 
+              className="w-20 h-20 rounded-full object-cover border-2 border-[#FDF1EB]"
+              alt="Avatar"
+            />
+            <h1 className="text-2xl font-bold">Sophie Martin</h1>
           </div>
-          
-          {/* Bouton Primaire Orange */}
-          <button className="bg-[#FE7D32] hover:bg-[#e66a25] text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all shadow-[0_10px_20px_rgba(254,125,50,0.2)] active:scale-95">
-            Modifier le profil
+          <button className="bg-[#FF7A30] hover:bg-[#e66a25] text-white px-8 py-3 rounded-full text-sm font-semibold transition-all shadow-lg shadow-[#FF7A30]/20">
+            modifier profil
           </button>
         </motion.div>
 
-        {/* ── STATISTIQUES (Harmonisation des couleurs) ── */}
+        {/* ── STATS ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <StatCard 
-            label="Dépenses Totales" 
-            value="65.400 DA" 
-            icon={<TbReportMoney />} 
-            color="#FE7D32" /* Orange principal */
-            delay={0.1}
-          />
-          <StatCard 
-            label="Articles commandés" 
-            value="48 Plats" 
-            icon={<FaBasketShopping />} 
-            color="#1A1208" /* Noir secondaire */
-            delay={0.2}
-          />
+          <StatCard label="Depense" value="654DA" icon={LuWallet} iconBg="#FDF1EB" iconColor="#9C6D57" />
+          <StatCard label="Panier" value="48" icon={BiBasket} iconBg="#E6FAF5" iconColor="#3CDFB0" />
         </div>
 
-        {/* ── CORPS DE PAGE (Menu + Contenu) ── */}
+        {/* ── NAVIGATION ET CONTENU ── */}
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
-          {/* Menu Latéral (Style épuré) */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="w-full lg:w-80 bg-white rounded-[35px] shadow-xl shadow-black/[0.02] p-6 space-y-2 border border-gray-100"
-          >
-            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[4px] mb-6 px-4">Mon Espace</p>
-            
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setPageActive(item.id)}
-                className={`w-full flex justify-between items-center p-4 rounded-2xl transition-all duration-300 group
-                  ${pageActive === item.id 
-                    ? "bg-[#FE7D32] text-white shadow-[0_10px_20px_rgba(254,125,50,0.25)] translate-x-2" 
-                    : "hover:bg-[#FFF9F5] text-[#1A1208]"}`}
-              >
-                <div className="flex items-center gap-4">
-                  <item.icon className={`text-xl ${pageActive === item.id ? "text-white" : "text-[#FE7D32]"}`} />
-                  <span className={`font-bold text-sm tracking-tight ${pageActive === item.id ? "text-white" : "text-[#1A1208]"}`}>
-                    {item.label}
-                  </span>
-                </div>
-                <IoChevronForward className={`transition-transform opacity-50 ${pageActive === item.id ? "rotate-90" : "group-hover:translate-x-1"}`} />
-              </button>
-            ))}
+          {/* MENU GAUCHE */}
+          <div className="w-full lg:w-72 bg-white rounded-[32px] p-5 shadow-sm border border-white">
+            <div className="space-y-2">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setPageActive(item.id)} // C'est ici que la magie opère
+                  className={`w-full flex justify-between items-center p-4 rounded-2xl transition-all duration-300
+                    ${pageActive === item.id 
+                      ? "bg-[#FF7A30] text-white shadow-md" 
+                      : "hover:bg-[#FFF5F0] text-[#6D2829]"}`}
+                >
+                  <div className="flex items-center gap-4">
+                    <item.icon className={`text-xl ${pageActive === item.id ? "text-white" : "text-[#FF7A30]"}`} />
+                    <span className="font-semibold text-sm capitalize">{item.label}</span>
+                  </div>
+                  <FiChevronRight className={`${pageActive === item.id ? "rotate-90" : "opacity-30"}`} />
+                </button>
+              ))}
+            </div>
 
-            <div className="pt-6 mt-6 border-t border-gray-100">
-              <button className="w-full flex items-center gap-4 p-4 rounded-2xl text-red-500 hover:bg-red-50 transition-colors group">
-                <MdLogout className="text-xl group-hover:rotate-12 transition-transform" />
-                <span className="font-black text-xs uppercase tracking-widest">Se déconnecter</span>
+            <div className="mt-6 pt-6 border-t border-gray-50">
+              <button className="w-full flex items-center gap-4 p-4 text-[#FF7A30] font-bold hover:bg-red-50 hover:text-red-500 rounded-2xl transition-all">
+                <FiLogOut className="text-xl" />
+                <span className="text-sm">Se deconnecter</span>
               </button>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Zone de Contenu Dynamique */}
+          {/* CONTENU DROITE (Dynamique) */}
           <motion.div 
-            key={pageActive}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="flex-1 w-full bg-white rounded-[40px] shadow-2xl shadow-black/[0.02] p-6 md:p-10 border border-gray-100 min-h-[500px]"
+            key={pageActive} // Oblige Framer Motion à rejouer l'anim au changement de page
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex-1 w-full bg-white rounded-[32px] p-8 md:p-10 shadow-sm border border-white min-h-[500px]"
           >
             <AnimatePresence mode="wait">
-              {pageActive === "informations" && <InfoPersonnelles key="info" />}
-              {pageActive === "commandes" && <MesCommandes key="orders" />}
-              {pageActive === "parmetres" && <Parametre key="settings" />}
+              {renderContent()}
             </AnimatePresence>
           </motion.div>
 
@@ -136,26 +114,17 @@ function ProfilPage() {
   );
 }
 
-// Composant interne pour les cartes de stats
-function StatCard({ label, value, icon, color, delay }) {
+function StatCard({ label, value, icon: Icon, iconBg, iconColor }) {
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay }}
-      className="bg-white p-6 rounded-[35px] shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-gray-50 flex justify-between items-center hover:shadow-md transition-shadow group"
-    >
+    <div className="bg-white p-6 rounded-[32px] shadow-sm border border-white flex justify-between items-center">
       <div>
-        <p className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-60" style={{ color }}>{label}</p>
-        <p className="text-2xl font-black text-[#1A1208]">{value}</p>
+        <p className="text-sm font-medium text-gray-400 capitalize">{label}</p>
+        <p className="text-3xl font-extrabold text-[#6D2829]">{value}</p>
       </div>
-      <div 
-        className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-transform group-hover:scale-110"
-        style={{ backgroundColor: `${color}15`, color: color }}
-      >
-        {icon}
+      <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-inner" style={{ backgroundColor: iconBg, color: iconColor }}>
+        <Icon />
       </div>
-    </motion.div>
+    </div>
   );
 }
 

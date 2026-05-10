@@ -20,15 +20,64 @@ function CategoriesPage() {
 
   // Ta base de données locale
   const categories = [
-    { id: 1, nom: "Plats Traditionnel", plats: [{ id: 11, name: "Couscous", prix: 450, image: "/couscous.png" }, { id: 12, name: "Rechta", prix: 380, image: "/rechta.png" }, { id: 13, name: "Chakhchoukha", prix: 400, image: "/chakh.png" }] },
-    { id: 2, nom: "Grillades", plats: [{ id: 21, name: "Brochettes Viande", prix: 350, image: "/broch.png" }, { id: 22, name: "Kefta", prix: 300, image: "/kefta.png" }] },
-    { id: 3, nom: "Fast Food", plats: [{ id: 31, name: "Burger Maison", prix: 250, image: "/burger.png" }, { id: 32, name: "Pizza Rapide", prix: 280, image: "/pizza.png" }] },
-    { id: 4, nom: "Salades", plats: [{ id: 41, name: "Salade Mechouia", prix: 180, image: "/mechouia.png" }, { id: 42, name: "Salade Niçoise", prix: 200, image: "/nicoise.png" }] },
-    { id: 5, nom: "Dessert", plats: [{ id: 51, name: "Baklawa", prix: 200, image: "/baklawa.png" }, { id: 52, name: "Qalb Louz", prix: 180, image: "/qalblouz.png" }] },
-    { id: 6, nom: "Boissons", plats: [{ id: 61, name: "Jus Citron", prix: 120, image: "/citron.png" }, { id: 62, name: "Thé Menthe", prix: 80, image: "/the.png" }] },
-    { id: 7, nom: "Plats Asiatique", plats: [{ id: 71, name: "Sushi Maison", prix: 450, image: "/sushi.png" }, { id: 72, name: "Riz Cantonais", prix: 350, image: "/riz.png" }] },
-    { id: 8, nom: "Plats africains", plats: [{ id: 81, name: "Poulet Yassa", prix: 400, image: "/yassa.png" }, { id: 82, name: "Mafé", prix: 350, image: "/mafe.png" }] }, 
-  ];
+    { 
+        id: 1, nom: "Plats Traditionnel", 
+        plats: [
+            { id: 11, name: "Couscous", prix: 450, image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 12, name: "Rechta", prix: 380, image: "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 13, name: "Chakhchoukha", prix: 400, image: "https://images.unsplash.com/photo-1589113103503-4966640c5780?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 2, nom: "Grillades", 
+        plats: [
+            { id: 21, name: "Brochettes Viande", prix: 350, image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 22, name: "Kefta", prix: 300, image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 3, nom: "Fast Food", 
+        plats: [
+            { id: 31, name: "Burger Maison", prix: 250, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 32, name: "Pizza Rapide", prix: 280, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 4, nom: "Salades", 
+        plats: [
+            { id: 41, name: "Salade Mechouia", prix: 180, image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 42, name: "Salade Niçoise", prix: 200, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 5, nom: "Dessert", 
+        plats: [
+            { id: 51, name: "Baklawa", prix: 200, image: "https://images.unsplash.com/photo-1519676867240-f031ee04a113?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 52, name: "Qalb Louz", prix: 180, image: "https://images.unsplash.com/photo-1605192554106-d549b1b975cd?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 6, nom: "Boissons", 
+        plats: [
+            { id: 61, name: "Jus Citron", prix: 120, image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 62, name: "Thé Menthe", prix: 80, image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 7, nom: "Plats Asiatique", 
+        plats: [
+            { id: 71, name: "Sushi Maison", prix: 450, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 72, name: "Riz Cantonais", prix: 350, image: "https://images.unsplash.com/photo-1512058560550-42749359a97b?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    },
+    { 
+        id: 8, nom: "Plats africains", 
+        plats: [
+            { id: 81, name: "Poulet Yassa", prix: 400, image: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?auto=format&fit=crop&w=800&q=80" }, 
+            { id: 82, name: "Mafé", prix: 350, image: "https://images.unsplash.com/photo-1547592166-23ac45744a05?auto=format&fit=crop&w=800&q=80" }
+        ] 
+    }
+];
 
   const idAChercher = stateRecu?.id || stateRecu?.catId;
   const catAfficher = categories.find((cat) => String(cat.id) === String(idAChercher));

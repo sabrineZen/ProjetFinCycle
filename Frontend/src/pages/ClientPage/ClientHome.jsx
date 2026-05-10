@@ -10,7 +10,14 @@ import RestaurantPopular from "../../composants/retaurantPopular";
 import Footer from "../../composants/footer";
 import Panier from "../../composants/panier";
 import LuxuryInfiniteCircle from "../../composants/LuxuryInfiniteCircle";
+import pizza from "../../assets/pizza.png";
+import burger from "../../assets/burger.png";
+import tacos from "../../assets/tacos.png";
+import sushi from "../../assets/sushi.png";
 
+import resto1 from "../../assets/resto1.png";
+import resto2 from "../../assets/resto2.png";
+import resto3 from "../../assets/resto3.png";
 // Data
 import { categories as categoriesData } from "../../data/categories";
 
@@ -31,16 +38,17 @@ function Home() {
       setChargement(true);
       setTimeout(() => {
         setPlats([
-          { id: 1, name: "Burger Gourmet", prix: 13.50, image: "/burger.png" },
-          { id: 2, name: "Pizza Royale", prix: 15.00, image: "/pizza.png" },
-          { id: 3, name: "Sushi Mix", prix: 18.00, image: "/sushi.png" },
-          { id: 4, name: "Tacos XL", prix: 12.00, image: "/tacos.png" },
-        ]);
-        setRestaurants([
-          { id: 1, name: "Maison Opera", image: "/resto1.jpg" },
-          { id: 2, name: "Le Palace", image: "/resto2.jpg" },
-          { id: 3, name: "L'Ardoise", image: "/resto3.jpg" },
-        ]);
+  { id: 1, name: "Burger Gourmet", prix: 13.50, image: burger }, // On utilise la variable burger
+  { id: 2, name: "Pizza Royale", prix: 15.00, image: pizza },   // On utilise la variable pizza
+  { id: 3, name: "Sushi Mix", prix: 18.00, image: sushi },     // etc...
+  { id: 4, name: "Tacos XL", prix: 12.00, image: tacos },
+]);
+
+setRestaurants([
+  { id: 1, name: "Maison Opera", image: resto1 },
+  { id: 2, name: "Le Palace", image: resto2 },
+  { id: 3, name: "L'Ardoise", image: resto3 },
+]);
         setChargement(false);
       }, 800);
     };
