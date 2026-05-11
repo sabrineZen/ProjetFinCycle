@@ -10,55 +10,55 @@ import RestaurantPopular from "../../composants/retaurantPopular";
 import Footer from "../../composants/footer";
 import Panier from "../../composants/panier";
 import LuxuryInfiniteCircle from "../../composants/LuxuryInfiniteCircle";
+
+// Assets
 import pizza from "../../assets/pizza.png";
 import burger from "../../assets/burger.png";
 import tacos from "../../assets/tacos.png";
 import sushi from "../../assets/sushi.png";
-
 import resto1 from "../../assets/resto1.png";
 import resto2 from "../../assets/resto2.png";
 import resto3 from "../../assets/resto3.png";
+
 // Data
 import { categories as categoriesData } from "../../data/categories";
 
-function Home() {
+// ON RÉCUPÈRE LES PROPS DEPUIS APP.JS
+function Home({ panier, setPanier, ajouterAuPanier }) {
   const navigate = useNavigate();
   
-  // ─── ÉTATS ───
+  // ─── ÉTATS LOCAUX ───
   const [montrerPanier, setMontrerPanier] = useState(false);
   const [texteRecherche, setTexteRecherche] = useState("");
-  const [panier, setPanier] = useState([]);
   const [plats, setPlats] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [chargement, setChargement] = useState(true);
 
-  // ─── CHARGEMENT DES DONNÉES (Simulation API) ───
+  // ─── CHARGEMENT DES DONNÉES ───
   useEffect(() => {
     const loadData = async () => {
       setChargement(true);
+      // Simulation API
       setTimeout(() => {
         setPlats([
-  { id: 1, name: "Burger Gourmet", prix: 13.50, image: burger }, // On utilise la variable burger
-  { id: 2, name: "Pizza Royale", prix: 15.00, image: pizza },   // On utilise la variable pizza
-  { id: 3, name: "Sushi Mix", prix: 18.00, image: sushi },     // etc...
-  { id: 4, name: "Tacos XL", prix: 12.00, image: tacos },
-]);
+          { id: 1, name: "Burger Gourmet", prix: 13.50, image: burger },
+          { id: 2, name: "Pizza Royale", prix: 15.00, image: pizza },
+          { id: 3, name: "Sushi Mix", prix: 18.00, image: sushi },
+          { id: 4, name: "Tacos XL", prix: 12.00, image: tacos },
+        ]);
 
-setRestaurants([
-  { id: 1, name: "Maison Opera", image: resto1 },
-  { id: 2, name: "Le Palace", image: resto2 },
-  { id: 3, name: "L'Ardoise", image: resto3 },
-]);
+        setRestaurants([
+          { id: 1, name: "Maison Opera", image: resto1 },
+          { id: 2, name: "Le Palace", image: resto2 },
+          { id: 3, name: "L'Ardoise", image: resto3 },
+        ]);
         setChargement(false);
       }, 800);
     };
     loadData();
   }, []);
 
-  const ajouterAuPanier = (plat) => {
-    setPanier((prev) => [...prev, { ...plat, instanceId: Date.now() }]);
-  };
-
+  // Filtrage des plats
   const platsFiltrés = texteRecherche.trim() 
     ? plats.filter((p) => p.name.toLowerCase().includes(texteRecherche.toLowerCase()))
     : plats;
@@ -66,47 +66,36 @@ setRestaurants([
   return (
     <div className="flex flex-col bg-[#FFF9F5] min-h-screen overflow-x-hidden font-sans">
       
-      {/* ─── NAVBAR ─── */}
+      {/* ─── NAVBAR (Utilise le panier global) ─── */}
       <NavbarHome 
-        panierCount={panier.length}
+        panierCount={panier ? panier.length : 0}
         onTogglePanier={() => setMontrerPanier(!montrerPanier)} 
         plats={plats}
         setTexteRecherche={setTexteRecherche}
         montrerPanier={montrerPanier}
       />
 
-      {/* ─── PANIER FLOTTANT ─── */}
+      {/* ─── PANIER FLOTTANT (Géré avec l'état global) ─── */}
       <AnimatePresence>
         {montrerPanier && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setMontrerPanier(false)} 
-              className="fixed inset-0 z-[250] bg-black/5 backdrop-blur-[4px]" 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="z-[300]"
+          >
+            <Panier 
+              produits={panier} 
+              setPanier={setPanier} 
+              onClose={() => setMontrerPanier(false)} 
             />
-            <motion.div 
-              initial={{ opacity: 0, y: -20, scale: 0.95 }} 
-              animate={{ opacity: 1, y: 0, scale: 1 }} 
-              exit={{ opacity: 0, y: -20, scale: 0.95 }} 
-              className="fixed top-[100px] right-4 md:right-16 z-[300] w-full max-w-[420px]"
-            >
-              <div className="bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden border border-white/50">
-                <Panier 
-                  produits={panier} 
-                  setPanier={setPanier} 
-                  onClose={() => setMontrerPanier(false)} 
-                />
-              </div>
-            </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
 
       <main className="w-full pt-28 md:pt-36">
         
-        {/* ─── SECTION : NOS UNIVERS (Infinite Circle) ─── */}
+        {/* ─── SECTION : NOS UNIVERS ─── */}
         <section id="univers" className="pb-16 px-4 md:px-20 max-w-[1600px] mx-auto">
           <header className="flex justify-between items-end mb-12">
             <div>
@@ -115,7 +104,6 @@ setRestaurants([
                 Nos <span className="text-[#FE7D32]">Univers</span>
               </h2>
             </div>
-            
           </header>
 
           <div className="h-[450px] flex items-center justify-center">
@@ -127,7 +115,6 @@ setRestaurants([
                   <CategoryCard
                     category={cat}
                     couleur={cat.couleur}
-                    // CORRECTION ICI : On envoie l'objet 'cat' complet au state
                     onClick={() => {
                         if(isCenter) {
                             navigate("/categoriesPage", { state: cat });

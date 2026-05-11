@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Navbar & Layout Components
@@ -6,10 +6,7 @@ import Sidebar from './composants/navbar/Sidebar';
 import Header from './composants/navbar/Header';
 
 // --- PAGES ---
-// Auth
 import Login from "./pages/loginpage/Login";
-
-// Client (Tes pages ajoutées)
 import Home from './pages/ClientPage/ClientHome.jsx';
 import CategoriesPage from './pages/ClientPage/CategoriesPage.jsx';
 import ProfilPage from './pages/ClientPage/ProfilPage.jsx';
@@ -35,11 +32,6 @@ import StatistiquesPage from './pages/AdminPage/StatistiquesPage.jsx';
 import './index.css';
 
 // --- LAYOUTS ---
-
-/**
- * Layout pour l'interface Restaurateur
- * Gère l'état de la navigation interne (Sidebar)
- */
 const RestaurateurLayout = () => {
   const [activePage, setActivePage] = useState('dashboard');
   const [restaurantActif, setRestaurantActif] = useState(true);
@@ -58,10 +50,7 @@ const RestaurateurLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#FFF8F3] flex flex-col">
-      <Header 
-        title={getTitle(activePage)} 
-        onMenuClick={() => setIsMenuOpen(true)} 
-      />
+      <Header title={getTitle(activePage)} onMenuClick={() => setIsMenuOpen(true)} />
       <div className="flex flex-1">
         <Sidebar 
           currentPage={activePage} 
@@ -85,15 +74,48 @@ const RestaurateurLayout = () => {
 // --- APP PRINCIPALE ---
 
 function App() {
+  // ─── 1. ÉTAT GLOBAL DU PANIER ───
+  const [panier, setPanier] = useState(() => {
+    // On récupère le panier sauvegardé au démarrage
+    const localData = localStorage.getItem("platigo_cart");
+    return localData ? JSON.parse(localData) : [];
+  });
+
+  // ─── 2. PERSISTANCE (LocalStorage) ───
+  useEffect(() => {
+    localStorage.setItem("platigo_cart", JSON.stringify(panier));
+  }, [panier]);
+
+  // ─── 3. LOGIQUE D'AJOUT (Gère les doublons avec quantité) ───
+  const ajouterAuPanier = (plat) => {
+    setPanier((prev) => {
+      const existe = prev.find((item) => item.id === plat.id);
+      if (existe) {
+        return prev.map((item) =>
+          item.id === plat.id ? { ...item, quantite: (item.quantite || 1) + 1 } : item
+        );
+      }
+      return [...prev, { ...plat, quantite: 1 }];
+    });
+  };
+
   return (
     <BrowserRouter>
       <Routes>
         {/* --- AUTH --- */}
         <Route path="/login" element={<Login />} />
 
-        {/* --- CLIENT --- */}
-        <Route path="/homeClient" element={<Home />} />
-        <Route path="/categoriesPage" element={<CategoriesPage />} />
+        {/* --- CLIENT (Passage des données du panier) --- */}
+        <Route 
+          path="/homeClient" 
+          element={<Home panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />} 
+        />
+        <Route 
+          path="/categoriesPage" 
+          element={<CategoriesPage panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />} 
+        />
+        
+        {/* Autres pages Client */}
         <Route path="/CategoriesAll" element={<AllCategories />} />
         <Route path="/profil" element={<ProfilPage />} />
         <Route path="/hero" element={<PlatigoPremiumHero />} />
@@ -112,19 +134,9 @@ function App() {
           <Route path="statistiques" element={<StatistiquesPage />} />
         </Route>
 
-        {/* --- GESTION DES ERREURS & REDIRECTIONS --- */}
-        {/* Si l'utilisateur arrive sur "/", on le redirige vers le login ou le home */}
+        {/* --- REDIRECTIONS --- */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-        
-        {/* Redirection pour toute URL inconnue */}
         <Route path="*" element={<Navigate to="/homeClient" replace />} />
-
-        {/* Route de test (optionnel) */}
-        <Route path="/test-tailwind" element={
-          <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <h1 className="text-4xl font-bold text-green-500">Tailwind OK ✅</h1>
-          </div>
-        } />
       </Routes>
     </BrowserRouter>
   );

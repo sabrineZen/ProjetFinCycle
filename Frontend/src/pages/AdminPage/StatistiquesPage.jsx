@@ -1,183 +1,173 @@
+import { useState, useEffect } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
-import { FaEuroSign, FaShoppingCart, FaUsers, FaStore } from "react-icons/fa";
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {
+  FaEuroSign, FaShoppingCart, FaUsers, FaStore, FaBars
+} from "react-icons/fa";
+import {
+  LineChart, Line, PieChart, Pie, Cell,
+  XAxis, YAxis, Tooltip, ResponsiveContainer
+} from "recharts";
 
 function StatistiquesPage() {
+  const [sidebarOuverte, setSidebarOuverte] = useState(false);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
-    { titre: "Revenus totaux", valeur: "€ 2,847", evolution: "+12.5%", icon: <FaEuroSign /> },
-    { titre: "Commandes totaux", valeur: "142", evolution: "+8.2%", icon: <FaShoppingCart /> },
-    { titre: "Nouveaux clients", valeur: "3,847", evolution: "+24.5%", icon: <FaUsers /> },
-    { titre: "Taux de statistique", valeur: "22,847", evolution: "+12.5%", icon: <FaStore /> },
-  ];
+  // Récupération des données du backend
+  useEffect(() => {
+    fetch("http://localhost:5000/api/admin/statistiques/global")
+      .then((res) => res.json())
+      .then((json) => {
+        setData(json);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Erreur:", err);
+        setLoading(false);
+      });
+  }, []);
 
-  const revenusData = [
-    { mois: "Jan", revenus: 30000 },
-    { mois: "Fév", revenus: 32000 },
-    { mois: "Mar", revenus: 34000 },
-    { mois: "Avr", revenus: 36000 },
-    { mois: "Mai", revenus: 38000 },
-    { mois: "Juin", revenus: 42000 },
-    { mois: "Juil", revenus: 45000 },
-    { mois: "Août", revenus: 50000 },
-  ];
-
-  const commandesData = [
-    { mois: "Jan", commandes: 250 },
-    { mois: "Fév", commandes: 260 },
-    { mois: "Mar", commandes: 270 },
-    { mois: "Avr", commandes: 280 },
-    { mois: "Mai", commandes: 300 },
-    { mois: "Juin", commandes: 310 },
-    { mois: "Juil", commandes: 320 },
-    { mois: "Août", commandes: 340 },
-  ];
-
-  const categoriesData = [
-    { name: "Français", value: 35, color: "#4A90D9" },
-    { name: "Italien", value: 25, color: "#2ECC71" },
-    { name: "Japonais", value: 20, color: "#F39C12" },
-    { name: "Fast-food", value: 12, color: "#E74C3C" },
-    { name: "Autres", value: 8, color: "#9B59B6" },
-  ];
-
-  const topRestaurants = [
-    { rang: 1, nom: "Sushi Paradise", commandes: 523, revenus: "$38,920", evolution: "+15.2%" },
-    { rang: 2, nom: "Le Gourmet", commandes: 523, revenus: "$45,670", evolution: "+23.5%" },
-    { rang: 3, nom: "Le Petit Bistrot", commandes: 523, revenus: "$23,450", evolution: "+8.7%" },
-    { rang: 4, nom: "Pizza Roma", commandes: 523, revenus: "$19,340", evolution: "+12.3%" },
-    { rang: 5, nom: "Burger House", commandes: 523, revenus: "$12,890", evolution: "-5.2%" },
-  ];
-
-  const platsPopulaires = [
-    { rang: 1, nom: "nom plats", restaurant: "nom restaurant", commandes: 2004 },
-    { rang: 2, nom: "", restaurant: "", commandes: null },
-    { rang: 3, nom: "", restaurant: "", commandes: null },
-    { rang: 4, nom: "", restaurant: "", commandes: null },
-    { rang: 5, nom: "", restaurant: "", commandes: null },
-    { rang: 6, nom: "", restaurant: "", commandes: null },
-  ];
+  if (loading) return <div className="p-10 text-center font-bold text-secondary">Chargement...</div>;
 
   return (
     <div className="flex">
-      <SidebarAdmin />
-      <div className="ml-56 p-8 w-full min-h-screen bg-fond">
+      {/* Overlay mobile */}
+      {sidebarOuverte && (
+        <div
+          className="fixed inset-0 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setSidebarOuverte(false)}
+        />
+      )}
 
-        {/* Titre */}
-        <h1 className="text-3xl font-bold text-secondary">Statistiques</h1>
-        <p className="text-gray-400 mt-1 mb-8">Vue d'ensemble des performances de la plateforme</p>
+      {/* Sidebar */}
+      <div className={`
+        fixed top-0 left-0 h-full z-50 transition-transform duration-300
+        lg:translate-x-0 lg:w-56
+        ${sidebarOuverte ? "translate-x-0" : "-translate-x-full"}
+        w-56
+      `}>
+        <SidebarAdmin />
+      </div>
 
-        {/* Cards KPI */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-bordure">
+      {/* Topbar mobile */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-bordure flex items-center px-4 z-30">
+        <button onClick={() => setSidebarOuverte(true)}>
+          <FaBars className="text-secondary" />
+        </button>
+        <h1 className="ml-4 font-bold text-secondary">Statistiques</h1>
+      </div>
+
+      {/* Content */}
+      <div className="w-full min-h-screen bg-fond p-4 pt-20 lg:pt-8 lg:ml-56 lg:p-8 font-sans">
+
+        {/* Header Style Ancien */}
+        <div className="hidden lg:block text-left">
+          <h1 className="text-3xl font-bold text-secondary">Statistiques</h1>
+          <p className="text-gray-400 mt-1 mb-8">
+            Vue d'ensemble des performances
+          </p>
+        </div>
+
+        <p className="text-gray-400 mb-4 lg:hidden text-left">
+          Performance globale
+        </p>
+
+        {/* 📊 STATS CARDS (Dynamique avec ton style) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+          {data?.statsCards.map((stat, index) => (
+            <div key={index} className="bg-white rounded-2xl p-5 shadow-sm border border-bordure text-left">
               <div className="flex justify-between items-start">
-                <span className="text-secondary text-xl">{stat.icon}</span>
-                <span className="text-green-500 text-sm font-medium">{stat.evolution}</span>
+                <span className="text-orange-400 text-xl">
+                    {stat.icon === 'euro' && <FaEuroSign />}
+                    {stat.icon === 'cart' && <FaShoppingCart />}
+                    {stat.icon === 'users' && <FaUsers />}
+                    {stat.icon === 'store' && <FaStore />}
+                </span>
+                <span className="text-green-500 text-sm font-medium">+12%</span>
               </div>
-              <p className="text-secondary text-sm mt-2">{stat.titre}</p>
+              <p className="text-secondary text-sm mt-2 uppercase tracking-tighter font-medium">{stat.titre}</p>
               <p className="text-3xl font-bold text-secondary mt-1">{stat.valeur}</p>
             </div>
           ))}
         </div>
 
-        {/* Graphiques ligne + barres */}
-        <div className="grid grid-cols-2 gap-6 mb-6">
-
-          {/* Revenus mensuels */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <h2 className="text-secondary font-semibold mb-4">Revenus mensuels ($)</h2>
+        {/* 📈 GRAPHS (Gardant ton ancienne disposition) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Revenus */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure text-left">
+            <h2 className="text-secondary font-semibold mb-4 italic text-left">Revenus mensuels (DA)</h2>
             <ResponsiveContainer width="100%" height={220}>
-              <LineChart data={revenusData}>
-                <XAxis dataKey="mois" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
+              <LineChart data={data?.revenusGraph}>
+                <XAxis dataKey="mois" axisLine={false} tickLine={false} />
+                <YAxis axisLine={false} tickLine={false} />
                 <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="revenus" stroke="#4A90D9" strokeWidth={2} dot={{ r: 4 }} name="Revenus" />
+                <Line type="monotone" dataKey="revenus" stroke="#FB923C" strokeWidth={3} dot={{r:4, fill:'#FB923C'}} />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Commandes mensuelles */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <h2 className="text-secondary font-semibold mb-4">Commandes mensuelles</h2>
+          {/* Catégories */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure text-left">
+            <h2 className="text-secondary font-semibold mb-4 italic text-left">Répartition par Catégories</h2>
             <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={commandesData}>
-                <XAxis dataKey="mois" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="commandes" fill="#2ECC71" name="Commandes" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Camembert + Top restaurants */}
-        <div className="grid grid-cols-2 gap-6 mb-6">
-
-          {/* Distribution par catégorie */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <h2 className="text-secondary font-semibold mb-4">Distribution par catégorie</h2>
-            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
-                <Pie data={categoriesData} cx="50%" cy="50%" outerRadius={90} dataKey="value" label={({ name, value }) => `${name}: ${value}%`}>
-                  {categoriesData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} />
+                <Pie data={data?.categoriesPie} dataKey="value" cx="50%" cy="50%" innerRadius={60} outerRadius={80}>
+                  {data?.categoriesPie.map((c, i) => (
+                    <Cell key={i} fill={c.color} />
                   ))}
                 </Pie>
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
           </div>
-
-          {/* Top Restaurants */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-            <h2 className="text-secondary font-semibold mb-4">Top Restaurants</h2>
-            <div className="flex flex-col gap-3">
-              {topRestaurants.map((r) => (
-                <div key={r.rang} className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-full bg-button text-white text-xs flex items-center justify-center font-bold flex-shrink-0">{r.rang}</span>
-                  <div className="flex-1">
-                    <p className="text-secondary text-sm font-medium">{r.nom}</p>
-                    <p className="text-gray-400 text-xs">{r.commandes} commandes</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-secondary text-sm font-bold">{r.revenus}</p>
-                    <p className={`text-xs ${r.evolution.startsWith("+") ? "text-green-500" : "text-red-500"}`}>{r.evolution}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Plats les plus commandés */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure">
-          <h2 className="text-secondary font-semibold mb-4">Plats les plus commandés</h2>
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-bordure">
-                <th className="text-left px-4 py-2 text-secondary text-sm font-medium">Range</th>
-                <th className="text-left px-4 py-2 text-secondary text-sm font-medium">Plat</th>
-                <th className="text-left px-4 py-2 text-button text-sm font-medium">Restaurant</th>
-                <th className="text-right px-4 py-2 text-button text-sm font-medium">Commandes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {platsPopulaires.map((p) => (
-                <tr key={p.rang} className="border-b border-bordure">
-                  <td className="px-4 py-3">
-                    <span className="w-7 h-7 rounded-full bg-button text-white text-xs flex items-center justify-center font-bold">{p.rang}</span>
-                  </td>
-                  <td className="px-4 py-3 text-secondary text-sm">{p.nom}</td>
-                  <td className="px-4 py-3 text-secondary text-sm">{p.restaurant}</td>
-                  <td className="px-4 py-3 text-secondary text-sm text-right">{p.commandes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/* 🏆 TABLE PLATS POPULAIRES (Design Image 5 & 6) */}
+<div className="bg-white rounded-[25px] p-8 shadow-sm border border-[#EEDDDA] mt-8 text-left">
+  <h2 className="text-[#4A1D1D] font-bold text-lg mb-6 italic">Plats populaires</h2>
+  
+  <div className="overflow-x-auto">
+    <table className="w-full text-left border-collapse">
+      <thead>
+        <tr className="text-[#8C7474] text-xs uppercase tracking-widest border-b border-[#F5E6E0]">
+          <th className="pb-4 font-semibold px-4">Rank</th>
+          <th className="pb-4 font-semibold px-4">Plat</th>
+          <th className="pb-4 font-semibold px-4">Restaurant</th>
+          <th className="pb-4 font-semibold px-4 text-right">Commandes</th>
+        </tr>
+      </thead>
+      <tbody className="text-sm">
+        {data?.platsPopulaires?.length > 0 ? (
+          data.platsPopulaires.map((p) => (
+            <tr key={p.rang} className="group hover:bg-[#FDF1E9] transition-colors border-b border-[#F5E6E0] last:border-0">
+              {/* Le rang vient de ton backend (index + 1) */}
+              <td className="py-5 px-4 text-[#8C7474] font-medium">{p.rang}</td>
+              
+              {/* Le nom du plat en bordeaux foncé comme sur l'image */}
+              <td className="py-5 px-4 text-[#4A1D1D] font-bold">{p.nom}</td>
+              
+              {/* Le nom du restaurant en gris-rosé */}
+              <td className="py-5 px-4 text-[#8C7474]">{p.restaurant}</td>
+              
+              {/* Le nombre de commandes avec badge discret */}
+              <td className="py-5 px-4 text-right font-bold text-[#4A1D1D]">
+                <span className="bg-[#FFF9F7] px-3 py-1 rounded-lg border border-[#FEECE2]">
+                  {p.commandes?.toLocaleString() || 0}
+                </span>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="4" className="py-10 text-center text-[#8C7474] italic">
+              Aucune donnée disponible pour le moment.
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
 
       </div>
     </div>

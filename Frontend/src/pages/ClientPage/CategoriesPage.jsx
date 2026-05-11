@@ -8,15 +8,15 @@ import PlatPopular from "../../composants/platPopular";
 import Footer from "../../composants/footer";
 import Panier from "../../composants/panier";
 
-function CategoriesPage() {
+// RÉCUPÉRATION DES PROPS GLOBAL (panier, setPanier, ajouterAuPanier)
+function CategoriesPage({ panier, setPanier, ajouterAuPanier }) {
   const location = useLocation();
   const navigate = useNavigate();
   const stateRecu = location.state;
 
-  // ─── ÉTATS ───
+  // ─── ÉTATS LOCAUX ───
   const [montrerPanier, setMontrerPanier] = useState(false);
-  const [panier, setPanier] = useState([]);
-  const [texteRecherche, setTexteRecherche] = useState(""); // État pour la recherche
+  const [texteRecherche, setTexteRecherche] = useState(""); 
 
   // Ta base de données locale
   const categories = [
@@ -42,61 +42,27 @@ function CategoriesPage() {
             { id: 32, name: "Pizza Rapide", prix: 280, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" }
         ] 
     },
-    { 
-        id: 4, nom: "Salades", 
-        plats: [
-            { id: 41, name: "Salade Mechouia", prix: 180, image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 42, name: "Salade Niçoise", prix: 200, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { 
-        id: 5, nom: "Dessert", 
-        plats: [
-            { id: 51, name: "Baklawa", prix: 200, image: "https://images.unsplash.com/photo-1519676867240-f031ee04a113?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 52, name: "Qalb Louz", prix: 180, image: "https://images.unsplash.com/photo-1605192554106-d549b1b975cd?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { 
-        id: 6, nom: "Boissons", 
-        plats: [
-            { id: 61, name: "Jus Citron", prix: 120, image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 62, name: "Thé Menthe", prix: 80, image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { 
-        id: 7, nom: "Plats Asiatique", 
-        plats: [
-            { id: 71, name: "Sushi Maison", prix: 450, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 72, name: "Riz Cantonais", prix: 350, image: "https://images.unsplash.com/photo-1512058560550-42749359a97b?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { 
-        id: 8, nom: "Plats africains", 
-        plats: [
-            { id: 81, name: "Poulet Yassa", prix: 400, image: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 82, name: "Mafé", prix: 350, image: "https://images.unsplash.com/photo-1547592166-23ac45744a05?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    }
-];
+    { id: 4, nom: "Salades", plats: [{ id: 41, name: "Salade Mechouia", prix: 180, image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" }] },
+    { id: 5, nom: "Dessert", plats: [{ id: 51, name: "Baklawa", prix: 200, image: "https://images.unsplash.com/photo-1519676867240-f031ee04a113?auto=format&fit=crop&w=800&q=80" }] },
+    { id: 6, nom: "Boissons", plats: [{ id: 61, name: "Jus Citron", prix: 120, image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80" }] },
+    { id: 7, nom: "Plats Asiatique", plats: [{ id: 71, name: "Sushi Maison", prix: 450, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" }] },
+    { id: 8, nom: "Plats africains", plats: [{ id: 81, name: "Poulet Yassa", prix: 400, image: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?auto=format&fit=crop&w=800&q=80" }] }
+  ];
 
   const idAChercher = stateRecu?.id || stateRecu?.catId;
   const catAfficher = categories.find((cat) => String(cat.id) === String(idAChercher));
 
   // ─── LOGIQUE DE FILTRATION ───
-  // On filtre les plats de la catégorie selon le texte saisi
   const platsFiltrés = catAfficher?.plats.filter((plat) =>
     plat.name.toLowerCase().includes(texteRecherche.toLowerCase())
   ) || [];
 
-  const ajouterAuPanier = (plat) => {
-    setPanier((prev) => [...prev, { ...plat, instanceId: Date.now() }]);
-  };
-
+  // SI CATÉGORIE NON TROUVÉE
   if (!catAfficher) {
     return (
       <div className="h-screen flex flex-col items-center justify-center bg-[#FFF9F5]">
         <h2 className="text-2xl font-black text-secondary mb-4 uppercase">Catégorie introuvable</h2>
-        <button onClick={() => navigate("/home")} className="bg-[#FE7D32] text-white px-8 py-3 rounded-full font-bold shadow-lg">
+        <button onClick={() => navigate("/homeClient")} className="bg-[#FE7D32] text-white px-8 py-3 rounded-full font-bold shadow-lg">
           Retour à l'accueil
         </button>
       </div>
@@ -105,25 +71,31 @@ function CategoriesPage() {
 
   return (
     <div className="flex flex-col bg-[#FFF9F5] min-h-screen font-sans">
-      {/* NAVBAR : On connecte l'état de recherche ici */}
+      
+      {/* NAVBAR (Connectée au panier global) */}
       <NavbarHome 
         panierCount={panier.length} 
         onTogglePanier={() => setMontrerPanier(!montrerPanier)} 
-        plats={catAfficher.plats} // On passe les plats à la navbar si elle en a besoin pour l'auto-suggestion
-        setTexteRecherche={setTexteRecherche} // Fonction de mise à jour du texte
+        plats={catAfficher.plats} 
+        setTexteRecherche={setTexteRecherche} 
         montrerPanier={montrerPanier}
       />
 
+      {/* PANIER FLOTTANT (Connecté au panier global) */}
       <AnimatePresence>
         {montrerPanier && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMontrerPanier(false)} className="fixed inset-0 z-[250] bg-black/5 backdrop-blur-[4px]" />
-            <motion.div initial={{ opacity: 0, y: -20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -20, scale: 0.95 }} className="fixed top-[100px] right-4 md:right-16 z-[300] w-full max-w-[420px]">
-              <div className="bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden border border-white/50">
-                <Panier produits={panier} setPanier={setPanier} onClose={() => setMontrerPanier(false)} />
-              </div>
-            </motion.div>
-          </>
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            className="z-[300]"
+          >
+            <Panier 
+              produits={panier} 
+              setPanier={setPanier} 
+              onClose={() => setMontrerPanier(false)} 
+            />
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -136,7 +108,7 @@ function CategoriesPage() {
           <div className="h-1.5 w-24 bg-[#FE7D32] mt-4 rounded-full"></div>
         </header>
 
-        {/* AFFICHAGE DES RÉSULTATS OU MESSAGE VIDE */}
+        {/* AFFICHAGE DES RÉSULTATS */}
         {platsFiltrés.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-24">
             {platsFiltrés.map((plat, index) => (
@@ -148,14 +120,16 @@ function CategoriesPage() {
               >
                 <PlatPopular 
                   plat={plat} 
-                  onAjouter={() => ajouterAuPanier(plat)} 
+                  onAjouter={() => ajouterAuPanier(plat)} // Appelle la fonction de App.js
                 />
               </motion.div>
             ))}
           </div>
         ) : (
           <div className="text-center py-20">
-            <p className="text-gray-400 font-bold uppercase tracking-widest">Aucun plat ne correspond à "{texteRecherche}"</p>
+            <p className="text-gray-400 font-bold uppercase tracking-widest">
+                Aucun plat ne correspond à "{texteRecherche}"
+            </p>
           </div>
         )}
       </main>

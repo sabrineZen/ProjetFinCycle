@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FaBox, FaChevronRight } from "react-icons/fa";
 
 function HistoriqueAchats() {
-  // Simulation de données plus réalistes
   const [achats] = useState([
     { id: 101, prix: 1550, date: "04 Mai 2026", articles: 3 },
     { id: 102, prix: 850, date: "02 Mai 2026", articles: 1 },
@@ -17,10 +16,12 @@ function HistoriqueAchats() {
           <p className="text-gray-400 italic text-sm">Aucun achat récent</p>
         </div>
       ) : (
-        achats.map((achat, index) => (
+        achats.map((achat) => (
           <div 
             key={achat.id} 
             className="group bg-gray-50 hover:bg-white hover:shadow-md border border-gray-100 rounded-2xl p-4 transition-all duration-300 cursor-pointer"
+            role="button"
+            aria-label={`Détails de la commande ${achat.id}`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -44,15 +45,15 @@ function HistoriqueAchats() {
                   Livré
                 </span>
                 <span className="text-sm font-black text-[#8B2A1B]">
-                  {achat.prix} DA
+                  {achat.prix.toLocaleString()} DA
                 </span>
               </div>
             </div>
 
             {/* Petit indicateur de détail au survol */}
-            <div className="mt-3 pt-3 border-t border-dashed border-gray-200 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Voir les détails</span>
-               <FaChevronRight className="text-gray-300" size={10} />
+            <div className="mt-3 pt-3 border-t border-dashed border-gray-200 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
+                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Voir les détails</span>
+                <FaChevronRight className="text-gray-300 group-hover:text-orange-500 transition-colors" size={10} />
             </div>
           </div>
         ))

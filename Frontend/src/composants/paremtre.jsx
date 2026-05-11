@@ -3,6 +3,31 @@ import { IoLockClosed } from "react-icons/io5";
 import { MdAddCard } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { IoChevronDown } from "react-icons/io5";
+import { MdOutlineEdit } from "react-icons/md";
+import { FaHome, FaBriefcase } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
+const adresses = [
+    {
+        id: 1,
+        type: "Adresse principale",
+        icone: <FaHome className="text-white text-xl"/>,
+        parDefaut: true,
+        nom: "Sophie Martin",
+        rue: "12 Rue de la République",
+        ville: "75001 Paris",
+        pays: "France",
+    },
+    {
+        id: 2,
+        type: "Bureau",
+        icone: <FaBriefcase className="text-gray-500 text-xl"/>,
+        parDefaut: false,
+        nom: "Sophie Martin",
+        rue: "45 Avenue des Champs-Élysées",
+        ville: "75008 Paris",
+        pays: "France",
+    }
+]
 function Parametre(){
     return(
         <div className="space-y-6">
@@ -34,7 +59,6 @@ function Parametre(){
              </div>
             </div>
              
-            
 
             <div className="pb-4 border-b border-gray-200">{/*partie Compte*/}
                 <div className="flex items-center gap-2 mb-3">
