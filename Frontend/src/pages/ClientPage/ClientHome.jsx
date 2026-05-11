@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-
+// Remplace ton import actuel par celui-ci :
+import { FaHistory, FaShoppingCart, FaTrash, FaTimes, FaPlus, FaMinus, FaArrowLeft } from "react-icons/fa";
 // Composants
 import NavbarHome from "../../composants/navbarHome";
 import CategoryCard from "../../composants/categoryCard";
@@ -97,6 +98,8 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
         
         {/* ─── SECTION : NOS UNIVERS ─── */}
         <section id="univers" className="pb-16 px-4 md:px-20 max-w-[1600px] mx-auto">
+          
+          {/* HEADER AVEC TITRE ET BOUTON VOIR TOUT */}
           <header className="flex justify-between items-end mb-12">
             <div>
               <p className="text-[#FE7D32] text-xs font-bold uppercase tracking-[4px] mb-2">Explorer par thème</p>
@@ -104,8 +107,22 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
                 Nos <span className="text-[#FE7D32]">Univers</span>
               </h2>
             </div>
+
+            {/* LE BOUTON VOIR TOUT */}
+            <button 
+              onClick={() => navigate("/categoriesAll")} 
+              className="group flex items-center gap-3 bg-white border border-gray-100 hover:border-[#FE7D32] px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
+            >
+              <span className="text-[10px] font-black text-secondary group-hover:text-[#FE7D32] uppercase tracking-[2px] ml-1">
+                Voir tout
+              </span>
+              <div className="bg-[#FE7D32]/10 group-hover:bg-[#FE7D32] p-1.5 rounded-full text-[#FE7D32] group-hover:text-white transition-colors">
+                <FaArrowLeft className="rotate-180" size={10} />
+              </div>
+            </button>
           </header>
 
+          {/* TES CATÉGORIES (NE SURTOUT PAS SUPPRIMER) */}
           <div className="h-[450px] flex items-center justify-center">
             <LuxuryInfiniteCircle 
               data={categoriesData} 
