@@ -20,12 +20,11 @@ function Panier({ produits, setPanier, onClose }) {
 
   // --- CALCULS DES PRIX ---
   const sousTotal = produits.reduce((total, p) => total + p.prix, 0);
-  const fraisLivraison = sousTotal > 1000 || produits.length === 0 ? 0 : 150; // Petit ajustement ici
+  const fraisLivraison = sousTotal > 1000 || produits.length === 0 ? 0 : 150;
   const prixTotal = sousTotal + fraisLivraison;
 
   // --- ACTIONS ---
   const ajouterUn = (produitCible) => {
-    // On ajoute simplement une copie du produit au tableau global
     setPanier([...produits, { ...produitCible }]);
   };
 
@@ -39,25 +38,25 @@ function Panier({ produits, setPanier, onClose }) {
   };
 
   return (
-    /* L'OVERLAY (FOND SOMBRE) */
+    /* L'OVERLAY (FOND SOMBRE) AVEC TOUTES TES CLASSES */
     <div 
       className="fixed inset-0 z-[1000] flex items-center justify-center md:items-start md:justify-end p-4 bg-black/40 backdrop-blur-sm transition-all"
       onClick={onClose}
     >
       
-      {/* LE PANIER FLOTTANT */}
+      {/* LE PANIER FLOTTANT COMPLET */}
       <div 
-        className="bg-white w-full max-w-[420px] flex flex-col shadow-2xl rounded-[32px] overflow-hidden md:mt-24 md:mr-10"
+        className="bg-white w-full max-w-[420px] flex flex-col shadow-2xl rounded-[32px] overflow-hidden md:mt-24 md:mr-10 animate-in zoom-in duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         
-        {/* HEADER FIXE */}
+        {/* HEADER FIXE COMPLET */}
         <div className="p-6 pb-4 flex items-center justify-between border-b border-gray-50">
           <div className="flex items-center gap-3">
             <div className="bg-orange-500 p-2.5 rounded-xl text-white shadow-lg shadow-orange-200">
               {vueActuelle === "panier" ? <FaShoppingCart size={18} /> : <FaHistory size={18} />}
             </div>
-            <h2 className="text-lg font-black text-secondary uppercase">
+            <h2 className="text-lg font-black text-secondary uppercase tracking-tight">
               {vueActuelle === "panier" ? `Mon Panier` : "Historique"}
             </h2>
           </div>
@@ -88,27 +87,28 @@ function Panier({ produits, setPanier, onClose }) {
           </div>
         </div>
 
-        {/* ZONE DE CONTENU SCROLLABLE */}
-        <div className="flex-1 overflow-y-auto p-6 max-h-[60vh]">
+        {/* ZONE DE CONTENU SCROLLABLE COMPLÈTE */}
+        <div className="flex-1 overflow-y-auto p-6 max-h-[60vh] min-h-[150px]">
           {vueActuelle === "panier" ? (
             <>
               {produitsRegroupes.length === 0 ? (
                 <div className="py-20 text-center">
                   <div className="text-gray-300 mb-4 flex justify-center"><FaShoppingCart size={48} /></div>
-                  <p className="text-gray-400 font-medium">Votre panier est encore vide...</p>
+                  <p className="text-gray-400 font-medium italic text-sm">Votre panier est encore vide...</p>
                 </div>
               ) : (
                 produitsRegroupes.map((produit) => (
                   <div key={produit.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-2xl mb-3 border border-gray-100 transition-hover hover:border-orange-100">
                     <div className="flex flex-col">
                       <span className="font-bold text-secondary text-sm">{produit.name}</span>
-                      <span className="text-orange-600 font-black text-xs">{produit.prix} DA</span>
+                      <span className="text-orange-600 font-black text-xs">{produit.prix * produit.quantite} DA</span>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-white rounded-xl px-2 py-1 shadow-sm border border-gray-100">
+                    {/* TES BOUTONS RONDS DU DÉBUT */}
+                    <div className="flex items-center gap-3">
                       <button 
                         onClick={() => enleverUn(produit.id)} 
-                        className={`p-1.5 transition-colors ${produit.quantite > 1 ? 'text-gray-400 hover:text-secondary' : 'text-red-300 hover:text-red-600'}`}
+                        className="w-8 h-8 rounded-full bg-gray-200/50 flex items-center justify-center text-gray-500 hover:bg-red-100 hover:text-red-500 transition-all"
                       >
                         {produit.quantite > 1 ? <FaMinus size={10} /> : <FaTrash size={10} />}
                       </button>
@@ -119,7 +119,7 @@ function Panier({ produits, setPanier, onClose }) {
                       
                       <button 
                         onClick={() => ajouterUn(produit)} 
-                        className="p-1.5 text-gray-400 hover:text-orange-500 transition-colors"
+                        className="w-8 h-8 rounded-full bg-[#FE7D32] flex items-center justify-center text-white hover:scale-110 transition-all shadow-md shadow-orange-100"
                       >
                         <FaPlus size={10} />
                       </button>
@@ -133,29 +133,29 @@ function Panier({ produits, setPanier, onClose }) {
           )}
         </div>
 
-        {/* FOOTER FIXE */}
+        {/* FOOTER FIXE COMPLET */}
         {vueActuelle === "panier" && produits.length > 0 && (
           <div className="p-6 bg-gray-50/50 border-t border-gray-100">
             <div className="space-y-2 mb-4">
-               <div className="flex justify-between text-xs font-bold text-gray-400 uppercase">
+               <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider">
                   <span>Sous-total</span>
                   <span>{sousTotal} DA</span>
                </div>
-               <div className="flex justify-between text-xs font-bold text-gray-400 uppercase">
+               <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider">
                   <span>Livraison</span>
                   <span className={fraisLivraison === 0 ? "text-green-500" : ""}>
                     {fraisLivraison === 0 ? "OFFERTE" : `${fraisLivraison} DA`}
                   </span>
                </div>
                <div className="flex justify-between items-center pt-2">
-                  <span className="text-sm font-black text-secondary uppercase">Total</span>
+                  <span className="text-sm font-black text-secondary uppercase">Total à payer</span>
                   <span className="text-2xl font-black text-orange-600 tracking-tighter">{prixTotal} DA</span>
                </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 h-12">
               <AnnulerButton onClick={() => setPanier([])} />
-              <ValiderButton onClick={() => alert("Commande en cours de traitement...")} />
+              <ValiderButton onClick={() => alert("Commande envoyée !")} />
             </div>
           </div>
         )}
