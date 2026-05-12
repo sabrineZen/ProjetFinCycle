@@ -2,7 +2,6 @@ Structure du dossier pour le volume OS
 Le numéro de série du volume est AA20-D92C
 C:.
 |   .gitignore
-|   et --hard HEAD@{1}
 |   package-lock.json
 |   package.json
 |   pnpm-lock.yaml
@@ -4555,14 +4554,23 @@ C:.
 |           1778111892136.jpg
 |           1778115390875.jpg
 |           1778116006727.jpg
+|           1778585641399.jpg
 |           1bf31ca61a84346c169ffa2a4ced8fee
+|           2653510f6a50fee0478e396b91b87991
 |           2a89a2274ef4b100f88596fa2ae9cad0
+|           2c47b12a75ff550c7671b90ff43474a8
 |           2d2cd8c72ca272e987687b4fc1f50829
+|           5b799c2752fdebeffa61f5650b2e61e2
+|           6d48efc8bf1a135ecc1ebb1ceb6b17d0
+|           81fcdc35f67b1391e2b5a8c08ef9bf1a
 |           882ba75679c90b30530b92bd6eda1f14
 |           8a64e686d176ca8a3c4baaa8699b2a4a
 |           a8503840664389e96fcac438f334195c
 |           b6ca46f94cde0cb4eeda7925fcac568e
 |           c4a74aede32ece3912e328817fd9476a
+|           c9a45b324602f3ef8ca3da12c823d6a1
+|           ca1994d47ec6abeb097fb3fd7ef6ab89
+|           deaad792ca1689773f5b9106f558b8e5
 |           e88670680295483eee44b3454afe0f55
 |           ebf62affedc6ce1979c918df02787bb3
 |           f6228d0f522ac51097417b91626924f8
@@ -4642,8 +4650,8 @@ C:.
     |   |           framer-motion.js.map
     |   |           i18next.js
     |   |           i18next.js.map
-    |   |           iconBase-Dt8hnUK-.js
-    |   |           iconBase-Dt8hnUK-.js.map
+    |   |           iconBase-9cr0OYL4.js
+    |   |           iconBase-9cr0OYL4.js.map
     |   |           lucide-react.js
     |   |           lucide-react.js.map
     |   |           package.json
@@ -4653,6 +4661,8 @@ C:.
     |   |           react-dom_client.js.map
     |   |           react-i18next.js
     |   |           react-i18next.js.map
+    |   |           react-icons_bi.js
+    |   |           react-icons_bi.js.map
     |   |           react-icons_bs.js
     |   |           react-icons_bs.js.map
     |   |           react-icons_cg.js
@@ -4669,6 +4679,8 @@ C:.
     |   |           react-icons_hi.js.map
     |   |           react-icons_io5.js
     |   |           react-icons_io5.js.map
+    |   |           react-icons_lu.js
+    |   |           react-icons_lu.js.map
     |   |           react-icons_md.js
     |   |           react-icons_md.js.map
     |   |           react-icons_ri.js
@@ -4685,8 +4697,8 @@ C:.
     |   |           react_jsx-runtime.js.map
     |   |           recharts.js
     |   |           recharts.js.map
-    |   |           shim-By01KgzB.js
-    |   |           shim-By01KgzB.js.map
+    |   |           shim-BJWfcMeD.js
+    |   |           shim-BJWfcMeD.js.map
     |   |           _metadata.json
     |   |           
     |   +---.vite-temp
@@ -22045,6 +22057,12 @@ C:.
         |   main.jsx
         |   
         +---assets
+        |       Boissons.png
+        |       burger.png
+        |       Design-logo .png
+        |       Desserts.png
+        |       fastfood.png
+        |       grillades.png
         |       img1.jpg
         |       img10.jpg
         |       img2.jpg
@@ -22055,7 +22073,19 @@ C:.
         |       img7.jpg
         |       img8.jpg
         |       img9.jpg
+        |       logo-white.png
         |       logo.png
+        |       pizza.png
+        |       Plat traditionnel.png
+        |       Plats africains.png
+        |       Plats asiatique.png
+        |       resto1.png
+        |       resto2.png
+        |       resto3.png
+        |       Salades.png
+        |       steak-grill.webm
+        |       sushi.png
+        |       tacos.png
         |       
         +---composants
         |   |   buttonAnnuler.jsx
@@ -22063,10 +22093,15 @@ C:.
         |   |   cardInfo.jsx
         |   |   carteplat.jsx
         |   |   categoryCard.jsx
+        |   |   ChuteDuCiel.jsx
         |   |   footer.jsx
+        |   |   Hero.jsx
         |   |   historique.jsx
         |   |   infospersonnelles.jsx
+        |   |   LuxuryConcave.jsx
+        |   |   LuxuryInfiniteCircle.jsx
         |   |   mescommandes.jsx
+        |   |   Navbar.jsx
         |   |   navbarHome.jsx
         |   |   panier.jsx
         |   |   paremtre.jsx
@@ -22096,7 +22131,7 @@ C:.
             |       CategoriesAll.jsx
             |       CategoriesPage.jsx
             |       ClientHome.jsx
-            |       lunding-page.jsx
+            |       PlatigoPremiumHero.jsx
             |       ProfilPage.jsx
             |       
             +---loginpage
