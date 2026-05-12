@@ -45,17 +45,18 @@ const getUtilisateurs = async (req, res) => {
 const validerRestaurateur = async (req, res) => {
   try {
     const { id } = req.params;
-    const { action } = req.body; // 'approuve' ou 'refuse'
+    const { action } = req.body; // Sera 'approuve', 'refuse' ou 'en_attente'
 
     const restaurant = await Utilisateur.findOne({ where: { id, role: 'restaurateur' } });
     if (!restaurant) return res.status(404).json({ message: 'Restaurant non trouvé' });
 
-    restaurant.statut = action === 'approuve' ? 'approuve' : 'refuse';
+    // On met à jour avec la valeur reçue (soit 'approuve', soit 'refuse')
+    restaurant.statut = action;
     await restaurant.save();
 
-    res.json({ message: `Restaurant ${restaurant.statut} avec succès`, statut: restaurant.statut });
+    res.json({ message: `Statut mis à jour : ${restaurant.statut}`, statut: restaurant.statut });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la validation' });
+    res.status(500).json({ message: 'Erreur lors de la mise à jour du statut' });
   }
 };
 
