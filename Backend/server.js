@@ -16,7 +16,7 @@ app.use(express.json());
 // ── Gestion des Images (Dossier Uploads) ──
 const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsPath));
-console.log("📂 Dossier des images configuré sur :", uploadsPath);
+console.log("Dossier des images configuré sur :", uploadsPath);
 
 // ── Imports des Routes ──
 const authRoutes         = require('./routes/authRoutes');

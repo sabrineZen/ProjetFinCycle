@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaBars, FaSpinner } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaBars, FaSpinner, FaImage } from "react-icons/fa";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -9,7 +9,7 @@ function Toast({ message, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
   const bg = type === "error" ? "bg-red-500" : type === "warning" ? "bg-orange-500" : "bg-green-500";
   return (
-    <div className={`fixed bottom-5 right-5 z-100 flex items-center gap-3 px-5 py-3 rounded-xl text-white text-sm shadow-lg ${bg}`}>
+    <div className={`fixed bottom-5 right-5 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl text-white text-sm shadow-lg ${bg}`}>
       {message}
       <button onClick={onClose}><FaTimes size={12} /></button>
     </div>
@@ -41,11 +41,44 @@ function ModalConfirm({ nom, onConfirm, onCancel, loading }) {
   );
 }
 
-// ── Formulaire avec color picker libre ────────────────────────────────────────
-function FormCategorie({ valeurs, onChange }) {
+// ── Formulaire avec color picker + upload image ────────────────────────────────
+function FormCategorie({ valeurs, onChange, categorieId, onImageUploaded }) {
+  const fileInputRef = useRef(null);
+  const [uploadEnCours, setUploadEnCours] = useState(false);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Si pas encore de catégorie créée (modal ajout) → aperçu local uniquement
+    if (!categorieId) {
+      onChange({ ...valeurs, _fichierImage: file, image: URL.createObjectURL(file) });
+      return;
+    }
+
+    // Mode modification → upload immédiat
+    setUploadEnCours(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const r = await fetch(`${API}/categories/${categorieId}/image`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!r.ok) throw new Error();
+      const { image } = await r.json();
+      onImageUploaded?.(image);
+    } catch {
+      alert("Erreur lors de l'upload de l'image.");
+    } finally {
+      setUploadEnCours(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
 
+      {/* Nom */}
       <div>
         <label className="text-secondary text-sm font-medium">Nom *</label>
         <input
@@ -57,6 +90,7 @@ function FormCategorie({ valeurs, onChange }) {
         />
       </div>
 
+      {/* Description */}
       <div>
         <label className="text-secondary text-sm font-medium">Description</label>
         <textarea
@@ -66,7 +100,7 @@ function FormCategorie({ valeurs, onChange }) {
         />
       </div>
 
-      {/* ── Color picker libre ── */}
+      {/* Couleur */}
       <div>
         <label className="text-secondary text-sm font-medium">Couleur *</label>
         <div className="flex items-center gap-3 mt-2">
@@ -93,21 +127,13 @@ function FormCategorie({ valeurs, onChange }) {
               maxLength={7}
               onChange={e => {
                 const val = e.target.value;
-                // Accepte uniquement format hex valide
-                if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
+                if (/^#[0-9A-Fa-f]{0,6}$/.test(val))
                   onChange({ ...valeurs, couleur: val });
-                }
               }}
               placeholder="#FCCEC1"
               className="w-full border border-bordure rounded-xl px-4 py-3 text-secondary text-sm outline-none focus:border-button bg-fond font-mono"
             />
           </div>
-
-          {/* Aperçu avec le nom hex */}
-          <div
-            className="w-12 h-12 rounded-xl border border-bordure flex-shrink-0"
-            style={{ backgroundColor: valeurs.couleur }}
-          />
         </div>
 
         {/* Couleurs rapides suggérées */}
@@ -126,6 +152,46 @@ function FormCategorie({ valeurs, onChange }) {
           </div>
         </div>
       </div>
+
+      {/* ── Zone upload image ── */}
+      <div>
+        <label className="text-secondary text-sm font-medium">Image</label>
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          className="mt-2 w-full h-32 rounded-xl border-2 border-dashed border-bordure cursor-pointer flex items-center justify-center overflow-hidden relative hover:border-button transition-colors group"
+          style={{ backgroundColor: valeurs.couleur + "22" }}
+        >
+          {uploadEnCours ? (
+            <FaSpinner className="animate-spin text-gray-400" size={24} />
+          ) : valeurs.image ? (
+            <>
+              <img
+                src={valeurs.image.startsWith("blob:") ? valeurs.image : `http://localhost:5000${valeurs.image}`}
+                alt="aperçu"
+                className="w-full h-full object-cover"
+              />
+              {/* Overlay hover */}
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-1">
+                <FaImage className="text-white" size={20} />
+                <p className="text-white text-xs font-medium">Changer l'image</p>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center gap-2 text-gray-400 pointer-events-none">
+              <FaImage size={28} className="opacity-40" />
+              <p className="text-xs">Cliquer pour ajouter une image</p>
+            </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+      </div>
+
     </div>
   );
 }
@@ -139,7 +205,7 @@ function CategoriesAdminPage() {
   const [sidebarOuverte, setSidebarOuverte] = useState(false);
 
   const [modalOuvert, setModalOuvert]       = useState(false);
-  const [nouvelle, setNouvelle]             = useState({ nom: "", description: "", couleur: "#FCCEC1" });
+  const [nouvelle, setNouvelle]             = useState({ nom: "", description: "", couleur: "#FCCEC1", image: null });
   const [ajoutEnCours, setAjoutEnCours]     = useState(false);
 
   const [modifId, setModifId]               = useState(null);
@@ -165,15 +231,35 @@ function CategoriesAdminPage() {
     if (!nouvelle.nom.trim()) return;
     setAjoutEnCours(true);
     try {
+      // 1. Créer la catégorie
       const r = await fetch(`${API}/categories`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nouvelle),
+        body: JSON.stringify({
+          nom: nouvelle.nom,
+          description: nouvelle.description,
+          couleur: nouvelle.couleur,
+        }),
       });
       if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
-      const creee = await r.json();
+      let creee = await r.json();
+
+      // 2. Upload image si un fichier a été sélectionné
+      if (nouvelle._fichierImage) {
+        const formData = new FormData();
+        formData.append("image", nouvelle._fichierImage);
+        const ri = await fetch(`${API}/categories/${creee.id}/image`, {
+          method: "POST",
+          body: formData,
+        });
+        if (ri.ok) {
+          const { image } = await ri.json();
+          creee = { ...creee, image };
+        }
+      }
+
       setCategories(prev => [...prev, creee]);
-      setNouvelle({ nom: "", description: "", couleur: "#FCCEC1" });
+      setNouvelle({ nom: "", description: "", couleur: "#FCCEC1", image: null });
       setModalOuvert(false);
       showToast("Catégorie ajoutée !");
     } catch (e) {
@@ -186,7 +272,12 @@ function CategoriesAdminPage() {
   // Ouvrir modification
   const ouvrirModif = (cat) => {
     setModifId(cat.id);
-    setValeursModif({ nom: cat.nom, description: cat.description, couleur: cat.couleur });
+    setValeursModif({
+      nom: cat.nom,
+      description: cat.description,
+      couleur: cat.couleur,
+      image: cat.image || null,   // ← image incluse
+    });
   };
 
   // Sauvegarder modification
@@ -197,11 +288,18 @@ function CategoriesAdminPage() {
       const r = await fetch(`${API}/categories/${cat.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(valeursModif),
+        body: JSON.stringify({
+          nom: valeursModif.nom,
+          description: valeursModif.description,
+          couleur: valeursModif.couleur,
+          image: valeursModif.image,
+        }),
       });
       if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
       const maj = await r.json();
-      setCategories(prev => prev.map(c => c.id === cat.id ? { ...c, ...maj } : c));
+      setCategories(prev => prev.map(c =>
+        c.id === cat.id ? { ...c, ...maj, image: valeursModif.image } : c
+      ));
       setModifId(null);
       showToast("Catégorie modifiée !");
     } catch (e) {
@@ -289,16 +387,39 @@ function CategoriesAdminPage() {
             {categories.map(cat => (
               <div key={cat.id} className="bg-white rounded-2xl shadow-sm border border-bordure overflow-hidden">
 
-                <div className="h-28 lg:h-32 flex items-center justify-center transition-colors duration-300" style={{ backgroundColor: cat.couleur }}>
-                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white bg-opacity-40 flex items-center justify-center text-3xl lg:text-4xl">
-                    🍽️
-                  </div>
+                {/* ── Header carte : image ou couleur + emoji ── */}
+                <div
+                  className="h-28 lg:h-32 flex items-center justify-center overflow-hidden relative transition-colors duration-300"
+                  style={{ backgroundColor: cat.couleur }}
+                >
+                  {cat.image ? (
+                    <img
+                      src={`http://localhost:5000${cat.image}`}
+                      alt={cat.nom}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white bg-opacity-40 flex items-center justify-center text-3xl lg:text-4xl">
+                      🍽️
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-3 lg:p-4">
                   {modifId === cat.id ? (
                     <div className="flex flex-col gap-3">
-                      <FormCategorie valeurs={valeursModif} onChange={setValeursModif} />
+                      <FormCategorie
+                        valeurs={valeursModif}
+                        onChange={setValeursModif}
+                        categorieId={cat.id}
+                        onImageUploaded={(img) => {
+                          // Met à jour localement l'image dans la grille immédiatement
+                          setValeursModif(prev => ({ ...prev, image: img }));
+                          setCategories(prev => prev.map(c =>
+                            c.id === cat.id ? { ...c, image: img } : c
+                          ));
+                        }}
+                      />
                       <div className="flex gap-2 mt-1">
                         <button onClick={() => sauvegarderModif(cat)} disabled={modifEnCours || !valeursModif.nom?.trim()}
                           className="flex-1 bg-button text-white py-2 rounded-xl text-xs font-medium hover:bg-valider transition flex items-center justify-center gap-1 disabled:opacity-60">
@@ -358,13 +479,20 @@ function CategoriesAdminPage() {
 
         {/* Modal ajout */}
         {modalOuvert && (
-          <div className="fixed inset-0 bg-black/50 bg-opacity-10 backdrop-blur-md flex items-center justify-center z-50 px-4">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50 px-4">
             <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl lg:text-2xl font-bold text-secondary mb-5">Nouvelle catégorie</h2>
-              <FormCategorie valeurs={nouvelle} onChange={setNouvelle} />
+              <FormCategorie
+                valeurs={nouvelle}
+                onChange={setNouvelle}
+                categorieId={null}   // pas encore créée
+              />
               <div className="flex gap-3 mt-5">
                 <button
-                  onClick={() => { setModalOuvert(false); setNouvelle({ nom: "", description: "", couleur: "#FCCEC1" }); }}
+                  onClick={() => {
+                    setModalOuvert(false);
+                    setNouvelle({ nom: "", description: "", couleur: "#FCCEC1", image: null });
+                  }}
                   className="flex-1 bg-secondary text-white py-3 rounded-xl text-sm font-medium hover:opacity-80 transition flex items-center justify-center gap-2">
                   <FaTimes /> Annuler
                 </button>
