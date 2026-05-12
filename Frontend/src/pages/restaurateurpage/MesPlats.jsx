@@ -94,7 +94,7 @@ const MesPlats = () => {
 
       const res = await fetch(url, { method, body: formData ,
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // ← ajouter
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       const result = await res.json();
