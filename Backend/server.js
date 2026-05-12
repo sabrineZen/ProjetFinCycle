@@ -19,12 +19,13 @@ app.use('/uploads', express.static(uploadsPath));
 console.log("📂 Dossier des images configuré sur :", uploadsPath);
 
 // ── Imports des Routes ──
+const platClientRoutes = require('./routes/platClientRoutes');
 const authRoutes         = require('./routes/authRoutes');
 const clientRoutes       = require('./routes/clientRoutes');
 const restaurateurRoutes = require('./routes/restaurateurRoutes');
 const adminRoutes         = require('./routes/adminRoutes');
 const categorieRoutes    = require('./routes/categorieRoutes');
-const platRoutes         = require('./routes/platRoutes');
+const platRoutes         = require('./routes/platRoutes')
 const panierRoutes       = require('./routes/panierRoutes');
 const commandeRoutes     = require('./routes/commandeRoutes');
 const utilisateurRoutes  = require('./routes/utilisateurRoutes');
@@ -33,15 +34,16 @@ const utilisateurRoutes  = require('./routes/utilisateurRoutes');
 const statsRoutes        = require("./routes/statsRoutes");
 
 // ── Utilisation des Routes ──
-app.use('/api/auth',          authRoutes);
-app.use('/api/clients',       clientRoutes);
-app.use('/api/restaurateurs', restaurateurRoutes);
-app.use('/api/admin',         adminRoutes);
-app.use('/api/categories',    categorieRoutes);
-app.use('/api/plats',         platRoutes);
-app.use('/api/panier',        panierRoutes);
-app.use('/api/commandes',     commandeRoutes);
-app.use('/api/utilisateurs',  utilisateurRoutes);
+app.use('/api/client', platClientRoutes);
+app.use('/api/auth',           authRoutes);
+app.use('/api/clients',        clientRoutes);
+app.use('/api/restaurateurs',  restaurateurRoutes);
+app.use('/api/admin',          adminRoutes);
+app.use('/api/categories',     categorieRoutes);
+app.use('/api/plats',          platRoutes);
+app.use('/api/panier',         panierRoutes);
+app.use('/api/commandes',      commandeRoutes);
+app.use('/api/utilisateurs',   utilisateurRoutes);
 
 // Route pour les statistiques globales de l'admin
 app.use("/api/admin/statistiques", statsRoutes);
