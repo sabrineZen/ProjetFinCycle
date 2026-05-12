@@ -165,14 +165,17 @@ function FormCategorie({ valeurs, onChange, categorieId, onImageUploaded }) {
             <FaSpinner className="animate-spin text-gray-400" size={24} />
           ) : valeurs.image ? (
             <>
-              <img
-                src={valeurs.image.startsWith("blob:") ? valeurs.image : `http://localhost:5000${valeurs.image}`}
-                alt="aperçu"
-                className="w-full h-full object-cover"
-              />
+              {/* Image ronde centrée — même style que la carte */}
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white border-opacity-60 shadow-md flex-shrink-0">
+                <img
+                  src={valeurs.image.startsWith("blob:") ? valeurs.image : `http://localhost:5000${valeurs.image}`}
+                  alt="aperçu"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               {/* Overlay hover */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-1">
-                <FaImage className="text-white" size={20} />
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-1 rounded-xl">
+                <FaImage className="text-white" size={18} />
                 <p className="text-white text-xs font-medium">Changer l'image</p>
               </div>
             </>
@@ -387,17 +390,19 @@ function CategoriesAdminPage() {
             {categories.map(cat => (
               <div key={cat.id} className="bg-white rounded-2xl shadow-sm border border-bordure overflow-hidden">
 
-                {/* ── Header carte : image ou couleur + emoji ── */}
+                {/* ── Header carte : image ronde centrée ou emoji ── */}
                 <div
                   className="h-28 lg:h-32 flex items-center justify-center overflow-hidden relative transition-colors duration-300"
                   style={{ backgroundColor: cat.couleur }}
                 >
                   {cat.image ? (
-                    <img
-                      src={`http://localhost:5000${cat.image}`}
-                      alt={cat.nom}
-                      className="w-full h-full object-cover"
-                    />
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white border-opacity-60 shadow-md flex-shrink-0">
+                      <img
+                        src={`http://localhost:5000${cat.image}`}
+                        alt={cat.nom}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   ) : (
                     <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white bg-opacity-40 flex items-center justify-center text-3xl lg:text-4xl">
                       🍽️
