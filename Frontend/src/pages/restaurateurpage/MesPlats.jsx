@@ -92,7 +92,11 @@ const MesPlats = () => {
       const method = isEditing ? 'PUT' : 'POST';
       const url = isEditing ? `${URL_API}/${platData.id}` : URL_API;
 
-      const res = await fetch(url, { method, body: formData });
+      const res = await fetch(url, { method, body: formData ,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // ← ajouter
+        }
+      });
       const result = await res.json();
 
       // Trouver le nom de la catégorie pour mettre à jour l'UI
