@@ -127,27 +127,27 @@ const validerEtAlerter = () => {
 
   // 1. Email
   if (!formData.email || !emailRegex.test(formData.email.toLowerCase())) {
-    alert("📧 Format d'email incorrect ! (Seuls Gmail, Outlook, Hotmail et Yahoo sont acceptés)");
+    alert(" Format d'email incorrect ! (Seuls Gmail, Outlook, Hotmail et Yahoo sont acceptés)");
     return false;
   }
 
   // 2. Mot de passe
   if (!formData.motDePasse || formData.motDePasse.length < 6) {
-    alert("🔑 Le mot de passe doit contenir au moins 6 caractères !");
+    alert(" Le mot de passe doit contenir au moins 6 caractères !");
     return false;
   }
 
   if (showInscription) {
     // 3. Téléphone (Utilise "telephone" pour les deux rôles)
     if (!formData.telephone || !telephoneRegex.test(formData.telephone)) {
-      alert("📞 Le numéro doit commencer par 05, 06 ou 07 et contenir 10 chiffres !");
+      alert(" Le numéro doit commencer par 05, 06 ou 07 et contenir 10 chiffres !");
       return false;
     }
 
     // 4. Registre du Commerce (Restaurateur uniquement)
     if (role === "restaurateur") {
       if (!formData.numeroRegistre || !rcRegex.test(formData.numeroRegistre)) {
-        alert("📋 Format du RC invalide !\nExemple : 19/00-1234567B15");
+        alert(" Format du RC invalide !\nExemple : 19/00-1234567B15");
         return false;
       }
     }
