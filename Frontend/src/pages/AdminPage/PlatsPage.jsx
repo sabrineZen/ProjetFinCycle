@@ -53,6 +53,7 @@ function PlatsPage() {
   };
 
   const ouvrirModal = (plat) => {
+    console.log('description:', plat.description );
     setPlatSelectionne(plat);
     setModalOuvert(true);
   };
@@ -144,7 +145,7 @@ function PlatsPage() {
                       {p.categorie || 'N/A'}
                     </span>
                   </div>
-                  <p className="text-gray-400 text-xs mb-3 italic">{p.restaurant || 'Restaurant inconnu'}</p>
+                  <p className="text-gray-400 text-xs mb-3 italic">{p.description || 'Restaurant inconnu'}</p>
                   
                   <div className="flex justify-between items-center mt-auto">
                     <p className="text-orange-600 font-bold text-xl">{p.prix} DA</p>

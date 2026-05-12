@@ -4,6 +4,7 @@ const { Plat, Categorie } = require('../models');
 const getAllPlats = async (req, res) => {
   try {
     const plats = await Plat.findAll({
+      attributes: ['id', 'nom', 'description', 'prix', 'image', 'disponible'],
       include: [{ model: Categorie, attributes: ['id', 'nom'] }]
     });
 
@@ -26,6 +27,7 @@ const getAllPlats = async (req, res) => {
         // On construit l'URL proprement avec un seul "/uploads/"
         image: fileName ? `http://localhost:5000/uploads/${fileName}` : null,
         categorie: data.Categorie?.nom || '',
+        description: data.description || ''
       };
     });
 
@@ -50,6 +52,7 @@ const createPlat = async (req, res) => {
       categorieId,
       image: imageName, 
       disponible: disponible === 'true' || disponible === true,
+      utilisateurId: req.user.id
     });
 
     const cat = await Categorie.findByPk(categorieId);
