@@ -47,6 +47,9 @@ const validerRestaurateur = async (req, res) => {
     const { id } = req.params;
     const { action } = req.body; // Sera 'approuve', 'refuse' ou 'en_attente'
 
+    console.log("ID reçu:", id);        // ← ajoute ça
+    console.log("Action reçue:", action); // ← ajoute ça
+
     const restaurant = await Utilisateur.findOne({ where: { id, role: 'restaurateur' } });
     if (!restaurant) return res.status(404).json({ message: 'Restaurant non trouvé' });
 
@@ -56,6 +59,8 @@ const validerRestaurateur = async (req, res) => {
 
     res.json({ message: `Statut mis à jour : ${restaurant.statut}`, statut: restaurant.statut });
   } catch (error) {
+
+    console.error("Erreur valider:", error); // ← et ça
     res.status(500).json({ message: 'Erreur lors de la mise à jour du statut' });
   }
 };

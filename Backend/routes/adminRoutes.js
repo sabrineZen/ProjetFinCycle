@@ -27,7 +27,8 @@ router.delete('/utilisateurs/:id',      supprimerUtilisateur);
 
 // --- C'EST CETTE LIGNE QU'ON ADAPTE ---
 // On utilise 'valider-restaurateur' pour correspondre au fetch du frontend
-router.put('/valider-restaurateur/:id', validerRestaurateur);
+
+router.put('/utilisateurs/:id/valider', validerRestaurateur);
 
 // Routes Plats & Catégories
 router.get('/plats',                         getPlats);

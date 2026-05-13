@@ -63,7 +63,7 @@ function RestaurantsPage() {
   });
   const handleChangerStatut = async (id, nouveauStatut) => {
   try {
-    const res = await fetch(`/api/admin/valider-restaurateur/${id}`, { // Vérifie que cette route correspond à ton adminRoutes.js
+    const res = await fetch(`/api/admin/utilisateurs/${id}/valider`, { // Vérifie que cette route correspond à ton adminRoutes.js
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: nouveauStatut }),
