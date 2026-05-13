@@ -2,13 +2,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Utilisateur } = require('../models/index');
 
-// ── CONNEXION ──
+// CONNEXION 
 const login = async (req, res) => {
   try {
     const { email, motDePasse } = req.body;
 
     if (!email || !motDePasse)
+<<<<<<< HEAD
       return res.status(400).json({ message: 'Email et mot de passe requis ' });
+=======
+      return res.status(400).json({ message: 'Email et mot de passe requis' });
+>>>>>>> e1677bec036c10e51ca653c7c4f7daf999cce722
 
     const utilisateur = await Utilisateur.findOne({ where: { email: email.trim() } });
     if (!utilisateur)
@@ -16,6 +20,7 @@ const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(motDePasse, utilisateur.motDePasse);
     if (!isMatch)
+<<<<<<< HEAD
       return res.status(401).json({ message: 'Mot de passe incorrect ' });
 
     //  VERIFICATION DU STATUT ──
@@ -33,6 +38,19 @@ if (utilisateur.role === 'restaurateur') {
     });
   }
 }
+=======
+      return res.status(401).json({ message: 'Mot de passe incorrect' });
+
+    // ── MODIFICATION ICI : VERIFICATION DU STATUT ──
+    if (utilisateur.role === 'restaurateur') {
+      if (utilisateur.statut === 'en_attente') {
+        return res.status(403).json({ message: 'Votre compte est en attente de validation par l\'administrateur.' });
+      }
+      if (utilisateur.statut === 'refuse') {
+        return res.status(403).json({ message: 'Votre demande d\'inscription a été refusée.' });
+      }
+    }
+>>>>>>> e1677bec036c10e51ca653c7c4f7daf999cce722
     // ───────────────────────────────────────────────
 
     const token = jwt.sign(

@@ -14,12 +14,12 @@ import LuxuryInfiniteCircle from "../../composants/LuxuryInfiniteCircle";
 function Home({ panier, setPanier, ajouterAuPanier }) {
   const navigate = useNavigate();
 
-  const [montrerPanier, setMontrerPanier]   = useState(false);
+  const [montrerPanier, setMontrerPanier] = useState(false);
   const [texteRecherche, setTexteRecherche] = useState("");
-  const [plats, setPlats]                   = useState([]);
-  const [restaurants, setRestaurants]       = useState([]);
-  const [categories, setCategories]         = useState([]);
-  const [chargement, setChargement]         = useState(true);
+  const [plats, setPlats] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [chargement, setChargement] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -74,7 +74,6 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
 
   return (
     <div className="flex flex-col bg-[#FFF9F5] min-h-screen overflow-x-hidden font-sans">
-
       <NavbarHome
         panierCount={panier ? panier.length : 0}
         onTogglePanier={() => setMontrerPanier(!montrerPanier)}
@@ -83,6 +82,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
         montrerPanier={montrerPanier}
       />
 
+      {/*PANIER FLOTTANT (Géré avec l'état global)*/}
       <AnimatePresence>
         {montrerPanier && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="z-[300]">
@@ -92,8 +92,6 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
       </AnimatePresence>
 
       <main className="w-full pt-28 md:pt-36">
-
-        {/* ─── NOS UNIVERS ─── */}
         <section id="univers" className="pb-16 px-4 md:px-20 max-w-[1600px] mx-auto">
           <header className="flex justify-between items-end mb-12">
             <div>

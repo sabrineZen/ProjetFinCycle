@@ -10,7 +10,7 @@ const createAdmin = async () => {
     // Vérification si l'admin existe déjà
     const exist = await Utilisateur.findOne({ where: { email } });
     if (exist) {
-      console.log("L'admin existe déjà ! 🛡️");
+      console.log("L'admin existe déjà");
       process.exit();
     }
 
@@ -24,7 +24,7 @@ const createAdmin = async () => {
       role: 'admin'
     });
 
-    console.log("Compte Admin minimaliste créé avec succès ! ✅");
+    console.log("Compte Admin minimaliste créé avec succès");
     console.log("Email :", email);
     console.log("Password :", password);
     

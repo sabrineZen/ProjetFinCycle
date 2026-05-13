@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const { Commande, LigneCommande, Plat } = require('../models');
 
 const creerCommande = async (req, res) => {
@@ -92,3 +93,21 @@ const changerStatutCommande = async (req, res) => {
 };
 
 module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande };
+=======
+const { Commande } = require('../models');
+const getMesCommandes = async (req, res) => {
+  try {
+    const commandes = await Commande.findAll({
+      where: { utilisateurId: req.user.id },
+      order: [['dateCommande', 'DESC']]
+    })
+    if (!commandes) {
+      return res.status(404).json({ message: 'Aucune commande trouvée' })
+    }
+    res.status(200).json(commandes)
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur', error: error.message })
+  }
+}
+module.exports = { getMesCommandes }
+>>>>>>> e1677bec036c10e51ca653c7c4f7daf999cce722

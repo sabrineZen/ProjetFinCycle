@@ -66,6 +66,7 @@ function CategoriesPage({ panier, setPanier, ajouterAuPanier }) {
         montrerPanier={montrerPanier}
       />
 
+      {/* PANIER FLOTTANT */}
       <AnimatePresence>
         {montrerPanier && (
           <motion.div

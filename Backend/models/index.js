@@ -7,7 +7,7 @@ const Panier        = require('./panierModel');
 const LignePanier   = require('./lignePanierModel');
 const Commande      = require('./commandeModel');
 const LigneCommande = require('./ligneCommandeModel');
-
+const Adresse = require('./adresseModel')
 module.exports = {
   sequelize,
   Utilisateur,
@@ -16,5 +16,6 @@ module.exports = {
   Panier,
   LignePanier,
   Commande,
-  LigneCommande
+  LigneCommande,
+   Adresse
 };
