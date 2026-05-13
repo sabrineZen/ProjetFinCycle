@@ -303,8 +303,10 @@ const historiquePanier = async (req, res) => {
   } catch (err) {
     console.error('HISTORIQUE ERROR:', err);
     res.status(500).json({ message: err.message });
+  }  // ← ✅ ACCOLADE AJOUTÉE ICI (manquait dans l'original)
 };
 
+// ── 9. RESTAURANTS POPULAIRES ──
 const getRestaurantsPopulaires = async (req, res) => {
   try {
     const restaurants = await Utilisateur.findAll({
