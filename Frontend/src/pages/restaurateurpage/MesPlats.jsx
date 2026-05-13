@@ -11,11 +11,11 @@ const MesPlats = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [platsData, setPlatsData] = useState([]);
 
-  const URL_API = "http://localhost:5000/api/plats";
+  const URL_API = `${import.meta.env.VITE_API_URL}/plats`;
 
   // ── Charger les catégories depuis la DB ──
   useEffect(() => {
-    fetch('http://localhost:5000/api/categories')
+    fetch(`${import.meta.env.VITE_API_URL}/categories`)
       .then(res => res.json())
       .then(data => {
         setCategoriesList([{ id: 'Tous', nom: 'Tous' }, ...data]);
