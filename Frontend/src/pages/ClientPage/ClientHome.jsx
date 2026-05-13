@@ -28,14 +28,14 @@ import { categories as categoriesData } from "../../data/categories";
 function Home({ panier, setPanier, ajouterAuPanier }) {
   const navigate = useNavigate();
   
-  // ─── ÉTATS LOCAUX ───
+  // ÉTATS LOCAUX 
   const [montrerPanier, setMontrerPanier] = useState(false);
   const [texteRecherche, setTexteRecherche] = useState("");
   const [plats, setPlats] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [chargement, setChargement] = useState(true);
 
-  // ─── CHARGEMENT DES DONNÉES ───
+  // CHARGEMENT DES DONNÉES
   useEffect(() => {
     const loadData = async () => {
       setChargement(true);
@@ -67,7 +67,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
   return (
     <div className="flex flex-col bg-[#FFF9F5] min-h-screen overflow-x-hidden font-sans">
       
-      {/* ─── NAVBAR (Utilise le panier global) ─── */}
+      {/*NAVBAR (Utilise le panier global)*/}
       <NavbarHome 
         panierCount={panier ? panier.length : 0}
         onTogglePanier={() => setMontrerPanier(!montrerPanier)} 
@@ -76,7 +76,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
         montrerPanier={montrerPanier}
       />
 
-      {/* ─── PANIER FLOTTANT (Géré avec l'état global) ─── */}
+      {/*PANIER FLOTTANT (Géré avec l'état global)*/}
       <AnimatePresence>
         {montrerPanier && (
           <motion.div
@@ -96,7 +96,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
 
       <main className="w-full pt-28 md:pt-36">
         
-        {/* ─── SECTION : NOS UNIVERS ─── */}
+        {/*NOS UNIVERS*/}
         <section id="univers" className="pb-16 px-4 md:px-20 max-w-[1600px] mx-auto">
           
           {/* HEADER AVEC TITRE ET BOUTON VOIR TOUT */}
@@ -122,7 +122,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
             </button>
           </header>
 
-          {/* TES CATÉGORIES (NE SURTOUT PAS SUPPRIMER) */}
+          {/* CATÉGORIES  */}
           <div className="h-[450px] flex items-center justify-center">
             <LuxuryInfiniteCircle 
               data={categoriesData} 
@@ -144,7 +144,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
           </div>
         </section>
 
-        {/* ─── SECTION : PLATS POPULAIRES ─── */}
+        {/*PLATS POPULAIRES */}
         <section id="plats-populaires" className="py-16 px-4 md:px-20 max-w-[1600px] mx-auto">
           <header className="mb-10">
             <h2 className="text-4xl font-black text-secondary uppercase tracking-tighter">
@@ -169,7 +169,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
           )}
         </section>
 
-        {/* ─── SECTION : RESTAURANTS POPULAIRES ─── */}
+        {/*RESTAURANTS POPULAIRES*/}
         <section id="partenaires" className="py-16 px-4 md:px-20 max-w-[1600px] mx-auto mb-20">
           <h2 className="text-4xl font-black text-secondary mb-10 uppercase tracking-tighter">
             Restaurants <span className="text-[#FE7D32]">Populaires</span>
