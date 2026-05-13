@@ -11,8 +11,8 @@ const MesPlats = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [platsData, setPlatsData] = useState([]);
 
-  const URL_API = `${import.meta.env.VITE_API_URL}/api/plats`;
-
+  const URL_API = `${import.meta.env.VITE_API_URL}/plats`;
+  //
   // ── Charger les catégories depuis la DB ──
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/categories`)
