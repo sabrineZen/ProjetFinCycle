@@ -11,12 +11,11 @@ const app = express();
 
 // ── Middlewares de base ──
 app.use(cors({
-  origin: "*",
+  origin: true, // 👈 IMPORTANT (echo origin dynamique)
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"]
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  credentials: true
 }));
-
-app.options("/*", cors());
 
 
 app.use(express.json());
