@@ -1,62 +1,99 @@
-import React, { useState } from "react";
-import { FaBox, FaChevronRight } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaBox } from "react-icons/fa";
 
 function HistoriqueAchats() {
-  const [achats] = useState([
-    { id: 101, prix: 1550, date: "04 Mai 2026", articles: 3 },
-    { id: 102, prix: 850, date: "02 Mai 2026", articles: 1 },
-    { id: 103, prix: 2400, date: "28 Avr 2026", articles: 5 },
-    { id: 104, prix: 1200, date: "25 Avr 2026", articles: 2 },
-  ]);
+  const [commandes, setCommandes] = useState([]);
+  const [chargement, setChargement] = useState(true);
+
+  useEffect(() => {
+    const fetchHistorique = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) { setChargement(false); return; }
+
+        const res = await fetch("/api/commandes/client", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setCommandes(data);
+        }
+      } catch (e) {
+        console.error("Erreur historique:", e);
+      } finally {
+        setChargement(false);
+      }
+    };
+
+    fetchHistorique();
+  }, []);
+
+  const getLabelStatut = (statut) => {
+    switch (statut) {
+      case 'en_attente':     return { label: 'En attente',      color: 'text-orange-600 bg-orange-50'  };
+      case 'confirmee':      return { label: 'Confirmée',       color: 'text-blue-600 bg-blue-50'      };
+      case 'en_preparation': return { label: 'En préparation',  color: 'text-purple-600 bg-purple-50'  };
+      case 'livree':         return { label: 'Livrée',          color: 'text-green-600 bg-green-50'    };
+      case 'annulee':        return { label: 'Annulée',         color: 'text-red-600 bg-red-50'        };
+      default:               return { label: statut,            color: 'text-gray-600 bg-gray-50'      };
+    }
+  };
+
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  if (chargement) {
+    return (
+      <div className="flex justify-center py-10">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4 py-2">
-      {achats.length === 0 ? (
+      {commandes.length === 0 ? (
         <div className="py-12 text-center">
           <p className="text-gray-400 italic text-sm">Aucun achat récent</p>
         </div>
       ) : (
-        achats.map((achat) => (
-          <div 
-            key={achat.id} 
-            className="group bg-gray-50 hover:bg-white hover:shadow-md border border-gray-100 rounded-2xl p-4 transition-all duration-300 cursor-pointer"
-            role="button"
-            aria-label={`Détails de la commande ${achat.id}`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {/* Icône stylisée */}
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:bg-orange-500 transition-colors duration-300">
-                  <FaBox className="text-orange-500 group-hover:text-white transition-colors" size={18} />
+        commandes.map((commande) => {
+          const statut     = getLabelStatut(commande.statut);
+          const nbArticles = commande.LigneCommandes?.reduce((sum, l) => sum + l.quantite, 0) || 0;
+
+          return (
+            <div
+              key={commande.id}
+              className="bg-gray-50 border border-gray-100 rounded-2xl p-4"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                    <FaBox className="text-orange-500" size={18} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-black text-gray-800 uppercase tracking-tight">
+                      Commande #{commande.id}
+                    </span>
+                    <span className="text-[11px] text-gray-400 font-medium">
+                      {formatDate(commande.dateCommande)} • {nbArticles} article{nbArticles > 1 ? 's' : ''}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-sm font-black text-gray-800 uppercase tracking-tight">
-                    Commande #{achat.id}
+                <div className="flex flex-col items-end gap-1">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${statut.color}`}>
+                    {statut.label}
                   </span>
-                  <span className="text-[11px] text-gray-400 font-medium">
-                    {achat.date} • {achat.articles} article{achat.articles > 1 ? 's' : ''}
+                  <span className="text-sm font-black text-[#8B2A1B]">
+                    {parseFloat(commande.total).toLocaleString()} DA
                   </span>
                 </div>
               </div>
-
-              <div className="flex flex-col items-end gap-1">
-                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Livré
-                </span>
-                <span className="text-sm font-black text-[#8B2A1B]">
-                  {achat.prix.toLocaleString()} DA
-                </span>
-              </div>
             </div>
-
-            {/* Petit indicateur de détail au survol */}
-            <div className="mt-3 pt-3 border-t border-dashed border-gray-200 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
-                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Voir les détails</span>
-                <FaChevronRight className="text-gray-300 group-hover:text-orange-500 transition-colors" size={10} />
-            </div>
-          </div>
-        ))
+          );
+        })
       )}
     </div>
   );

@@ -91,4 +91,28 @@ const changerStatutCommande = async (req, res) => {
   }
 };
 
-module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande };
+const getCommandesClient = async (req, res) => {
+  try {
+    const utilisateurId = req.user.id;
+
+    const commandes = await Commande.findAll({
+      where: { utilisateurId },
+      include: [{
+        model: LigneCommande,
+        attributes: ['id', 'quantite', 'prixUnitaire', 'sousTotal'],
+        include: [{
+          model: Plat,
+          attributes: ['id', 'nom', 'image']
+        }]
+      }],
+      order: [['dateCommande', 'DESC']]
+    });
+
+    res.json(commandes);
+  } catch (err) {
+    console.error('Erreur getCommandesClient:', err.message);
+    res.status(500).json({ message: 'Erreur serveur', detail: err.message });
+  }
+};
+
+module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande, getCommandesClient };
