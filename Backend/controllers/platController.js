@@ -24,7 +24,7 @@ const getAllPlats = async (req, res) => {
       return {
         ...data,
         // On construit l'URL proprement avec un seul "/uploads/"
-        image: fileName ? `http://localhost:5000/uploads/${fileName}` : null,
+        image: fileName ? `http://${process.env.BACKEND_HOST}:${process.env.PORT}/uploads/${fileName}` : null,
         categorie: data.Categorie?.nom || '',
       };
     });
@@ -50,6 +50,7 @@ const createPlat = async (req, res) => {
       categorieId,
       image: imageName, 
       disponible: disponible === 'true' || disponible === true,
+      utilisateurId: req.user.id
     });
 
     const cat = await Categorie.findByPk(categorieId);
