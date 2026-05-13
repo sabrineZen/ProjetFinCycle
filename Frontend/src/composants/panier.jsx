@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { FaHistory, FaShoppingCart, FaTrash, FaTimes, FaArrowLeft, FaPlus, FaMinus } from "react-icons/fa";
 import AnnulerButton from "./buttonAnnuler";
-import ValiderButton from "./buttonValider";
 import HistoriqueAchats from "./historique";
 
 function Panier({ produits, setPanier, onClose }) {
   const [vueActuelle, setVueActuelle] = useState("panier");
+  const [adresse, setAdresse] = useState("");
+  const [commandeEnCours, setCommandeEnCours] = useState(false);
 
   // --- LOGIQUE DE REGROUPEMENT ---
   const produitsRegroupes = produits.reduce((acc, produit) => {
@@ -18,7 +19,7 @@ function Panier({ produits, setPanier, onClose }) {
     return acc;
   }, []);
 
-  // --- CALCULS DES PRIX (parseFloat pour éviter la concaténation de strings) ---
+  // --- CALCULS DES PRIX ---
   const sousTotal = produits.reduce((total, p) => total + parseFloat(p.prix || 0), 0);
   const fraisLivraison = sousTotal > 1000 || produits.length === 0 ? 0 : 150;
   const prixTotal = sousTotal + fraisLivraison;
@@ -37,14 +38,61 @@ function Panier({ produits, setPanier, onClose }) {
     }
   };
 
+  // --- COMMANDE ---
+  const handleCommande = async () => {
+    if (!adresse.trim()) {
+      alert("Veuillez entrer une adresse de livraison !");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Vous devez être connecté !");
+      return;
+    }
+
+    const produitsGroupes = produits.reduce((acc, p) => {
+      const ex = acc.find(x => x.id === p.id);
+      if (ex) ex.quantite += 1;
+      else acc.push({ ...p, quantite: 1 });
+      return acc;
+    }, []);
+
+    setCommandeEnCours(true);
+    try {
+      const res = await fetch("/api/commandes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          adresseLivraison: adresse,
+          produits: produitsGroupes
+        })
+      });
+
+      if (res.ok) {
+        alert("Commande passée avec succès !");
+        setPanier([]);
+        onClose();
+      } else {
+        const data = await res.json();
+        alert("Erreur : " + data.message);
+      }
+    } catch (e) {
+      console.error("Erreur commande:", e);
+      alert("Erreur lors de la commande");
+    } finally {
+      setCommandeEnCours(false);
+    }
+  };
+
   return (
-    /* L'OVERLAY (FOND SOMBRE) */
     <div
       className="fixed inset-0 z-[1000] flex items-center justify-center md:items-start md:justify-end p-4 bg-black/40 backdrop-blur-sm transition-all"
       onClick={onClose}
     >
-
-      {/* LE PANIER FLOTTANT */}
       <div
         className="bg-white w-full max-w-[420px] flex flex-col shadow-2xl rounded-[32px] overflow-hidden md:mt-24 md:mr-10 animate-in zoom-in duration-200"
         onClick={(e) => e.stopPropagation()}
@@ -57,7 +105,7 @@ function Panier({ produits, setPanier, onClose }) {
               {vueActuelle === "panier" ? <FaShoppingCart size={18} /> : <FaHistory size={18} />}
             </div>
             <h2 className="text-lg font-black text-secondary uppercase tracking-tight">
-              {vueActuelle === "panier" ? `Mon Panier` : "Historique"}
+              {vueActuelle === "panier" ? "Mon Panier" : "Historique"}
             </h2>
           </div>
 
@@ -87,7 +135,7 @@ function Panier({ produits, setPanier, onClose }) {
           </div>
         </div>
 
-        {/* ZONE DE CONTENU SCROLLABLE */}
+        {/* ZONE SCROLLABLE */}
         <div className="flex-1 overflow-y-auto p-6 max-h-[60vh] min-h-[150px]">
           {vueActuelle === "panier" ? (
             <>
@@ -100,17 +148,15 @@ function Panier({ produits, setPanier, onClose }) {
                 produitsRegroupes.map((produit) => (
                   <div
                     key={produit.id}
-                    className="flex justify-between items-center p-4 bg-gray-50 rounded-2xl mb-3 border border-gray-100 transition-hover hover:border-orange-100"
+                    className="flex justify-between items-center p-4 bg-gray-50 rounded-2xl mb-3 border border-gray-100 hover:border-orange-100 transition"
                   >
                     <div className="flex flex-col">
                       <span className="font-bold text-secondary text-sm">{produit.nom}</span>
-                      {/* FIX : parseFloat pour calculer correctement */}
                       <span className="text-orange-600 font-black text-xs">
                         {(parseFloat(produit.prix) * produit.quantite).toFixed(2)} DA
                       </span>
                     </div>
 
-                    {/* BOUTONS QUANTITÉ */}
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => enleverUn(produit.id)}
@@ -142,10 +188,19 @@ function Panier({ produits, setPanier, onClose }) {
         {/* FOOTER */}
         {vueActuelle === "panier" && produits.length > 0 && (
           <div className="p-6 bg-gray-50/50 border-t border-gray-100">
+
+            {/* Adresse livraison */}
+            <input
+              type="text"
+              placeholder="Adresse de livraison..."
+              value={adresse}
+              onChange={e => setAdresse(e.target.value)}
+              className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm mb-4 outline-none focus:border-orange-400"
+            />
+
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider">
                 <span>Sous-total</span>
-                {/* FIX : toFixed(2) pour afficher proprement */}
                 <span>{sousTotal.toFixed(2)} DA</span>
               </div>
               <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -156,7 +211,6 @@ function Panier({ produits, setPanier, onClose }) {
               </div>
               <div className="flex justify-between items-center pt-2">
                 <span className="text-sm font-black text-secondary uppercase">Total à payer</span>
-                {/* FIX : toFixed(2) sur le total final */}
                 <span className="text-2xl font-black text-orange-600 tracking-tighter">
                   {prixTotal.toFixed(2)} DA
                 </span>
@@ -165,7 +219,13 @@ function Panier({ produits, setPanier, onClose }) {
 
             <div className="grid grid-cols-2 gap-3 h-12">
               <AnnulerButton onClick={() => setPanier([])} />
-              <ValiderButton onClick={() => alert("Commande envoyée !")} />
+              <button
+                onClick={handleCommande}
+                disabled={commandeEnCours}
+                className="bg-[#FF7D32] text-white rounded-xl text-sm font-bold hover:bg-orange-500 transition disabled:opacity-60"
+              >
+                {commandeEnCours ? "..." : "Commander"}
+              </button>
             </div>
           </div>
         )}
