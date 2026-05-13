@@ -1,14 +1,13 @@
 const sequelize = require('../config/db');
 
-const Utilisateur=require('./utilisateurModel');
-const Categorie=require('./categorieModel');
-const Plat=require('./platModel');
-const Panier=require('./panierModel');
-const LignePanier= require('./lignePanierModel');
-const Commande=require('./commandeModel');
-const LigneCommande=require('./ligneCommandeModel');
-const Adresse=require('./adresseModel');
-
+const Utilisateur   = require('./utilisateurModel');
+const Categorie     = require('./categorieModel');
+const Plat          = require('./platModel');
+const Panier        = require('./panierModel');
+const LignePanier   = require('./lignePanierModel');
+const Commande      = require('./commandeModel');
+const LigneCommande = require('./ligneCommandeModel');
+const Adresse = require('./adresseModel')
 module.exports = {
   sequelize,
   Utilisateur,
@@ -18,5 +17,5 @@ module.exports = {
   LignePanier,
   Commande,
   LigneCommande,
-  Adresse
+   Adresse
 };

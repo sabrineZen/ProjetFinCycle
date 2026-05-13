@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import pour la navigation
 import { 
   FiUser, FiShoppingBag, FiSettings, 
@@ -16,6 +16,35 @@ import Parametre from "../../composants/paremtre";
 function ProfilPage() {
   const navigate = useNavigate(); // Initialisation du hook de navigation
   const [pageActive, setPageActive] = useState("informations");
+  const [nomComplet, setNomComplet] = useState("")
+   useEffect(() => {
+  const token = localStorage.getItem("token")
+  fetch("http://localhost:5000/api/utilisateurs/profil", {
+    headers: { Authorization: "Bearer " + token }
+  })
+  .then(res => res.json())
+  .then(data => {
+    setNomComplet(data.prenom + " " + data.nom)
+  })
+}, [])
+  
+const token = localStorage.getItem("token")
+const tokenDecode = JSON.parse(atob(token.split('.')[1]))
+const userId = tokenDecode.id
+
+const [photo, setPhoto] = useState(localStorage.getItem("photo_" + userId) || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")
+
+function changerPhoto(e) {
+  const fichier = e.target.files[0]
+  if (!fichier) return
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    localStorage.setItem("photo_" + userId, reader.result)
+    setPhoto(reader.result)
+  }
+  reader.readAsDataURL(fichier)
+}
 
   const menuItems = [
     { id: "informations", label: "Informations", icon: FiUser },
@@ -60,14 +89,16 @@ function ProfilPage() {
           className="bg-white rounded-[32px] p-6 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-sm border border-white"
         >
           <div className="flex items-center gap-5">
-            <img 
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" 
-              className="w-20 h-20 rounded-full object-cover border-2 border-[#FDF1EB]"
-              alt="Avatar"
-            />
+            <label className="cursor-pointer">
+                <img 
+                   src={photo}
+                   className="w-20 h-20 rounded-full object-cover border-2 border-[#FDF1EB]"
+                    alt="Avatar"
+                 />
+                  <input type="file" accept="image/*" className="hidden" onChange={changerPhoto} />
+              </label>
             <div>
-              <h1 className="text-2xl font-bold">Sophie Martin</h1>
-              <p className="text-gray-400 text-sm italic">Membre depuis 2024</p>
+              <h1 className="text-2xl font-bold">{nomComplet}</h1>
             </div>
           </div>
           <button className="bg-[#FF7A30] hover:bg-[#e66a25] text-white px-8 py-3 rounded-full text-sm font-semibold transition-all shadow-lg shadow-[#FF7A30]/20">
