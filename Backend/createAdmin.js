@@ -22,7 +22,7 @@ const createAdmin = async () => {
     statut:            null,
   });
 
-  console.log("✅ Admin créé !");
+  console.log("Admin créé");
   process.exit();
 };
 

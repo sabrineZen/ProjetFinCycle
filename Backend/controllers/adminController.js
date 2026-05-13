@@ -1,9 +1,6 @@
 const { Utilisateur, Commande, Plat, Categorie, LigneCommande } = require('../models/index');
 const { Op } = require('sequelize');
-// ─────────────────────────────────────────
 //  UTILISATEURS & VALIDATION
-// ─────────────────────────────────────────
-
 const getUtilisateurs = async (req, res) => {
   try {
     const utilisateurs = await Utilisateur.findAll({
@@ -40,7 +37,7 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
-// --- FONCTION DE VALIDATION AJOUTÉE ---
+//  FONCTION DE VALIDATION AJOUTÉE 
 const validerRestaurateur = async (req, res) => {
   try {
     const { id } = req.params;
@@ -70,11 +67,9 @@ const supprimerUtilisateur = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────
 //  PLATS & CATÉGORIES
-// ─────────────────────────────────────────
 
-// Après — transformation complète ✅
+// Après — transformation complète 
 const getPlats = async (req, res) => {
   try {
     const plats = await Plat.findAll({
@@ -126,7 +121,6 @@ const getCategories = async (req, res) => {
   } catch (error) { res.status(500).json({ message: 'Erreur' }); }
 };
 
-
 //Toggle disponibilité
 const toggleDisponibilite = async (req, res) => {
   try {
@@ -140,7 +134,6 @@ const toggleDisponibilite = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
-
 
 //dashboard controller
 // Stats globales

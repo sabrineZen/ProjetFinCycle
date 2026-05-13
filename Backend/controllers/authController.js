@@ -2,29 +2,29 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Utilisateur } = require('../models/index');
 
-// ── CONNEXION ──
+// CONNEXION 
 const login = async (req, res) => {
   try {
     const { email, motDePasse } = req.body;
 
     if (!email || !motDePasse)
-      return res.status(400).json({ message: 'Email et mot de passe requis ❌' });
+      return res.status(400).json({ message: 'Email et mot de passe requis' });
 
     const utilisateur = await Utilisateur.findOne({ where: { email: email.trim() } });
     if (!utilisateur)
-      return res.status(404).json({ message: 'Email introuvable ❌' });
+      return res.status(404).json({ message: 'Email introuvable ' });
 
     const isMatch = await bcrypt.compare(motDePasse, utilisateur.motDePasse);
     if (!isMatch)
-      return res.status(401).json({ message: 'Mot de passe incorrect ❌' });
+      return res.status(401).json({ message: 'Mot de passe incorrect' });
 
     // ── MODIFICATION ICI : VERIFICATION DU STATUT ──
     if (utilisateur.role === 'restaurateur') {
       if (utilisateur.statut === 'en_attente') {
-        return res.status(403).json({ message: '⏳ Votre compte est en attente de validation par l\'administrateur.' });
+        return res.status(403).json({ message: 'Votre compte est en attente de validation par l\'administrateur.' });
       }
       if (utilisateur.statut === 'refuse') {
-        return res.status(403).json({ message: '❌ Votre demande d\'inscription a été refusée.' });
+        return res.status(403).json({ message: 'Votre demande d\'inscription a été refusée.' });
       }
     }
     // ───────────────────────────────────────────────
