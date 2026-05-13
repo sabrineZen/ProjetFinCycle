@@ -13,7 +13,7 @@ function ValidationPage() {
   // 1. Charger les restaurants depuis le backend
   const fetchRestaurants = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/utilisateurs");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/admin/utilisateurs`);
       // On ne garde que les restaurateurs en attente
       const enAttente = res.data.filter(u => u.role === 'restaurateur' && u.statut === 'en_attente');
       setRestaurants(enAttente);
@@ -34,7 +34,7 @@ function ValidationPage() {
     if (!confirmation) return;
 
     try {
-      await axios.put(`http://localhost:5000/api/admin/utilisateurs/${id}/valider`, { action });
+      await axios.put(`${import.meta.env.VITE_API_URL}/admin/utilisateurs/${id}/valider`, { action });
       alert(`Opération réussie : ${action}`);
       setModalOuvert(false);
       fetchRestaurants(); // Rafraîchir la liste
@@ -97,7 +97,7 @@ function ValidationPage() {
                 <div className="mb-4">
                   <p className="text-gray-400 text-sm mb-2">Document officiel :</p>
                   <a 
-                    href={`http://localhost:5000/uploads/${r.documentOfficiel}`} 
+                    href={`${import.meta.env.VITE_API_URL}/uploads/${r.documentOfficiel}`} 
                     target="_blank" 
                     rel="noreferrer"
                     className="flex items-center gap-2 text-blue-600 text-sm font-medium hover:underline"

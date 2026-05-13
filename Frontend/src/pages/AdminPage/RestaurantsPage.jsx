@@ -19,7 +19,7 @@ function RestaurantsPage() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await fetch("/api/utilisateurs/restaurateurs");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/utilisateurs/restaurateurs`);
         if (!res.ok) throw new Error("Erreur lors du chargement");
         const data = await res.json();
         setRestaurants(data);

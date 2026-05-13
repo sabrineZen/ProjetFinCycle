@@ -76,7 +76,6 @@ const RestaurateurLayout = () => {
 function App() {
   // ─── 1. ÉTAT GLOBAL DU PANIER ───
   const [panier, setPanier] = useState(() => {
-    // On récupère le panier sauvegardé au démarrage
     const localData = localStorage.getItem("platigo_cart");
     return localData ? JSON.parse(localData) : [];
   });
@@ -86,7 +85,7 @@ function App() {
     localStorage.setItem("platigo_cart", JSON.stringify(panier));
   }, [panier]);
 
-  // ─── 3. LOGIQUE D'AJOUT (Gère les doublons avec quantité) ───
+  // ─── 3. LOGIQUE D'AJOUT ───
   const ajouterAuPanier = (plat) => {
     setPanier((prev) => {
       const existe = prev.find((item) => item.id === plat.id);
@@ -102,10 +101,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* --- HERO (Landing Page) --- */}
+        <Route path="/" element={<PlatigoPremiumHero />} />
+
         {/* --- AUTH --- */}
         <Route path="/login" element={<Login />} />
 
-        {/* --- CLIENT (Passage des données du panier) --- */}
+        {/* --- CLIENT --- */}
         <Route 
           path="/homeClient" 
           element={<Home panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />} 
@@ -114,8 +116,6 @@ function App() {
           path="/categoriesPage" 
           element={<CategoriesPage panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />} 
         />
-        
-        {/* Autres pages Client */}
         <Route path="/CategoriesAll" element={<AllCategories />} />
         <Route path="/profil" element={<ProfilPage />} />
         <Route path="/hero" element={<PlatigoPremiumHero />} />
@@ -134,9 +134,8 @@ function App() {
           <Route path="statistiques" element={<StatistiquesPage />} />
         </Route>
 
-        {/* --- REDIRECTIONS --- */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/homeClient" replace />} />
+        {/* --- REDIRECTION --- */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
