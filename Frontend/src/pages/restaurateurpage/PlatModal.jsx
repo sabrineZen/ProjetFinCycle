@@ -13,7 +13,7 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
   const [categoriesList, setCategoriesList] = useState([]);
   // Ajoute ce useEffect pour charger les catégories
   useEffect(() => {
-    fetch('http://localhost:5000/api/categories')
+    fetch(`${import.meta.env.VITE_API_URL}/categories`)
       .then(res => res.json())
       .then(data => {
         setCategoriesList(data);
