@@ -15,9 +15,9 @@ function AdminDashboard() {
     const fetchTout = async () => {
       try {
         const [statsRes, attenteRes, activitesRes] = await Promise.all([
-          fetch('/api/admin/stats'),
-          fetch('/api/admin/en-attente'),
-          fetch('/api/admin/activites'),
+          fetch(`${import.meta.env.VITE_API_URL}/admin/stats`),
+          fetch(`${import.meta.env.VITE_API_URL}/admin/en-attente`),
+          fetch(`${import.meta.env.VITE_API_URL}/admin/activites`),
         ]);
         const statsData     = await statsRes.json();
         const attenteData   = await attenteRes.json();
