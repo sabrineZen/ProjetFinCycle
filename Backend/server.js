@@ -16,7 +16,7 @@ app.use(express.json());
 // ── Gestion des Images (Dossier Uploads) ──
 const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsPath));
-console.log("📂 Dossier des images configuré sur :", uploadsPath);
+console.log("Dossier des images configuré sur :", uploadsPath);
 
 // ── Imports des Routes ──
 const authRoutes         = require('./routes/authRoutes');
@@ -28,6 +28,7 @@ const platRoutes         = require('./routes/platRoutes');
 const panierRoutes       = require('./routes/panierRoutes');
 const commandeRoutes     = require('./routes/commandeRoutes');
 const utilisateurRoutes  = require('./routes/utilisateurRoutes');
+const adresseRoutes = require('./routes/adresseRoutes')
 
 // Import des Statistiques (Directement dans le dossier routes)
 const statsRoutes        = require("./routes/statsRoutes");
@@ -42,7 +43,7 @@ app.use('/api/plats',         platRoutes);
 app.use('/api/panier',        panierRoutes);
 app.use('/api/commandes',     commandeRoutes);
 app.use('/api/utilisateurs',  utilisateurRoutes);
-
+app.use('/api/adresses', adresseRoutes);
 // Route pour les statistiques globales de l'admin
 app.use("/api/admin/statistiques", statsRoutes);
 

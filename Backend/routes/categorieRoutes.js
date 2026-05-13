@@ -10,7 +10,7 @@ const {
 } = require("../controllers/categorieController");
 
 // Vérifie que les fonctions sont bien importées
-console.log("✅ categorieController chargé :", {
+console.log("categorieController chargé :", {
   getCategories:    typeof getCategories,
   getCategorieById: typeof getCategorieById,
   createCategorie:  typeof createCategorie,
