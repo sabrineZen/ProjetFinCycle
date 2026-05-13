@@ -8,21 +8,18 @@ const {
   augmenterQuantite,
   diminuerQuantite,
   supprimerDuPanier,
-  historiquePanier
+  historiquePanier,
+  getRestaurantsPopulaires
 } = require('../controllers/platClientController');
 
-// ── Routes Plats ──
-router.get('/populaires', getPlatPopulaires);
-router.get('/categorie/:categorieId', getPlatsByCategorie);
-router.get('/filtrer', filtrerPlats);
-
-// ── Routes Panier ──
-router.post('/panier/ajouter', ajouterAuPanier);
-router.put('/panier/:lignePanierId/augmenter', augmenterQuantite);
-router.put('/panier/:lignePanierId/diminuer', diminuerQuantite);
-router.delete('/panier/:lignePanierId/supprimer', supprimerDuPanier);
-
-// ── Routes Historique ──
-router.get('/historique/:utilisateurId', historiquePanier);
+router.get('/populaires',                          getPlatPopulaires);
+router.get('/restaurants-populaires',              getRestaurantsPopulaires);
+router.get('/categorie/:categorieId',              getPlatsByCategorie);
+router.get('/filtrer',                             filtrerPlats);
+router.post('/panier/ajouter',                     ajouterAuPanier);
+router.put('/panier/:lignePanierId/augmenter',     augmenterQuantite);
+router.put('/panier/:lignePanierId/diminuer',      diminuerQuantite);
+router.delete('/panier/:lignePanierId/supprimer',  supprimerDuPanier);
+router.get('/historique/:utilisateurId',           historiquePanier);
 
 module.exports = router;

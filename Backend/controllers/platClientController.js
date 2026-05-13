@@ -306,6 +306,44 @@ const historiquePanier = async (req, res) => {
   }
 };
 
+const getRestaurantsPopulaires = async (req, res) => {
+  try {
+    const restaurants = await Utilisateur.findAll({
+      where: { role: 'restaurateur', statut: 'approuve' },
+      attributes: ['id', 'nomRestaurant', 'adresseRestaurant'],
+      include: [{
+        model: Plat,
+        attributes: ['id'],
+        include: [{
+          model: LigneCommande,
+          attributes: ['id'],
+          required: false
+        }],
+        required: false
+      }],
+    });
+
+    const result = restaurants.map(r => {
+      const data = r.toJSON();
+      const totalCommandes = data.Plats?.reduce((sum, p) => 
+        sum + (p.LigneCommandes?.length || 0), 0) || 0;
+      return {
+        id: data.id,
+        nomRestaurant: data.nomRestaurant,
+        adresseRestaurant: data.adresseRestaurant,
+        totalCommandes
+      };
+    })
+    .sort((a, b) => b.totalCommandes - a.totalCommandes)
+    .slice(0, 6);
+
+    res.json({ success: true, data: result });
+  } catch (err) {
+    console.error('RESTAURANTS POPULAIRES ERROR:', err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getPlatPopulaires,
   getPlatsByCategorie,
@@ -314,5 +352,6 @@ module.exports = {
   augmenterQuantite,
   diminuerQuantite,
   supprimerDuPanier,
-  historiquePanier
+  historiquePanier,
+  getRestaurantsPopulaires
 };
