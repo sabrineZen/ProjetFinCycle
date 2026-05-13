@@ -16,7 +16,7 @@ app.use(express.json());
 // ── Gestion des Images (Dossier Uploads) ──
 const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsPath));
-console.log("📂 Dossier des images configuré sur :", uploadsPath);
+console.log("Dossier des images configuré sur :", uploadsPath);
 
 // ── Imports des Routes ──
 const authRoutes         = require('./routes/authRoutes');
@@ -32,7 +32,7 @@ const utilisateurRoutes  = require('./routes/utilisateurRoutes');
 // Import des Statistiques (Directement dans le dossier routes)
 const statsRoutes        = require("./routes/statsRoutes");
 
-// ── Utilisation des Routes ──
+// Utilisation des Routes
 app.use('/api/auth',          authRoutes);
 app.use('/api/clients',       clientRoutes);
 app.use('/api/restaurateurs', restaurateurRoutes);
@@ -48,7 +48,7 @@ app.use("/api/admin/statistiques", statsRoutes);
 
 // ── Route de test (Vérification serveur) ──
 app.get("/", (req, res) => {
-  res.send("Le serveur fonctionne parfaitement ! 🚀");
+  res.send("Le serveur fonctionne parfaitement");
 });
 
 // ── Lancement du Serveur et Connexion BDD ──
@@ -56,16 +56,16 @@ const PORT = process.env.PORT || 5000;
 
 sequelize.authenticate()
   .then(() => {
-    console.log("✅ Base de données connectée avec succès");
+    console.log("Base de données connectée avec succès");
     // .sync({ alter: false }) pour ne pas casser la structure existante
     return sequelize.sync({ alter: false }); 
   })
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`🚀 Serveur démarré sur : http://localhost:${PORT}`);
+      console.log(`Serveur démarré sur : http://localhost:${PORT}`);
     });
   })
   .catch(err => {
-    console.error("❌ Erreur critique lors du démarrage :", err.message);
+    console.error("Erreur critique lors du démarrage :", err.message);
     process.exit(1); 
   });
