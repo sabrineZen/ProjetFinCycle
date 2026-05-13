@@ -76,7 +76,14 @@ const getCategories = async (req, res) => {
 
 const getCategorieById = async (req, res) => {
   try {
-    const cat = await Categorie.findByPk(req.params.id);
+    const cat = await Categorie.findByPk(req.params.id, {
+      include: [{
+        model: Plat,
+        attributes: ['id', 'nom', 'description', 'prix', 'image', 'disponible'],
+        where: { disponible: true },
+        required: false
+      }]
+    });
     if (!cat) return res.status(404).json({ message: "Catégorie introuvable" });
     res.json(cat);
   } catch (err) {
