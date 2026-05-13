@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
-const bcrypt = require('bcryptjs')
->>>>>>> frontend
+const bcrypt = require('bcryptjs');
 const { Utilisateur } = require('../models');
-const bcrypt = require('bcryptjs')
+
 const getRestaurateurs = async (req, res) => {
   try {
     const restaurateurs = await Utilisateur.findAll({
@@ -30,27 +27,14 @@ const deleteRestaurateur = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-//Informations personelles 
-
-=======
->>>>>>> frontend
 const getProfil = async (req, res) => {
   try {
     const utilisateur = await Utilisateur.findByPk(req.user.id, {
       attributes: ['nom', 'prenom', 'email', 'telephone', 'adresse']
     });
-<<<<<<< HEAD
-
     if (!utilisateur) {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
-
-=======
-    if (!utilisateur) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
->>>>>>> frontend
     res.status(200).json(utilisateur);
   } catch (error) {
     res.status(500).json({ message: 'Erreur serveur', error: error.message });
@@ -60,42 +44,25 @@ const getProfil = async (req, res) => {
 const updateProfil = async (req, res) => {
   try {
     const { nom, prenom, email, telephone, adresse } = req.body;
-<<<<<<< HEAD
-
-    const utilisateur = await Utilisateur.findByPk(req.user.id);
-
-    if (!utilisateur) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
-
-    // Vérifier si l'email est déjà utilisé par un autre utilisateur
-=======
     const utilisateur = await Utilisateur.findByPk(req.user.id);
     if (!utilisateur) {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
->>>>>>> frontend
+
     if (email && email !== utilisateur.email) {
       const emailExistant = await Utilisateur.findOne({ where: { email } });
       if (emailExistant) {
         return res.status(400).json({ message: 'Cet email est déjà utilisé' });
       }
     }
-<<<<<<< HEAD
 
-    // Vérifier si le téléphone est déjà utilisé par un autre utilisateur
-=======
->>>>>>> frontend
     if (telephone && telephone !== utilisateur.telephone) {
       const telExistant = await Utilisateur.findOne({ where: { telephone } });
       if (telExistant) {
         return res.status(400).json({ message: 'Ce téléphone est déjà utilisé' });
       }
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> frontend
     await utilisateur.update({ nom, prenom, email, telephone, adresse });
     await utilisateur.reload();
     res.status(200).json({
@@ -115,49 +82,30 @@ const updateProfil = async (req, res) => {
 
 const changerMotDePasse = async (req, res) => {
   try {
-    const { nouveauMotDePasse } = req.body
-<<<<<<< HEAD
-
-=======
->>>>>>> frontend
-    const utilisateur = await Utilisateur.findByPk(req.user.id)
+    const { nouveauMotDePasse } = req.body;
+    const utilisateur = await Utilisateur.findByPk(req.user.id);
     if (!utilisateur) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' })
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
-<<<<<<< HEAD
-
-    const hash = await bcrypt.hash(nouveauMotDePasse, 10)
-    await utilisateur.update({ motDePasse: hash })
-
-=======
-    const hash = await bcrypt.hash(nouveauMotDePasse, 10)
-    await utilisateur.update({ motDePasse: hash })
->>>>>>> frontend
-    res.status(200).json({ message: 'Mot de passe mis à jour avec succès' })
+    const hash = await bcrypt.hash(nouveauMotDePasse, 10);
+    await utilisateur.update({ motDePasse: hash });
+    res.status(200).json({ message: 'Mot de passe mis à jour avec succès' });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error: error.message })
+    res.status(500).json({ message: 'Erreur serveur', error: error.message });
   }
-}
+};
 
 const supprimerCompte = async (req, res) => {
   try {
-    const utilisateur = await Utilisateur.findByPk(req.user.id)
+    const utilisateur = await Utilisateur.findByPk(req.user.id);
     if (!utilisateur) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' })
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> frontend
-    await utilisateur.destroy()
-    res.status(200).json({ message: 'Compte supprimé avec succès' })
+    await utilisateur.destroy();
+    res.status(200).json({ message: 'Compte supprimé avec succès' });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error: error.message })
+    res.status(500).json({ message: 'Erreur serveur', error: error.message });
   }
-}
+};
 
-<<<<<<< HEAD
-module.exports = { getRestaurateurs,deleteRestaurateur,getProfil,updateProfil,changerMotDePasse,supprimerCompte};
-=======
 module.exports = { getRestaurateurs, deleteRestaurateur, getProfil, updateProfil, changerMotDePasse, supprimerCompte };
->>>>>>> frontend

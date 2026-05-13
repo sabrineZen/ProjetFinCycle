@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const { Commande, LigneCommande, Plat } = require('../models');
 
 const creerCommande = async (req, res) => {
@@ -9,13 +8,11 @@ const creerCommande = async (req, res) => {
     if (!produits || produits.length === 0)
       return res.status(400).json({ message: 'Panier vide' });
 
-    // Calculer le total
     let total = 0;
     for (const p of produits) {
       total += parseFloat(p.prix) * p.quantite;
     }
 
-    // Créer la commande
     const commande = await Commande.create({
       utilisateurId,
       adresseLivraison,
@@ -23,20 +20,18 @@ const creerCommande = async (req, res) => {
       statut: 'en_attente'
     });
 
-    // Créer les lignes de commande
     for (const p of produits) {
       await LigneCommande.create({
         commandeId: commande.id,
-        platId:     p.id,
-        quantite:   p.quantite,
+        platId: p.id,
+        quantite: p.quantite,
         prixUnitaire: parseFloat(p.prix),
-        sousTotal:  parseFloat(p.prix) * p.quantite
+        sousTotal: parseFloat(p.prix) * p.quantite
       });
     }
 
     res.status(201).json({ message: 'Commande créée !', commande });
   } catch (err) {
-    console.error('Erreur creerCommande:', err.message);
     console.error('Erreur creerCommande:', err);
     res.status(500).json({ message: 'Erreur serveur', detail: err.message });
   }
@@ -66,7 +61,7 @@ const getCommandesRestaurateur = async (req, res) => {
 
     res.json(commandes);
   } catch (err) {
-    console.error('Erreur getCommandesRestaurateur:', err.message);
+    console.error('Erreur getCommandesRestaurateur:', err);
     res.status(500).json({ message: 'Erreur serveur', detail: err.message });
   }
 };
@@ -92,22 +87,21 @@ const changerStatutCommande = async (req, res) => {
   }
 };
 
-module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande };
-=======
-const { Commande } = require('../models');
 const getMesCommandes = async (req, res) => {
   try {
     const commandes = await Commande.findAll({
       where: { utilisateurId: req.user.id },
       order: [['dateCommande', 'DESC']]
-    })
-    if (!commandes) {
-      return res.status(404).json({ message: 'Aucune commande trouvée' })
+    });
+
+    if (!commandes || commandes.length === 0) {
+      return res.status(404).json({ message: 'Aucune commande trouvée' });
     }
-    res.status(200).json(commandes)
+
+    res.status(200).json(commandes);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error: error.message })
+    res.status(500).json({ message: 'Erreur serveur', error: error.message });
   }
-}
-module.exports = { getMesCommandes }
->>>>>>> e1677bec036c10e51ca653c7c4f7daf999cce722
+};
+
+module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande, getMesCommandes };

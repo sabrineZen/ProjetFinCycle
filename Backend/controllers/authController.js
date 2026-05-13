@@ -8,49 +8,28 @@ const login = async (req, res) => {
     const { email, motDePasse } = req.body;
 
     if (!email || !motDePasse)
-<<<<<<< HEAD
-      return res.status(400).json({ message: 'Email et mot de passe requis ' });
-=======
       return res.status(400).json({ message: 'Email et mot de passe requis' });
->>>>>>> e1677bec036c10e51ca653c7c4f7daf999cce722
 
     const utilisateur = await Utilisateur.findOne({ where: { email: email.trim() } });
     if (!utilisateur)
-      return res.status(404).json({ message: 'Email introuvable ' });
+      return res.status(404).json({ message: 'Email introuvable' });
 
     const isMatch = await bcrypt.compare(motDePasse, utilisateur.motDePasse);
     if (!isMatch)
-<<<<<<< HEAD
-      return res.status(401).json({ message: 'Mot de passe incorrect ' });
-
-    //  VERIFICATION DU STATUT ──
-    
-if (utilisateur.role === 'restaurateur') {
-  if (utilisateur.statut === 'en_attente') {
-    return res.status(403).json({ 
-      message: "Accès refusé : Votre dossier est encore en cours d'examen par notre équipe. Un email vous sera envoyé dès validation." 
-    });
-  }
-  
-  if (utilisateur.statut === 'refuse') {
-    return res.status(403).json({ 
-      message: " Accès refusé : Votre demande d'inscription a été rejetée ou votre compte a été suspendu par l'administration. Veuillez contacter le support pour plus d'informations." 
-    });
-  }
-}
-=======
       return res.status(401).json({ message: 'Mot de passe incorrect' });
 
-    // ── MODIFICATION ICI : VERIFICATION DU STATUT ──
     if (utilisateur.role === 'restaurateur') {
       if (utilisateur.statut === 'en_attente') {
-        return res.status(403).json({ message: 'Votre compte est en attente de validation par l\'administrateur.' });
+        return res.status(403).json({
+          message: 'Accès refusé : votre dossier est en attente de validation par l\'administrateur.'
+        });
       }
       if (utilisateur.statut === 'refuse') {
-        return res.status(403).json({ message: 'Votre demande d\'inscription a été refusée.' });
+        return res.status(403).json({
+          message: 'Accès refusé : votre demande d\'inscription a été rejetée ou votre compte est suspendu.'
+        });
       }
     }
->>>>>>> e1677bec036c10e51ca653c7c4f7daf999cce722
     // ───────────────────────────────────────────────
 
     const token = jwt.sign(
