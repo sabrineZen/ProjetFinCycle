@@ -26,7 +26,7 @@ const updateProfil = async (req, res) => {
       { where: { id: req.user.id } }
     );
 
-    res.json({ message: '✅ Profil mis à jour avec succès' });
+    res.json({ message: 'Profil mis à jour avec succès' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -15,6 +15,7 @@ import img9 from "../../assets/img9.jpg";
 import img10 from "../../assets/img10.jpg";
 import logo from "../../assets/logo.png";
 
+
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
 export default function Login() {
@@ -26,6 +27,7 @@ export default function Login() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -57,26 +59,29 @@ export default function Login() {
   };
 
   // ── CONNEXION ──
-  const handleLogin = async () => {
-    setError("");
-    setLoading(true);
-    try {
-      const res = await api.post("/auth/login", formData);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
-      localStorage.setItem("nom", res.data.nom); // ✅ nom ajouté
+ const handleLogin = async () => {
+  setLoading(true);
+  try {
+    const res = await api.post("/auth/login", formData);
+    
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("role", res.data.role);
+    localStorage.setItem("nom", res.data.nom);
 
-      if (res.data.role === "client") navigate("/homeClient");
-      else if (res.data.role === "restaurateur") navigate("/restaurateur");
-      else if (res.data.role === "admin") navigate("/admin/dashboard");
+    if (res.data.role === "client") navigate("/homeClient");
+    else if (res.data.role === "restaurateur") navigate("/restaurateur");
+    else if (res.data.role === "admin") navigate("/admin/dashboard");
 
-    } catch (err) {
-      setError(err.response?.data?.message || "Erreur de connexion ❌");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err) {
+    const message = err.response?.data?.message || "Erreur de connexion ❌";
 
+    //  ON AFFICHE UNIQUEMENT L'ALERTE NAVIGATEUR
+    alert(message); 
+
+  } finally {
+    setLoading(false);
+  }
+};
   // ── INSCRIPTION CLIENT ──
   const handleRegisterClient = async () => {
     setError("");
@@ -85,14 +90,70 @@ export default function Login() {
       await api.post("/auth/register/client", formData);
       setShowInscription(false);
       setFormData({});
-      alert("Compte créé avec succès ✅");
+      alert("Compte créé avec succès ");
     } catch (err) {
-      setError(err.response?.data?.message || "Erreur d'inscription ❌");
+      alert(err.response?.data?.message || "Erreur d'inscription ❌");
     } finally {
       setLoading(false);
     }
   };
+  const validerFormulaire = () => {
+  if (role === "client") {
+    if (!formData.email || !formData.motDePasse || !formData.nom || !formData.telephone) {
+      alert(" Veuillez remplir tous les champs obligatoires (Nom, Email, Mot de passe, Téléphone)");
+      return false;
+    }
+  } else {
+    // Correction des noms ici pour correspondre à tes inputs
+    if (
+      !formData.email || 
+      !formData.motDePasse || 
+      !formData.nomRestaurant || 
+      !formData.numeroRegistre || // Corrigé (était registreCommerce)
+      !formData.documentOfficiel || // Corrigé (était document)
+      !formData.telephone
+    ) {
+      alert(" Veuillez remplir toutes les champs obligatoires (Nom du restaurant, Numéro de registre, Document officiel, Numéro de téléphone du restaurant !");
+      return false;
+    }
+  }
+  return true;
+};
 
+const validerEtAlerter = () => {
+  const emailRegex = /^[^\s@]+@(gmail\.com|outlook\.com|hotmail\.com|yahoo\.(com|fr))$/;
+  const telephoneRegex = /^(05|06|07)[0-9]{8}$/;
+  const rcRegex = /^[0-9]{2}\/[0-9]{2}-[0-9]{7}[A-Z][0-9]{2}$/;
+
+  // 1. Email
+  if (!formData.email || !emailRegex.test(formData.email.toLowerCase())) {
+    alert(" Format d'email incorrect ! (Seuls Gmail, Outlook, Hotmail et Yahoo sont acceptés)");
+    return false;
+  }
+
+  // 2. Mot de passe
+  if (!formData.motDePasse || formData.motDePasse.length < 6) {
+    alert(" Le mot de passe doit contenir au moins 6 caractères !");
+    return false;
+  }
+
+  if (showInscription) {
+    // 3. Téléphone (Utilise "telephone" pour les deux rôles)
+    if (!formData.telephone || !telephoneRegex.test(formData.telephone)) {
+      alert(" Le numéro doit commencer par 05, 06 ou 07 et contenir 10 chiffres !");
+      return false;
+    }
+
+    // 4. Registre du Commerce (Restaurateur uniquement)
+    if (role === "restaurateur") {
+      if (!formData.numeroRegistre || !rcRegex.test(formData.numeroRegistre)) {
+        alert(" Format du RC invalide !\nExemple : 19/00-1234567B15");
+        return false;
+      }
+    }
+  }
+  return true;
+};
   // ── INSCRIPTION RESTAURATEUR ──
   const handleRegisterRestaurateur = async () => {
     setError("");
@@ -103,19 +164,32 @@ export default function Login() {
       await api.post("/auth/register/restaurateur", data);
       setShowInscription(false);
       setFormData({});
-      alert("Restaurant créé avec succès ✅");
+      alert("Restaurant créé avec succès ");
     } catch (err) {
-      setError(err.response?.data?.message || "Erreur d'inscription ❌");
-    } finally {
-      setLoading(false);
-    }
+    //  Message d'erreur (ex: email déjà utilisé, fichier manquant)
+    const message = err.response?.data?.message || "Erreur d'inscription ❌";
+    alert(message);
+  } finally {
+    setLoading(false);
+  }
   };
+  
+const handleSubmit = () => {
+  if (!showInscription) {
+    handleLogin();
+  } else {
+    if (!validerFormulaire()) return; 
 
-  const handleSubmit = () => {
-    if (!showInscription) handleLogin();
-    else if (role === "client") handleRegisterClient();
-    else handleRegisterRestaurateur();
-  };
+    //  Nom corrigé ici : validerEtAlerter au lieu de validerConditions
+    if (!validerEtAlerter()) return;
+
+    if (role === "client") {
+      handleRegisterClient();
+    } else {
+      handleRegisterRestaurateur();
+    }
+  }
+};
 
   const slowTransition = { type: "tween", duration: 1.1, ease: "easeInOut" };
   const delayedTransition = { ...slowTransition, delay: 0.2 };
@@ -212,7 +286,7 @@ export default function Login() {
             </div>
           )}
 
-          {error && <p className="text-red-500 text-xs text-center mb-2">{error}</p>}
+          
 
           <div className="flex w-full gap-3 mb-4">
             <button onClick={() => { setShowInscription(!showInscription); setError(""); setFormData({}); }}
@@ -360,6 +434,7 @@ export default function Login() {
           </footer>
         </motion.div>
       </motion.div>
+     
     </div>
   );
 }

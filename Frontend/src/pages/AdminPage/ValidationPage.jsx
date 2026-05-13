@@ -96,14 +96,18 @@ function ValidationPage() {
                 {/* Lien vers le document réel stocké sur le serveur */}
                 <div className="mb-4">
                   <p className="text-gray-400 text-sm mb-2">Document officiel :</p>
-                  <a 
-                    href={`${import.meta.env.VITE_API_URL}/uploads/${r.documentOfficiel}`} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="flex items-center gap-2 text-blue-600 text-sm font-medium hover:underline"
-                  >
-                    <FaFilePdf /> Consulter le Registre de Commerce
-                  </a>
+                  {r.documentOfficiel ? (
+                    <a 
+                      href={`http://localhost:5000/uploads/${r.documentOfficiel}${r.documentOfficiel.includes('.') ? '' : '.pdf'}`} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-xl text-sm font-semibold border border-red-200 hover:bg-red-100 transition-all duration-200 shadow-sm"
+                    >
+                      <FaFilePdf /> Consulter le Registre de Commerce
+                    </a>
+                  ) : (
+                    <p className="text-gray-400 text-sm italic">Aucun document fourni</p>
+                  )}
                 </div>
 
                 <div className="flex gap-3 mt-4">

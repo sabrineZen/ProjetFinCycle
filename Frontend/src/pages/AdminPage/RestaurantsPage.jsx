@@ -61,6 +61,24 @@ function RestaurantsPage() {
       (statusFiltre === "Suspendu" && r.statut === "refuse");
     return matchRecherche && matchStatus;
   });
+  const handleChangerStatut = async (id, nouveauStatut) => {
+  try {
+    const res = await fetch(`/api/admin/utilisateurs/${id}/valider`, { // Vérifie que cette route correspond à ton adminRoutes.js
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: nouveauStatut }),
+    });
+
+    if (res.ok) {
+      // Met à jour la liste localement sans recharger la page
+      setRestaurants(prev => prev.map(r => r.id === id ? { ...r, statut: nouveauStatut } : r));
+    } else {
+      alert("Erreur lors de la modification");
+    }
+  } catch (e) {
+    console.error("Erreur statut:", e);
+  }
+};
 
   return (
     <div className="flex">
@@ -161,27 +179,44 @@ function RestaurantsPage() {
                     </div>
 
                     <div className="flex gap-3">
-                      {estActif ? (
-                        <button className="flex-1 bg-button text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
-                          <FaBan /> Suspendre
-                        </button>
-                      ) : (
-                        <button className="flex-1 border border-bordure text-secondary py-2 rounded-xl text-sm flex items-center justify-center gap-2">
-                          <FaCheckCircle /> Réactiver
-                        </button>
-                      )}
-                      <button className="bg-secondary text-white p-2 rounded-xl">
-                        <button
-                          onClick={() => handleSupprimer(r.id)}
-                          disabled={suppressionId === r.id}
-                          className={`bg-secondary text-white p-2 rounded-xl transition-opacity ${
-                            suppressionId === r.id ? 'opacity-50 cursor-not-allowed' : ''
-                          }`}
-                        >
-                          <FaTrash />
-                        </button>
+                    {/* CAS 1 : ACTIF (approuve) -> Affiche bouton Suspendre */}
+                    {r.statut === "approuve" && (
+                      <button 
+                        onClick={() => handleChangerStatut(r.id, "refuse")}
+                        className="flex-1 bg-button text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-orange-400 transition-colors"
+                      >
+                        <FaBan /> Suspendre
                       </button>
-                    </div>
+                    )}
+
+                    {/* CAS 2 : SUSPENDU (refuse) -> Affiche bouton Réactiver */}
+                    {r.statut === "refuse" && (
+                      <button 
+                        onClick={() => handleChangerStatut(r.id, "approuve")}
+                        className="flex-1 bg-[#FFF4EC] border border-bordure text-secondary py-2 rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-[#fee8d8] transition-colors"
+                      >
+                        <FaCheckCircle className="text-[#951418]" /> Réactiver
+                      </button>
+                    )}
+
+                    {/* CAS 3 : EN ATTENTE -> Affiche un texte ou rien */}
+                    {r.statut === "en_attente" && (
+                      <div className="flex-1 py-2 text-center text-sm text-gray-400 italic">
+                        En attente de validation
+                      </div>
+                    )}
+
+                    {/* Bouton Poubelle (toujours présent) */}
+                    <button
+                      onClick={() => handleSupprimer(r.id)}
+                      disabled={suppressionId === r.id}
+                      className={`bg-secondary text-white p-2 rounded-xl transition-opacity ${
+                        suppressionId === r.id ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'
+                      }`}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
                   </div>
                 );
               })

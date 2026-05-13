@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-// On pointe directement vers controllers/statsController.js
 const statsController = require("../controllers/statsController");
 
-// L'URL sera : http://localhost:5000/api/admin/statistiques/global
+// Route pour l'Admin
 router.get("/global", statsController.getGlobalStats);
+
+// Route pour le Restaurateur
+// ✅ Vérifie bien que le nom getRestaurateurDashboard est identique au controller
+router.get("/dashboard-restaurateur", statsController.getRestaurateurDashboard);
 
 module.exports = router;

@@ -47,15 +47,20 @@ const MesPlats = () => {
 
   // ── Toggle disponibilité ──
   const handleToggleStatus = async (id) => {
-    const platToUpdate = platsData.find(p => p.id === id);
+  const platToUpdate = platsData.find(p => p.id === id);
     if (!platToUpdate) return;
     try {
       const newStatus = !platToUpdate.disponible;
-      await fetch(`${URL_API}/${id}`, {
+      const res = await fetch(`${URL_API}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`  // ← déjà présent dans handleSavePlat mais pas ici
+        },
         body: JSON.stringify({ disponible: newStatus })
       });
+
+      if (!res.ok) return;
       setPlatsData(prev =>
         prev.map(plat => plat.id === id ? { ...plat, disponible: newStatus } : plat)
       );
@@ -68,7 +73,19 @@ const MesPlats = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Supprimer ce plat ?")) return;
     try {
-      await fetch(`${URL_API}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${URL_API}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("Erreur suppression:", err);
+        return;
+      }
+
       setPlatsData(prev => prev.filter(p => p.id !== id));
     } catch (err) {
       console.error("Erreur suppression:", err);
@@ -92,7 +109,11 @@ const MesPlats = () => {
       const method = isEditing ? 'PUT' : 'POST';
       const url = isEditing ? `${URL_API}/${platData.id}` : URL_API;
 
-      const res = await fetch(url, { method, body: formData });
+      const res = await fetch(url, { method, body: formData ,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       const result = await res.json();
 
       // Trouver le nom de la catégorie pour mettre à jour l'UI
