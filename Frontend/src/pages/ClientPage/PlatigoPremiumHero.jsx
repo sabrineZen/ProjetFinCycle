@@ -618,7 +618,7 @@ const PlatigoPremiumHero = () => {
                   <div className="w-5 h-5 flex items-center justify-center">
                     <span className="text-orange-400">@</span>
                   </div>
-                  <a href="mailto:contact@platigo.dz" className="hover:text-white transition-colors">contact@platigo.dz</a>
+                  <a href="mailto:platigodz06@gmail.com" className="hover:text-white transition-colors">platigodz06@gmail.com</a>
                 </li>
               </ul>
             </div>
