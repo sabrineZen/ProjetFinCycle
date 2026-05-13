@@ -16,7 +16,7 @@ function UtilisateursPage() {
   useEffect(() => {
     const fetchUtilisateurs = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/utilisateurs", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/utilisateurs`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

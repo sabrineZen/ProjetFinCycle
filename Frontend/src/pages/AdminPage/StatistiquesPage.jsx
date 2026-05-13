@@ -15,7 +15,7 @@ function StatistiquesPage() {
 
   // Récupération des données du backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/statistiques/global")
+    fetch(`${import.meta.env.VITE_API_URL}/admin/statistiques/global`)
       .then((res) => res.json())
       .then((json) => {
         setData(json);
