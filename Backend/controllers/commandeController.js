@@ -115,4 +115,27 @@ const getCommandesClient = async (req, res) => {
   }
 };
 
-module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande, getCommandesClient };
+const getStatsClient = async (req, res) => {
+  try {
+    const utilisateurId = req.user.id;
+
+    const commandes = await Commande.findAll({
+      where: { utilisateurId },
+      include: [{
+        model: LigneCommande,
+        attributes: ['quantite', 'sousTotal']
+      }]
+    });
+
+    const depensesTotales = commandes.reduce((sum, c) => sum + parseFloat(c.total || 0), 0);
+    const articlesCommandes = commandes.reduce((sum, c) => {
+      return sum + c.LigneCommandes.reduce((s, l) => s + l.quantite, 0);
+    }, 0);
+
+    res.json({ depensesTotales, articlesCommandes, totalCommandes: commandes.length });
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', detail: err.message });
+  }
+};
+
+module.exports = { creerCommande, getCommandesRestaurateur, changerStatutCommande, getCommandesClient, getStatsClient };
