@@ -28,7 +28,7 @@ const adresses = [
         pays: "France",
     }
 ]
-function Parametre(){
+function Parametre({ profil }){
     return(
         <div className="space-y-6">
             <div className="pb-4 border-b border-gray-200">{/*partie langue */}
@@ -51,7 +51,7 @@ function Parametre(){
                   <p className="font-bold" style={{ color: '#8B2A1B' }}>Securité</p>
              </div>             
              <div className="bg-[#FFF0E8] rounded-xl p-4 space-y-3">
-                  <p lassName="font-semibold text-[#8B2A1B]">Modifier Mot passe</p>
+                  <p className="font-semibold text-[#8B2A1B]">Modifier Mot passe</p>
                   <div className="flex items-center bg-white rounded-lg px-3 py-2">
                      <input type="password" placeholder="Nouveau mot de passe" className="outline-none bg-transparent w-full"></input>
                   </div>                 
@@ -65,9 +65,15 @@ function Parametre(){
                   <RiDeleteBinLine className="text-red-500 text-xl" />
                    <p className="font-bold" style={{ color: '#8B2A1B' }}>Compte</p>
                 </div>
-                <div className="bg-red-50 rounded-xl p-4">
-                    <p className="font-semibold text-red-500">Supprimer Mon compte</p>
-                    <p className="text-red-400 text-sm mt-1">Cette action est irréversible. Toutes vos données seront définitivement supprimées.</p>
+                <div className="bg-red-50 rounded-xl p-4 space-y-3">
+                    <div>
+                      <p className="font-semibold text-red-500">Supprimer Mon compte</p>
+                      <p className="text-red-400 text-sm mt-1">Cette action est irréversible. Toutes vos données seront définitivement supprimées.</p>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <p>Email : {profil?.email || "Non renseigné"}</p>
+                      <p>Adresse : {profil?.adresse || "Non renseignée"}</p>
+                    </div>
                     <button className="mt-3 bg-red-500 text-white px-4 py-2 rounded-lg">Supprimer le Compte </button>
                 </div>
             </div>

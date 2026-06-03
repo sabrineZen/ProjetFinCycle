@@ -3,6 +3,7 @@ import { FaHistory, FaShoppingCart, FaTrash, FaTimes, FaArrowLeft, FaPlus, FaMin
 import AnnulerButton from "./buttonAnnuler";
 import ValiderButton from "./buttonValider";
 import HistoriqueAchats from "./historique";
+import api from "../api";
 
 function Panier({ produits, setPanier, onClose }) {
   const [vueActuelle, setVueActuelle] = useState("panier");
@@ -155,7 +156,19 @@ function Panier({ produits, setPanier, onClose }) {
             
             <div className="grid grid-cols-2 gap-3 h-12">
               <AnnulerButton onClick={() => setPanier([])} />
-              <ValiderButton onClick={() => alert("Commande envoyée !")} />
+              <ValiderButton onClick={async () => {
+                try {
+                  // Prépare les items regroupés pour le backend
+                  const items = produitsRegroupes.map(p => ({ platId: p.id, quantite: p.quantite, prix: p.prix }));
+                  await api.post('/commandes/checkout', { items });
+                  // vider le panier local et passer à l'historique
+                  setPanier([]);
+                  setVueActuelle('historique');
+                } catch (err) {
+                  console.error('Erreur commande:', err);
+                  alert(err.response?.data?.message || 'Erreur lors de l\'envoi de la commande');
+                }
+              }} />
             </div>
           </div>
         )}

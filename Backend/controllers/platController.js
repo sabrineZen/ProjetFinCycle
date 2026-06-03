@@ -54,10 +54,12 @@ const createPlat = async (req, res) => {
     });
 
     const cat = await Categorie.findByPk(categorieId);
+    const host = process.env.BACKEND_HOST || 'localhost';
+    const port = process.env.PORT || 5000;
 
     res.status(201).json({
       ...nouveauPlat.toJSON(),
-      image: imageName ? `http://localhost:5000/uploads/${imageName}` : null,
+      image: imageName ? `http://${host}:${port}/uploads/${imageName}` : null,
       categorie: cat ? cat.nom : ''
     });
   } catch (err) {
@@ -87,10 +89,12 @@ const updatePlat = async (req, res) => {
     });
 
     const cat = await Categorie.findByPk(categorieId);
+    const host = process.env.BACKEND_HOST || 'localhost';
+    const port = process.env.PORT || 5000;
 
     res.json({
       ...plat.toJSON(),
-      image: imageName ? `http://localhost:5000/uploads/${imageName}` : null,
+      image: imageName ? `http://${host}:${port}/uploads/${imageName}` : null,
       categorie: cat ? cat.nom : ''
     });
   } catch (err) {
@@ -109,4 +113,4 @@ const deletePlat = async (req, res) => {
   }
 };
 
-module.exports = { getAllPlats, createPlat, updatePlat, deletePlat };
+module.exports = { getAllPlats, createPlat, updatePlat, deletePlat }; 

@@ -15,7 +15,7 @@ const getCategories = async (req, res) => {
           const restaurants = await Plat.count({
             where: { categorieId: cat.id },
             distinct: true,
-            col: "UtilisateurId",
+            col: "utilisateurId",
           });
 
           return {

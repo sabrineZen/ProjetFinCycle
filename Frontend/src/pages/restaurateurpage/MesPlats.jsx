@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Eye, EyeOff, Edit2, Trash2 } from 'lucide-react';
 import PlatModal from './PlatModal';
+import api from '../../api';
 
 const MesPlats = () => {
   const [showModal, setShowModal] = useState(false);
@@ -11,23 +12,19 @@ const MesPlats = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [platsData, setPlatsData] = useState([]);
 
-  const URL_API = `${import.meta.env.VITE_API_URL}/plats`;
-  //
   // ── Charger les catégories depuis la DB ──
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/categories`)
-      .then(res => res.json())
-      .then(data => {
-        setCategoriesList([{ id: 'Tous', nom: 'Tous' }, ...data]);
+    api.get('/categories')
+      .then(res => {
+        setCategoriesList([{ id: 'Tous', nom: 'Tous' }, ...res.data]);
       })
       .catch(err => console.error('Erreur catégories:', err));
   }, []);
 
   // ── Charger les plats au démarrage ──
   useEffect(() => {
-    fetch(URL_API)
-      .then(res => res.json())
-      .then(data => setPlatsData(data))
+    api.get('/plats')
+      .then(res => setPlatsData(res.data))
       .catch(err => console.error("Erreur de chargement:", err));
   }, []);
 
@@ -51,11 +48,7 @@ const MesPlats = () => {
     if (!platToUpdate) return;
     try {
       const newStatus = !platToUpdate.disponible;
-      await fetch(`${URL_API}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ disponible: newStatus })
-      });
+      await api.put(`/plats/${id}`, { disponible: newStatus });
       setPlatsData(prev =>
         prev.map(plat => plat.id === id ? { ...plat, disponible: newStatus } : plat)
       );
@@ -68,7 +61,7 @@ const MesPlats = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Supprimer ce plat ?")) return;
     try {
-      await fetch(`${URL_API}/${id}`, { method: 'DELETE' });
+      await api.delete(`/plats/${id}`);
       setPlatsData(prev => prev.filter(p => p.id !== id));
     } catch (err) {
       console.error("Erreur suppression:", err);
@@ -89,11 +82,11 @@ const MesPlats = () => {
         formData.append('image', platData.image);
       }
 
-      const method = isEditing ? 'PUT' : 'POST';
-      const url = isEditing ? `${URL_API}/${platData.id}` : URL_API;
-
-      const res = await fetch(url, { method, body: formData });
-      const result = await res.json();
+      const res = isEditing 
+        ? await api.put(`/plats/${platData.id}`, formData)
+        : await api.post('/plats', formData);
+      
+      const result = res.data;
 
       // Trouver le nom de la catégorie pour mettre à jour l'UI
       const selectedCat = categoriesList.find(c => String(c.id) === String(platData.categorieId));

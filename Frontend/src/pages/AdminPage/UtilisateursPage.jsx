@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
+import { API } from '../../config';
 import { FaEnvelope, FaPhone, FaEye, FaTrash, FaBars, FaTimes } from "react-icons/fa";
 
 function UtilisateursPage() {
@@ -16,7 +17,7 @@ function UtilisateursPage() {
   useEffect(() => {
     const fetchUtilisateurs = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/utilisateurs`, {
+        const res = await fetch(`${API}/admin/utilisateurs`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -37,7 +38,7 @@ function UtilisateursPage() {
   const supprimerUtilisateur = async (id) => {
     if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/utilisateurs/${id}`, {
+      const res = await fetch(`${API}/admin/utilisateurs/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

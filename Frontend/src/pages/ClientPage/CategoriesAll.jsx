@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import api from "../../api";
 
 // Composants
 import NavbarHome from "../../composants/navbarHome";
@@ -8,16 +9,30 @@ import CategoryCard from "../../composants/categoryCard";
 import Footer from "../../composants/footer";
 import Panier from "../../composants/panier";
 
-// Data
-import { categories as categoriesData } from "../../data/categories";
-
 function AllCategories() {
   const navigate = useNavigate();
   
   // États pour la Navbar (Panier et Recherche)
   const [montrerPanier, setMontrerPanier] = useState(false);
   const [texteRecherche, setTexteRecherche] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [chargement, setChargement] = useState(true);
   const [panier, setPanier] = useState([]); // Idéalement, utilise un Context pour partager le panier entre Home et ici
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      setChargement(true);
+      try {
+        const res = await api.get('/categories');
+        setCategories(res.data || []);
+      } catch (err) {
+        console.error('Erreur récupération catégories', err);
+      } finally {
+        setChargement(false);
+      }
+    };
+    loadCategories();
+  }, []);
 
   return (
     <div className="flex flex-col bg-[#FFF9F5] min-h-screen overflow-x-hidden font-sans">
@@ -77,21 +92,27 @@ function AllCategories() {
         </header>
 
         {/* GRILLE DES CATÉGORIES (Compatible Style Home) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-20">
-          {categoriesData.map((cat) => (
-            <motion.div
-              key={cat.id}
-              whileHover={{ y: -10 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <CategoryCard
-                category={cat}
-                couleur={cat.couleur}
-                onClick={() => navigate("/categoriesPage", { state: cat })}
-              />
-            </motion.div>
-          ))}
-        </div>
+        {chargement ? (
+          <div className="flex justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FE7D32]" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-20">
+            {categories.map((cat) => (
+              <motion.div
+                key={cat.id}
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <CategoryCard
+                  category={cat}
+                  couleur={cat.couleur}
+                  onClick={() => navigate("/categoriesPage", { state: cat })}
+                />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </main>
 
       <Footer />

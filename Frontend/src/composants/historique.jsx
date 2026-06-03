@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBox, FaChevronRight } from "react-icons/fa";
+import api from "../api";
 
 function HistoriqueAchats() {
-  const [achats] = useState([
-    { id: 101, prix: 1550, date: "04 Mai 2026", articles: 3 },
-    { id: 102, prix: 850, date: "02 Mai 2026", articles: 1 },
-    { id: 103, prix: 2400, date: "28 Avr 2026", articles: 5 },
-    { id: 104, prix: 1200, date: "25 Avr 2026", articles: 2 },
-  ]);
+  const [achats, setAchats] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await api.get('/commandes');
+        setAchats(res.data || []);
+      } catch (err) {
+        console.error('Erreur historique:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, []);
+
+  if (loading) return <div className="py-8 text-center">Chargement...</div>;
 
   return (
     <div className="flex flex-col gap-4 py-2">
@@ -21,11 +34,9 @@ function HistoriqueAchats() {
             key={achat.id} 
             className="group bg-gray-50 hover:bg-white hover:shadow-md border border-gray-100 rounded-2xl p-4 transition-all duration-300 cursor-pointer"
             role="button"
-            aria-label={`Détails de la commande ${achat.id}`}
-          >
+            aria-label={`Détails de la commande ${achat.id}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                {/* Icône stylisée */}
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:bg-orange-500 transition-colors duration-300">
                   <FaBox className="text-orange-500 group-hover:text-white transition-colors" size={18} />
                 </div>
@@ -35,22 +46,21 @@ function HistoriqueAchats() {
                     Commande #{achat.id}
                   </span>
                   <span className="text-[11px] text-gray-400 font-medium">
-                    {achat.date} • {achat.articles} article{achat.articles > 1 ? 's' : ''}
+                    {new Date(achat.dateCommande).toLocaleDateString('fr-FR')} • {achat.LigneCommandes?.reduce((s,l)=>s+ (l.quantite||0),0) || 0} article(s)
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col items-end gap-1">
                 <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Livré
+                  {achat.statut}
                 </span>
                 <span className="text-sm font-black text-[#8B2A1B]">
-                  {achat.prix.toLocaleString()} DA
+                  {(achat.total || 0).toLocaleString()} DA
                 </span>
               </div>
             </div>
 
-            {/* Petit indicateur de détail au survol */}
             <div className="mt-3 pt-3 border-t border-dashed border-gray-200 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
                 <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Voir les détails</span>
                 <FaChevronRight className="text-gray-300 group-hover:text-orange-500 transition-colors" size={10} />

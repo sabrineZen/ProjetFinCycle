@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
+import { API } from '../../config';
 import {
   FaEuroSign, FaShoppingCart, FaUsers, FaStore, FaBars
 } from "react-icons/fa";
@@ -15,7 +16,7 @@ function StatistiquesPage() {
 
   // Récupération des données du backend
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/admin/statistiques/global`)
+    fetch(`${API}/admin/statistiques/global`)
       .then((res) => res.json())
       .then((json) => {
         setData(json);

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
+import { API } from '../../config';
 import { FaEdit, FaTrash, FaPlus, FaTimes, FaBars, FaSpinner } from "react-icons/fa";
-
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 // ── Toast ──────────────────────────────────────────────────────────────────────
 function Toast({ message, type, onClose }) {

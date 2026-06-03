@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SidebarAdmin from "../../composants/sidebarAdmin";
+import { API } from '../../config';
 import { FaUsers, FaStore, FaUtensils, FaEuroSign, FaBars } from "react-icons/fa";
 
 function AdminDashboard() {
@@ -15,9 +16,9 @@ function AdminDashboard() {
     const fetchTout = async () => {
       try {
         const [statsRes, attenteRes, activitesRes] = await Promise.all([
-          fetch(`${import.meta.env.VITE_API_URL}/admin/stats`),
-          fetch(`${import.meta.env.VITE_API_URL}/admin/en-attente`),
-          fetch(`${import.meta.env.VITE_API_URL}/admin/activites`),
+          fetch(`${API}/admin/stats`),
+          fetch(`${API}/admin/en-attente`),
+          fetch(`${API}/admin/activites`),
         ]);
         const statsData     = await statsRes.json();
         const attenteData   = await attenteRes.json();
@@ -61,7 +62,7 @@ function AdminDashboard() {
   const couleurActivite = (type) => {
   if (type === 'validation') return 'bg-green-400';
   if (type === 'refus')      return 'bg-red-400';
-  if (type === 'attente')    return 'bg-yellow-400'; // ← ajoute ça
+  if (type === 'attente')    return 'bg-yellow-400'; 
   return 'bg-button';
 };
 

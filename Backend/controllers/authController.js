@@ -40,7 +40,21 @@ const login = async (req, res) => {
       : utilisateur.role === 'client'     ? `${utilisateur.prenom} ${utilisateur.nom}`
       : 'Admin';
 
-    res.json({ token, role: utilisateur.role, nom });
+    const user = {
+      id: utilisateur.id,
+      role: utilisateur.role,
+      nom: utilisateur.nom,
+      prenom: utilisateur.prenom,
+      email: utilisateur.email,
+      telephone: utilisateur.telephone,
+      adresse: utilisateur.adresse,
+      nomRestaurant: utilisateur.nomRestaurant,
+      adresseRestaurant: utilisateur.adresseRestaurant,
+      numeroRegistre: utilisateur.numeroRegistre,
+      statut: utilisateur.statut,
+    };
+
+    res.json({ token, role: utilisateur.role, nom, user });
 
   } catch (err) {
     console.error('LOGIN ERROR:', err);

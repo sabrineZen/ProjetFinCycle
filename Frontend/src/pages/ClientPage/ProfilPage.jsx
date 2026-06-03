@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import pour la navigation
-import { 
-  FiUser, FiShoppingBag, FiSettings, 
-  FiLogOut, FiChevronRight, FiArrowLeft 
+import {
+  FiUser, FiShoppingBag, FiSettings,
+  FiLogOut, FiChevronRight, FiArrowLeft
 } from "react-icons/fi";
-import { LuWallet } from "react-icons/lu"; 
-import { BiBasket } from "react-icons/bi"; 
+import { LuWallet } from "react-icons/lu";
+import { BiBasket } from "react-icons/bi";
 
 // Tes imports de composants
 import InfoPersonnelles from "../../composants/infospersonnelles";
@@ -14,8 +14,36 @@ import MesCommandes from "../../composants/mescommandes";
 import Parametre from "../../composants/paremtre";
 
 function ProfilPage() {
-  const navigate = useNavigate(); // Initialisation du hook de navigation
+  const navigate = useNavigate();
   const [pageActive, setPageActive] = useState("informations");
+  const [profil, setProfil] = useState({
+    role: "client",
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    adresse: "",
+    nomRestaurant: "",
+  });
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setProfil(JSON.parse(storedUser));
+      } catch (error) {
+        console.warn("Impossible de charger le profil utilisateur :", error);
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("nom");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   const menuItems = [
     { id: "informations", label: "Informations", icon: FiUser },
@@ -26,13 +54,13 @@ function ProfilPage() {
   const renderContent = () => {
     switch (pageActive) {
       case "informations":
-        return <InfoPersonnelles />;
+        return <InfoPersonnelles profil={profil} />;
       case "commandes":
         return <MesCommandes />;
       case "parametres":
-        return <Parametre />;
+        return <Parametre profil={profil} />;
       default:
-        return <InfoPersonnelles />;
+        return <InfoPersonnelles profil={profil} />;
     }
   };
 
@@ -66,11 +94,14 @@ function ProfilPage() {
               alt="Avatar"
             />
             <div>
-              <h1 className="text-2xl font-bold">Sophie Martin</h1>
+              <h1 className="text-2xl font-bold">{[profil.nom].filter(Boolean).join(" ") || profil.nomRestaurant || "Utilisateur"}</h1>
               <p className="text-gray-400 text-sm italic">Membre depuis 2024</p>
             </div>
           </div>
-          <button className="bg-[#FF7A30] hover:bg-[#e66a25] text-white px-8 py-3 rounded-full text-sm font-semibold transition-all shadow-lg shadow-[#FF7A30]/20">
+          <button
+            className="bg-[#FF7A30] hover:bg-[#e66a25] text-white px-8 py-3 rounded-full text-sm font-semibold transition-all shadow-lg shadow-[#FF7A30]/20"
+            onClick={() => setPageActive("informations")}
+          >
             Modifier profil
           </button>
         </motion.div>
@@ -107,7 +138,7 @@ function ProfilPage() {
 
             <div className="mt-6 pt-6 border-t border-gray-50">
               <button 
-                onClick={() => navigate("/")} // Redirection vers login ou accueil lors de la déconnexion
+                onClick={handleLogout} // Redirection vers login ou accueil lors de la déconnexion
                 className="w-full flex items-center gap-4 p-4 text-[#FF7A30] font-bold hover:bg-red-50 hover:text-red-500 rounded-2xl transition-all"
               >
                 <FiLogOut className="text-xl" />

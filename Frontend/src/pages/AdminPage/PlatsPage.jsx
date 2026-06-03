@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SidebarAdmin from "../../composants/sidebarAdmin";
+import { API, UPLOADS } from '../../config';
 import { FaEye, FaTrash, FaBars, FaUtensils, FaTimes, FaToggleOn, FaToggleOff } from "react-icons/fa";
 
 function PlatsPage() {
@@ -13,13 +14,13 @@ function PlatsPage() {
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
 
-  const API_URL = "http://localhost:5000";
+  // const API_URL = "http://localhost:5000";
 
   // ── Chargement des données ──
   useEffect(() => {
     const fetchPlats = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/plats`, {
+        const res = await fetch(`${API}/admin/plats`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -40,7 +41,7 @@ function PlatsPage() {
   const supprimerPlat = async (id) => {
     if (!window.confirm("Supprimer ce plat définitivement ?")) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/plats/${id}`, {
+      const res = await fetch(`${API}/admin/plats/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -62,7 +63,7 @@ function PlatsPage() {
     if (!imagePath) return null;
     if (imagePath.startsWith("http")) return imagePath;
     const fileName = imagePath.split(/[\\/]/).pop();
-    return `${import.meta.env.VITE_API_URL}/uploads/${fileName}`;
+    return `${UPLOADS}/${fileName}`;
   };
 
   // ── Listes pour filtres ──

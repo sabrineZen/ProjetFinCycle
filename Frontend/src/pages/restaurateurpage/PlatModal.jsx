@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API } from '../../config';
 import { X, Image as ImageIcon, AlertCircle, Plus, Edit2 } from 'lucide-react';
 
 const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
@@ -13,12 +14,10 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
   const [categoriesList, setCategoriesList] = useState([]);
   // Ajoute ce useEffect pour charger les catégories
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/categories`)
+    fetch(`${API}/categories`)
       .then(res => res.json())
-      .then(data => {
-        setCategoriesList(data);
-    })
-    .catch(err => console.error('Erreur chargement catégories:', err));
+      .then(data => setCategoriesList(data))
+      .catch(err => console.error('Erreur chargement catégories:', err));
   }, []);
 
   // 2. Pré-remplir le formulaire si on modifie, ou le vider si on ajoute
@@ -27,22 +26,22 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
       if (isEditing && currentPlat) {
         setNom(currentPlat.nom || '');
         setDescription(currentPlat.description || '');
-        setPrix(currentPlat.prix ? currentPlat.prix.replace(" DA", "") : '');
-        setCategorie(currentPlat.categorieId || '');
+        setPrix(typeof currentPlat.prix === 'number' ? String(currentPlat.prix) : (currentPlat.prix || ''));
+        setCategorie(currentPlat.categorieId ?? categoriesList[0]?.id ?? '');
         setImage(currentPlat.image || '');
-        setImagePreview(currentPlat.image || null); // 🌟 NOUVEAU : Affiche l'image existante si on modifie
+        setImagePreview(currentPlat.image || null);
         setDisponible(currentPlat.disponible !== undefined ? currentPlat.disponible : true);
       } else {
         setNom('');
         setDescription('');
         setPrix('');
         setCategorie(categoriesList[0]?.id || '');
-        setImage(''); // 🌟 NOUVEAU : On vide le vrai fichier
-        setImagePreview(null); // 🌟 NOUVEAU : On vide l'aperçu
+        setImage('');
+        setImagePreview(null);
         setDisponible(true);
       }
     }
-  }, [isOpen, isEditing, currentPlat]);
+  }, [isOpen, isEditing, currentPlat, categoriesList]);
 
   // 🌟 NOUVEAU : Fonction pour gérer le choix de l'image
   const handleImageChange = (e) => {
@@ -64,8 +63,8 @@ const PlatModal = ({ isOpen, onClose, onSave, isEditing, currentPlat }) => {
       ...(isEditing && currentPlat ? { id: currentPlat.id } : {}),
       nom,
       description,
-      prix: `${prix} DA`, // On remet le " DA"
-      categorieId: categorie,
+      prix: parseFloat(prix) || 0,
+      categorieId: categorie || categoriesList[0]?.id || '',
       image,
       disponible
     };

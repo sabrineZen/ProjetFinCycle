@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-// Remplace ton import actuel par celui-ci :
+import api from "../../api";
 import { FaHistory, FaShoppingCart, FaTrash, FaTimes, FaPlus, FaMinus, FaArrowLeft } from "react-icons/fa";
 // Composants
 import NavbarHome from "../../composants/navbarHome";
@@ -22,7 +22,6 @@ import resto2 from "../../assets/resto2.png";
 import resto3 from "../../assets/resto3.png";
 
 // Data
-import { categories as categoriesData } from "../../data/categories";
 
 // ON RÉCUPÈRE LES PROPS DEPUIS APP.JS
 function Home({ panier, setPanier, ajouterAuPanier }) {
@@ -33,28 +32,37 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
   const [texteRecherche, setTexteRecherche] = useState("");
   const [plats, setPlats] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [chargement, setChargement] = useState(true);
 
   // ─── CHARGEMENT DES DONNÉES ───
   useEffect(() => {
     const loadData = async () => {
       setChargement(true);
-      // Simulation API
-      setTimeout(() => {
-        setPlats([
-          { id: 1, name: "Burger Gourmet", prix: 13.50, image: burger },
-          { id: 2, name: "Pizza Royale", prix: 15.00, image: pizza },
-          { id: 3, name: "Sushi Mix", prix: 18.00, image: sushi },
-          { id: 4, name: "Tacos XL", prix: 12.00, image: tacos },
+      try {
+        const [categoriesRes, platsRes, restosRes] = await Promise.all([
+          api.get('/categories'),
+          api.get('/plats'),
+          api.get('/utilisateurs/restaurateurs'),
         ]);
 
-        setRestaurants([
-          { id: 1, name: "Maison Opera", image: resto1 },
-          { id: 2, name: "Le Palace", image: resto2 },
-          { id: 3, name: "L'Ardoise", image: resto3 },
-        ]);
+        setCategories(categoriesRes.data || []);
+        setPlats((platsRes.data || []).map((plat) => ({
+          ...plat,
+          name: plat.nom,
+          prix: parseFloat(plat.prix),
+          image: plat.image || burger,
+        })));
+        setRestaurants((restosRes.data || []).map((resto) => ({
+          id: resto.id,
+          name: resto.nomRestaurant || `${resto.nom} ${resto.prenom || ''}`,
+          image: resto.image || resto1,
+        })));
+      } catch (err) {
+        console.error('Erreur chargement client:', err);
+      } finally {
         setChargement(false);
-      }, 800);
+      }
     };
     loadData();
   }, []);
@@ -125,7 +133,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
           {/* TES CATÉGORIES (NE SURTOUT PAS SUPPRIMER) */}
           <div className="h-[450px] flex items-center justify-center">
             <LuxuryInfiniteCircle 
-              data={categoriesData} 
+              data={categories} 
               itemWidth={300} 
               renderItem={(cat, isCenter) => (
                 <div className={`transition-all duration-500 ease-out ${isCenter ? "scale-110 z-40 drop-shadow-2xl" : "opacity-40 scale-90 blur-[1px]"}`}>

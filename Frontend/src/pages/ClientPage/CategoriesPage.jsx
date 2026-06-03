@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import api from "../../api";
 
 // Composants
 import NavbarHome from "../../composants/navbarHome";
@@ -18,44 +19,52 @@ function CategoriesPage({ panier, setPanier, ajouterAuPanier }) {
   const [montrerPanier, setMontrerPanier] = useState(false);
   const [texteRecherche, setTexteRecherche] = useState(""); 
 
-  // Ta base de données locale
-  const categories = [
-    { 
-        id: 1, nom: "Plats Traditionnel", 
-        plats: [
-            { id: 11, name: "Couscous", prix: 450, image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 12, name: "Rechta", prix: 380, image: "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 13, name: "Chakhchoukha", prix: 400, image: "https://images.unsplash.com/photo-1589113103503-4966640c5780?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { 
-        id: 2, nom: "Grillades", 
-        plats: [
-            { id: 21, name: "Brochettes Viande", prix: 350, image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 22, name: "Kefta", prix: 300, image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { 
-        id: 3, nom: "Fast Food", 
-        plats: [
-            { id: 31, name: "Burger Maison", prix: 250, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" }, 
-            { id: 32, name: "Pizza Rapide", prix: 280, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" }
-        ] 
-    },
-    { id: 4, nom: "Salades", plats: [{ id: 41, name: "Salade Mechouia", prix: 180, image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" }] },
-    { id: 5, nom: "Dessert", plats: [{ id: 51, name: "Baklawa", prix: 200, image: "https://images.unsplash.com/photo-1519676867240-f031ee04a113?auto=format&fit=crop&w=800&q=80" }] },
-    { id: 6, nom: "Boissons", plats: [{ id: 61, name: "Jus Citron", prix: 120, image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80" }] },
-    { id: 7, nom: "Plats Asiatique", plats: [{ id: 71, name: "Sushi Maison", prix: 450, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" }] },
-    { id: 8, nom: "Plats africains", plats: [{ id: 81, name: "Poulet Yassa", prix: 400, image: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?auto=format&fit=crop&w=800&q=80" }] }
-  ];
+  const [categories, setCategories] = useState([]);
+  const [plats, setPlats] = useState([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoadingCats(true);
+      try {
+        const [categoriesRes, platsRes] = await Promise.all([
+          api.get('/categories'),
+          api.get('/plats'),
+        ]);
+
+        setCategories(categoriesRes.data || []);
+        setPlats((platsRes.data || []).map((plat) => ({
+          ...plat,
+          name: plat.nom,
+          prix: parseFloat(plat.prix),
+          categorieId: plat.categorieId,
+        })));
+      } catch (err) {
+        console.error('Erreur fetch catégories ou plats', err);
+      } finally {
+        setLoadingCats(false);
+      }
+    };
+    loadData();
+  }, []);
 
   const idAChercher = stateRecu?.id || stateRecu?.catId;
   const catAfficher = categories.find((cat) => String(cat.id) === String(idAChercher));
 
   // ─── LOGIQUE DE FILTRATION ───
-  const platsFiltrés = catAfficher?.plats.filter((plat) =>
+  const platsFiltrés = plats.filter((plat) =>
+    String(plat.categorieId) === String(catAfficher?.id) &&
     plat.name.toLowerCase().includes(texteRecherche.toLowerCase())
-  ) || [];
+  );
+
+  // ATTENDRE LE CHARGEMENT AVANT D'AFFICHER UNE ERREUR
+  if (loadingCats) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center bg-[#FFF9F5]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FE7D32]" />
+      </div>
+    );
+  }
 
   // SI CATÉGORIE NON TROUVÉE
   if (!catAfficher) {
@@ -76,7 +85,7 @@ function CategoriesPage({ panier, setPanier, ajouterAuPanier }) {
       <NavbarHome 
         panierCount={panier.length} 
         onTogglePanier={() => setMontrerPanier(!montrerPanier)} 
-        plats={catAfficher.plats} 
+        plats={platsFiltrés} 
         setTexteRecherche={setTexteRecherche} 
         montrerPanier={montrerPanier}
       />
@@ -109,7 +118,9 @@ function CategoriesPage({ panier, setPanier, ajouterAuPanier }) {
         </header>
 
         {/* AFFICHAGE DES RÉSULTATS */}
-        {platsFiltrés.length > 0 ? (
+        {loadingCats ? (
+          <div className="text-center py-20">Chargement des catégories...</div>
+        ) : platsFiltrés.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-24">
             {platsFiltrés.map((plat, index) => (
               <motion.div
@@ -120,7 +131,14 @@ function CategoriesPage({ panier, setPanier, ajouterAuPanier }) {
               >
                 <PlatPopular 
                   plat={plat} 
-                  onAjouter={() => ajouterAuPanier(plat)} // Appelle la fonction de App.js
+                  onAjouter={() => {
+                    const role = localStorage.getItem('role');
+                    if (role === 'restaurateur') {
+                      alert('Action non autorisée: un restaurateur ne peut pas ajouter au panier client.');
+                      return;
+                    }
+                    ajouterAuPanier(plat);
+                  }}
                 />
               </motion.div>
             ))}

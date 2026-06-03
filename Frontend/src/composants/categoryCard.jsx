@@ -18,7 +18,7 @@ function CategoryCard({ couleur, category, hoverClass, onClick }) {
       <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-white flex items-center justify-center overflow-hidden group">
         <img
           src={category.image || "/default.png"}
-          alt={category.name}
+          alt={category.nom || category.name || 'Catégorie'}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />
       </div>
@@ -26,9 +26,9 @@ function CategoryCard({ couleur, category, hoverClass, onClick }) {
       {/* --- TITRE AJUSTÉ --- */}
       <h2 
   className="text-sm sm:text-base md:text-lg font-bold mt-4 text-center uppercase tracking-tight"
-  style={{ color: "#8B2A1B" }} // Ta nouvelle couleur ici
+  style={{ color: "#8B2A1B" }}
 >
-  {category.name}
+  {category.nom || category.name || 'Catégorie'}
 </h2>
 
       {/* --- EFFET DE BRILLANCE --- */}

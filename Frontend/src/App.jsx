@@ -88,6 +88,12 @@ function App() {
 
   // ─── 3. LOGIQUE D'AJOUT (Gère les doublons avec quantité) ───
   const ajouterAuPanier = (plat) => {
+    const role = localStorage.getItem('role');
+    if (role === 'restaurateur') {
+      alert("Action interdite : un restaurateur ne peut pas ajouter de plat au panier client.");
+      return;
+    }
+
     setPanier((prev) => {
       const existe = prev.find((item) => item.id === plat.id);
       if (existe) {
@@ -116,7 +122,7 @@ function App() {
         />
         
         {/* Autres pages Client */}
-        <Route path="/CategoriesAll" element={<AllCategories />} />
+        <Route path="/categoriesAll" element={<AllCategories />} />
         <Route path="/profil" element={<ProfilPage />} />
         <Route path="/hero" element={<PlatigoPremiumHero />} />
 

@@ -11,12 +11,6 @@ const app = express();
 
 // ── Middlewares de base ──
 app.use(cors());
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Autorise toutes les origines
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
-});
 app.use(express.json());
 
 // ── Gestion des Images (Dossier Uploads) ──

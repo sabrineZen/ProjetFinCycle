@@ -57,14 +57,20 @@ export default function Login() {
   };
 
   // ── CONNEXION ──
+  const saveUserSession = (data) => {
+    const user = data.user || {};
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("role", data.role);
+    localStorage.setItem("nom", data.nom || "");
+    localStorage.setItem("user", JSON.stringify(user));
+  };
+
   const handleLogin = async () => {
     setError("");
     setLoading(true);
     try {
       const res = await api.post("/auth/login", formData);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
-      localStorage.setItem("nom", res.data.nom); // ✅ nom ajouté
+      saveUserSession(res.data);
 
       if (res.data.role === "client") navigate("/homeClient");
       else if (res.data.role === "restaurateur") navigate("/restaurateur");
@@ -83,9 +89,14 @@ export default function Login() {
     setLoading(true);
     try {
       await api.post("/auth/register/client", formData);
+      // auto-login après inscription
+      const res = await api.post('/auth/login', { email: formData.email, motDePasse: formData.motDePasse });
+      saveUserSession(res.data);
       setShowInscription(false);
       setFormData({});
-      alert("Compte créé avec succès ✅");
+      if (res.data.role === "client") navigate("/homeClient");
+      else if (res.data.role === "restaurateur") navigate("/restaurateur");
+      else if (res.data.role === "admin") navigate("/admin/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Erreur d'inscription ❌");
     } finally {
@@ -101,9 +112,14 @@ export default function Login() {
       const data = new FormData();
       Object.keys(formData).forEach((key) => data.append(key, formData[key]));
       await api.post("/auth/register/restaurateur", data);
+      // auto-login après inscription restaurateur
+      const res = await api.post('/auth/login', { email: formData.email, motDePasse: formData.motDePasse });
+      saveUserSession(res.data);
       setShowInscription(false);
       setFormData({});
-      alert("Restaurant créé avec succès ✅");
+      if (res.data.role === "client") navigate("/homeClient");
+      else if (res.data.role === "restaurateur") navigate("/restaurateur");
+      else if (res.data.role === "admin") navigate("/admin/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Erreur d'inscription ❌");
     } finally {

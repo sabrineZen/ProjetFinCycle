@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import SidebarAdmin from "../../composants/sidebarAdmin";
+import { API } from '../../config';
 import {
   FaMapMarkerAlt, FaStar, FaUtensils,
   FaBan, FaTrash, FaCheckCircle, FaBars
@@ -19,7 +20,7 @@ function RestaurantsPage() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/utilisateurs/restaurateurs`);
+        const res = await fetch(`${API}/utilisateurs/restaurateurs`);
         if (!res.ok) throw new Error("Erreur lors du chargement");
         const data = await res.json();
         setRestaurants(data);
@@ -38,7 +39,7 @@ function RestaurantsPage() {
 
     setSuppressionId(id);
     try {
-      const res = await fetch(`/api/utilisateurs/restaurateurs/${id}`, {
+      const res = await fetch(`${API}/utilisateurs/restaurateurs/${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) {
