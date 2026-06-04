@@ -1,3 +1,4 @@
+import api from "../../api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import pour la navigation
@@ -37,6 +38,9 @@ function ProfilPage() {
     }
   }, []);
 
+  const [loadingProfil, setLoadingProfil] = useState(true);
+  const [errorProfil, setErrorProfil] = useState("");
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -45,22 +49,62 @@ function ProfilPage() {
     navigate("/login");
   };
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setProfil(JSON.parse(storedUser));
+      } catch (error) {
+        console.warn("Impossible de charger le profil utilisateur :", error);
+      }
+    }
+
+    const fetchProfil = async () => {
+      try {
+        const res = await api.get("/clients/profil");
+        setProfil(res.data);
+        localStorage.setItem("user", JSON.stringify({ ...JSON.parse(storedUser || "{}"), ...res.data }));
+      } catch (err) {
+        console.warn("Erreur récupération profil client :", err.response?.data?.message || err.message);
+        setErrorProfil("Impossible de charger le profil depuis le serveur.");
+      } finally {
+        setLoadingProfil(false);
+      }
+    };
+
+    if (localStorage.getItem("token")) {
+      fetchProfil();
+    } else {
+      setLoadingProfil(false);
+    }
+  }, []);
+
   const menuItems = [
     { id: "informations", label: "Informations", icon: FiUser },
     { id: "commandes", label: "Mes commandes", icon: FiShoppingBag },
     { id: "parametres", label: "Paramètres", icon: FiSettings },
   ];
 
+  const profileName =
+    profil.role === "restaurateur"
+      ? profil.nomRestaurant || "Restaurateur"
+      : [profil.prenom, profil.nom?.split(" ").pop()].filter(Boolean).join(" ") || "Utilisateur";
+
+  const handleProfilUpdate = (updatedProfil) => {
+    setProfil(updatedProfil);
+    localStorage.setItem("user", JSON.stringify(updatedProfil));
+  };
+
   const renderContent = () => {
     switch (pageActive) {
       case "informations":
-        return <InfoPersonnelles profil={profil} />;
+        return <InfoPersonnelles profil={profil} onProfileUpdate={handleProfilUpdate} />;
       case "commandes":
-        return <MesCommandes />;
+        return <MesCommandes profil={profil} />;
       case "parametres":
         return <Parametre profil={profil} />;
       default:
-        return <InfoPersonnelles profil={profil} />;
+        return <InfoPersonnelles profil={profil} onProfileUpdate={handleProfilUpdate} />;
     }
   };
 
@@ -94,7 +138,7 @@ function ProfilPage() {
               alt="Avatar"
             />
             <div>
-              <h1 className="text-2xl font-bold">{[profil.nom].filter(Boolean).join(" ") || profil.nomRestaurant || "Utilisateur"}</h1>
+              <h1 className="text-2xl font-bold">{profileName}</h1>
               <p className="text-gray-400 text-sm italic">Membre depuis 2024</p>
             </div>
           </div>

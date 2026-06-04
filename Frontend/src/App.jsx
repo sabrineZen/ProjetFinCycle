@@ -108,6 +108,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+                <Route path="/" element={<PlatigoPremiumHero />} />
+
         {/* --- AUTH --- */}
         <Route path="/login" element={<Login />} />
 

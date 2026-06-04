@@ -45,6 +45,22 @@ function Parametre({ profil }){
               </div>           
             </div>
 
+            <div className="pb-4 border-b border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                    <MdOutlineEdit className="text-[#FF6900] text-xl"/>
+                    <p className="font-bold" style={{ color: '#8B2A1B' }}>Mon profil</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-[#FFF0E8] rounded-xl p-4">
+                        <p className="text-sm text-gray-500">Nom complet</p>
+                        <p className="font-semibold">{[profil?.prenom, profil?.nom].filter(Boolean).join(" ") || "Non renseigné"}</p>
+                    </div>
+                    <div className="bg-[#FFF0E8] rounded-xl p-4">
+                        <p className="text-sm text-gray-500">Téléphone</p>
+                        <p className="font-semibold">{profil?.telephone || "Non renseigné"}</p>
+                    </div>
+                </div>
+            </div>
             <div className="pb-4 border-b border-gray-200">{/*partie securité */}
              <div className="flex items-center gap-2 mb-3">
                  <IoLockClosed className="text-[#FF6900] text-xl"/>

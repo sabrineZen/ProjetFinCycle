@@ -3,7 +3,11 @@ const { Plat, Categorie } = require('../models');
 // ── RÉCUPÉRER TOUS LES PLATS ──
 const getAllPlats = async (req, res) => {
   try {
+    // Si c'est un restaurateur, il voit UNIQUEMENT ses propres plats
+    const where = req.user.role === 'restaurateur' ? { utilisateurId: req.user.id } : {};
+    
     const plats = await Plat.findAll({
+      where,
       include: [{ model: Categorie, attributes: ['id', 'nom'] }]
     });
 

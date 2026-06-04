@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // On dit à Express d'utiliser les fonctions du contrôleur
-router.get('/', platCtrl.getAllPlats);          
+router.get('/', protect, platCtrl.getAllPlats);          
 router.post('/', protect, upload.single('image'), platCtrl.createPlat);   
 router.put('/:id', protect, upload.single('image'), platCtrl.updatePlat); 
 router.delete('/:id', protect, platCtrl.deletePlat);      

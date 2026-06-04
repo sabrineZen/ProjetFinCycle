@@ -86,9 +86,20 @@ const getOrders = async (req, res) => {
     }
 
     if (role === 'restaurateur') {
-      // Trouve les commandes contenant au moins une ligne dont le plat appartient au restaurateur
+      // Retourner uniquement les commandes qui contiennent au moins une ligne
+      // dont le plat appartient au restaurateur, et n'inclure que
+      // les lignes/plats appartenant à ce restaurateur (INNER JOIN).
       const commandes = await Commande.findAll({
-        include: [{ model: LigneCommande, include: [{ model: Plat, where: { utilisateurId: userId } }] }, { model: Utilisateur, attributes: ['id','nom','prenom','email'] }],
+        include: [
+          {
+            model: LigneCommande,
+            required: true,
+            include: [
+              { model: Plat, required: true, where: { utilisateurId: userId } }
+            ]
+          },
+          { model: Utilisateur, attributes: ['id','nom','prenom','email'] }
+        ],
         order: [['dateCommande','DESC']],
       });
       return res.json(commandes);
