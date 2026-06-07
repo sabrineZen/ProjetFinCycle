@@ -7,7 +7,7 @@ const getRestaurateurs = async (req, res) => {
       where: { role: 'restaurateur' },
       attributes: [
         'id', 'email', 'nomRestaurant', 'adresseRestaurant',
-        'numeroRegistre', 'statut', 'nom', 'prenom'
+        'numeroRegistre', 'statut', 'nom', 'prenom', 'documentOfficiel'
       ]
     });
     res.json(restaurateurs);

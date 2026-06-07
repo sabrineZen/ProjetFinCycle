@@ -1,142 +1,179 @@
-import React from 'react';
-import { DollarSign, ClipboardList, Star, Clock, ChevronRight, MoreHorizontal } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { DollarSign, ClipboardList, Star, Clock, ChevronRight, MoreHorizontal } from "lucide-react";
+import api from "../../api";
 
-// --- DONNÉES SIMULÉES (MOCK DATA) ---
-// Ces données remplacent ta future base de données pour l'instant.
-
-const statsCards = [
-  { id: 1, label: 'Vente du jour', value: '36 700 DA', icon: <DollarSign size={24} />, color: 'text-blue-600', bg: 'bg-blue-50' },
-  { id: 2, label: 'Commandes', value: '24', icon: <ClipboardList size={24} />, color: 'text-red-600', bg: 'bg-red-50' },
-  { id: 3, label: 'Note Moyenne', value: '4.7/5', icon: <Star size={24} />, color: 'text-yellow-500', bg: 'bg-yellow-50' },
-  { id: 4, label: 'Temps moyenne', value: '28 min', icon: <Clock size={24} />, color: 'text-purple-600', bg: 'bg-purple-50' },
-];
-
-const topPlats = [
-  { id: 1, nom: 'Pizza Margarita', commandes: 42, progress: 90, rank: 1 },
-  { id: 2, nom: 'Burger Gurmet', commandes: 35, progress: 75, rank: 2 },
-  { id: 3, nom: 'Couscous Royal', commandes: 28, progress: 60, rank: 3 },
-  { id: 4, nom: 'Salade César', commandes: 21, progress: 45, rank: 4 },
-];
-
-const commandesRecentes = [
-  { id: '#0045', client: 'Ahmed Y.', plats: 'Burger + Frittes', montant: '2800 DA', status: 'En cours', heure: '12 : 30' },
-  { id: '#0040', client: 'Ghanou Y.', plats: 'Pizza Margeretta', montant: '3900 DA', status: 'Livré', heure: '12 : 30' },
-  { id: '#0024', client: 'Wassim Y.', plats: 'Salade César * 2', montant: '4500 DA', status: 'Pret', heure: '12 : 30' },
-  { id: '#0039', client: 'Oussama Y.', plats: 'Couscous Royale', montant: '1000 DA', status: 'Annuller', heure: '12 : 30' },
-  { id: '#0023', client: 'zyada', plats: 'mazal', montant: '1020 DA', status: 'Nouvelle', heure: '12 : 30' },
-];
-
-// Fonction utilitaire pour le style des badges de statut
-const getStatusStyle = (status) => {
-  switch (status) {
-    case 'En cours': return 'bg-orange-100 text-orange-600';
-    case 'Livré': return 'bg-green-100 text-green-600';
-    case 'Pret': return 'bg-blue-100 text-blue-600';
-    case 'Annuller': return 'bg-red-100 text-red-600';
-    case 'Nouvelle': return 'bg-emerald-100 text-emerald-600';
-    default: return 'bg-gray-100 text-gray-600';
-  }
-};
+// ─────────────────────────────
+// DASHBOARD
+// ─────────────────────────────
 
 const Dashboard = ({ estActif, setEstActif }) => {
-    
+  
+
+  const [stats, setStats] = useState(null);
+  const [topPlats, setTopPlats] = useState([]);
+  const [commandesRecentes, setCommandesRecentes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ─────────────────────────────
+  // CHARGEMENT BACKEND
+  // ─────────────────────────────
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const [statsRes, platsRes, commandesRes] = await Promise.all([
+          api.get("/admin/stats"),
+          api.get("/plats"), // ou /plats/populaires si tu l’as
+          api.get("/commandes")
+        ]);
+
+        // ─── STATS ───
+        setStats({
+          ventes: statsRes.data.revenus || 0,
+          commandes: statsRes.data.totalPlats || 0,
+          note: 4.7,
+          temps: "28 min"
+        });
+
+        // ─── TOP PLATS ───
+        const platsFormates = (platsRes.data || []).map((p, index) => ({
+          id: p.id,
+          nom: p.nom,
+          commandes: p.commandes || 0,
+          progress: Math.min((p.commandes || 0) * 10, 100),
+          rank: index + 1
+        }));
+
+        setTopPlats(platsFormates.slice(0, 4));
+
+        // ─── COMMANDES RÉCENTES ───
+        const commandesFormatees = (commandesRes.data || []).map((c) => ({
+          id: `#${c.id}`,
+          client: c.clientNom || "Client",
+          plats: c.plats?.map(p => p.nom).join(" + ") || "",
+          montant: `${c.total} DA`,
+          status: c.status,
+          heure: new Date(c.createdAt).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+        }));
+
+        setCommandesRecentes(commandesFormatees);
+
+      } catch (err) {
+        console.error("Erreur dashboard:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
+  // ─────────────────────────────
+  // STYLE STATUS
+  // ─────────────────────────────
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "En cours": return "bg-orange-100 text-orange-600";
+      case "Livré": return "bg-green-100 text-green-600";
+      case "Préparé": return "bg-blue-100 text-blue-600";
+      case "Annulé": return "bg-red-100 text-red-600";
+      default: return "bg-gray-100 text-gray-600";
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-40 text-gray-400">
+        Chargement dashboard...
+      </div>
+    );
+  }
+
+  // ─────────────────────────────
+  // UI
+  // ─────────────────────────────
   return (
-    <div className="flex-1 space-y-10 pb-10 text-[#951418] font-regular ">
-      
-      {/* 1. SECTION : Statut du Restaurant */}
-      <section className="bg-white p-6 rounded-[20px] shadow-md  flex items-center justify-between transition-all">
+    <div className="flex-1 space-y-10 pb-10 text-[#951418] font-regular">
+
+      {/* ───── STATUT RESTAURANT ───── */}
+      <section className="bg-white p-6 rounded-[20px] shadow-md flex items-center justify-between">
         <div>
-            <h2 className="text-xl ">Statut de votre restaurant</h2>
-            <p className="text-sm text-[#951418]/70 mt-1">
-            {estActif 
-                ? "Votre restaurant est actuellement ouvert et visible par les clients" 
-                : "Votre restaurant est fermé. Les clients ne peuvent pas commander"}
-            </p>
+          <h2 className="text-xl">Statut de votre restaurant</h2>
+          <p className="text-sm text-[#951418]/70 mt-1">
+            {estActif
+              ? "Votre restaurant est ouvert"
+              : "Votre restaurant est fermé"}
+          </p>
         </div>
 
-        {/* Le bouton Toggle interactif */}
-        <div 
-            onClick={() => setEstActif(!estActif)} // Inverse l'état au clic
-            className={`flex items-center gap-3 px-4 py-2 rounded-full border cursor-pointer transition-all duration-300 ${
-            estActif ? 'bg-orange-50 border-orange-100' : 'bg-red-50 border-gray-200'
-            }`}
+        <div
+          onClick={() => setEstActif(!estActif)}
+          className={`flex items-center gap-3 px-4 py-2 rounded-full border cursor-pointer ${
+            estActif ? "bg-orange-50" : "bg-red-50"
+          }`}
         >
-            {/* Le switch (la glissière) */}
-            <div className={`w-10 h-6 rounded-full p-1 flex transition-colors duration-300 ${
-            estActif ? 'bg-[#FF843D] justify-end' : 'bg-[#FA0D15] justify-start'
-            }`}>
-            {/* Le petit rond blanc qui bouge */}
-            <div className="w-4 h-4 bg-white rounded-full shadow-md"></div>
-            </div>
-
-            {/* Le texte qui change */}
-            <span className={`text-sm font-bold transition-colors ${
-            estActif ? 'text-[#FF843D]' : 'text-[#FA0D15]'
-            }`}>
-            {estActif ? 'Actif' : 'Inactif'}
-            </span>
+          <div className={`w-10 h-6 rounded-full p-1 flex ${
+            estActif ? "bg-orange-500 justify-end" : "bg-red-500 justify-start"
+          }`}>
+            <div className="w-4 h-4 bg-white rounded-full"></div>
+          </div>
+          <span className="text-sm font-bold">
+            {estActif ? "Actif" : "Inactif"}
+          </span>
         </div>
-        </section>
+      </section>
 
-      {/* 2. SECTION : Cartes de Statistiques Clés */}
+      {/* ───── STATS ───── */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsCards.map((stat) => (
-          <div key={stat.id} className="bg-white p-7 rounded-[20px] shadow-md  flex items-center gap-5 transition-transform hover:-translate-y-1.25">
-            <div className={`p-4 rounded-3xl ${stat.bg} ${stat.color}`}>
-              {stat.icon}
-            </div>
+        {[
+          { label: "Ventes", value: `${stats.ventes} DA`, icon: <DollarSign /> },
+          { label: "Commandes", value: stats.commandes, icon: <ClipboardList /> },
+          { label: "Note", value: stats.note, icon: <Star /> },
+          { label: "Temps", value: stats.temps, icon: <Clock /> }
+        ].map((s, i) => (
+          <div key={i} className="bg-white p-6 rounded-[20px] shadow-md flex items-center gap-4">
+            <div className="text-orange-500">{s.icon}</div>
             <div>
-              <p className="text-2xl font-bold ">{stat.value}</p>
-              <p className="text-sm  font-medium mt-1">{stat.label}</p>
+              <p className="text-xl font-bold">{s.value}</p>
+              <p className="text-sm text-gray-500">{s.label}</p>
             </div>
           </div>
         ))}
       </section>
 
-      {/* 3. SECTION CENTRALE : Graphique Ventes & Top Plats (Grille 2 colonnes) */}
+      {/* ───── TOP PLATS + GRAPH (mock graph gardé) ───── */}
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        
-        {/* A. Graphique Ventes de la semaine (Prend 2/3 de l'espace sur grand écran) */}
-        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md  relative min-h-100">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-3xl">Ventes de la semaine</h3>
-            
-          </div>
-          
-          {/* Faux Graphique (Simulation) */}
-          <div className="absolute inset-x-8 bottom-8 top-28 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-3xl bg-gray-50/50">
-            <span className="text-gray-300 italic font-medium text-lg">Graphique des ventes bientôt...</span>
-            <p className="text-gray-300 text-sm mt-1">(Demande base de données)</p>
+
+        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md min-h-100">
+          <h3 className="text-2xl mb-6">Ventes de la semaine</h3>
+          <div className="border-2 border-dashed border-gray-200 rounded-3xl h-60 flex items-center justify-center text-gray-300">
+            Graphique dynamique à connecter
           </div>
         </div>
 
-        {/* B. Top Plats (Prend 1/3 de l'espace) */}
-        <div className="bg-white p-8 rounded-[20px] shadow-md ">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-2xl font-regular">Top Plats</h3>
-           
-          </div>
+        <div className="bg-white p-8 rounded-[20px] shadow-md">
+          <h3 className="text-xl mb-6">Top Plats</h3>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {topPlats.map((plat) => (
-              <div key={plat.id} className="flex items-center gap-4">
-                {/* Badge de Rang */}
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-md ${plat.rank === 1 ? 'bg-[#FF843D]' : 'bg-gray-300'}`}>
+              <div key={plat.id} className="flex gap-4 items-center">
+                <div className="w-9 h-9 rounded-full bg-orange-400 text-white flex items-center justify-center font-bold">
                   {plat.rank}
                 </div>
-                
-                {/* Nom et Progression */}
-                <div className="flex-1 space-y-1.5">
-                  <div className="flex justify-between items-center">
-                    <p className="font-bold  text-sm">{plat.nom}</p>
-                    <p className="text-xs  font-semibold">{plat.commandes} cmd</p>
+
+                <div className="flex-1">
+                  <div className="flex justify-between">
+                    <p className="font-semibold text-sm">{plat.nom}</p>
+                    <p className="text-xs">{plat.commandes} cmd</p>
                   </div>
-                  {/* Barre de Progression */}
-                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-[#FF843D] rounded-full" 
+
+                  <div className="w-full bg-gray-100 h-2 rounded-full mt-1">
+                    <div
+                      className="bg-orange-400 h-2 rounded-full"
                       style={{ width: `${plat.progress}%` }}
-                    ></div>
+                    />
                   </div>
                 </div>
               </div>
@@ -145,52 +182,45 @@ const Dashboard = ({ estActif, setEstActif }) => {
         </div>
       </section>
 
-      {/* 4. SECTION : Tableau des Commandes Récentes */}
-      <section className="bg-white p-10 rounded-[20px] shadow-md ">
-        <div className="flex items-center justify-between mb-10">
-          <h3 className="text-3xl ">Commandes récentes</h3>
-          <button className="flex items-center gap-2 bg-[#FF843D] text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg shadow-orange-100 hover:scale-105 transition-all">
-            Toutes les commandes <ChevronRight size={18} />
-          </button>
-        </div>
+      {/* ───── COMMANDES RÉCENTES ───── */}
+      <section className="bg-white p-8 rounded-[20px] shadow-md">
 
-        {/* Tableau Responsive */}
-        <div className="w-full">
-          <table className="w-full text-left">
-            <thead className="border-b border-gray-100">
-             <tr className="text-xs md:text-sm font-bold uppercase tracking-tight">
-                <th className="pb-5 pr-4">ID</th>
-                <th className="pb-5 pr-4">Client</th>
-                <th className="pb-5 pr-4">Plats</th>
-                <th className="pb-5 pr-4">Montant</th>
-                <th className="pb-5 pr-4">Status</th>
-                <th className="pb-5 pr-4">Heure</th>
-                <th className="pb-5 text-center">Action</th>
+        <h3 className="text-2xl mb-6">Commandes récentes</h3>
+
+        <table className="w-full text-left">
+          <thead>
+            <tr className="text-sm text-gray-500 border-b">
+              <th>ID</th>
+              <th>Client</th>
+              <th>Plats</th>
+              <th>Montant</th>
+              <th>Status</th>
+              <th>Heure</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {commandesRecentes.map((c, i) => (
+              <tr key={i} className="border-b hover:bg-gray-50">
+                <td className="py-3 font-semibold">{c.id}</td>
+                <td>{c.client}</td>
+                <td>{c.plats}</td>
+                <td>{c.montant}</td>
+                <td>
+                  <span className={`px-3 py-1 rounded-full text-xs ${getStatusStyle(c.status)}`}>
+                    {c.status}
+                  </span>
+                </td>
+                <td>{c.heure}</td>
+                <td className="text-center">
+                  <MoreHorizontal size={18} />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {commandesRecentes.map((commande, index) => (
-                <tr key={index} className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50/50">
-                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.id}</td>
-                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.client}</td>
-                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.plats}</td>
-                 <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">{commande.montant}</td>
-                  <td className="py-4 font-semibold text-xs md:text-sm whitespace-nowrap">
-                    <span className={`px-4 py-1.5 rounded-full text-xs font-bold ${getStatusStyle(commande.status)}`}>
-                      {commande.status}
-                    </span>
-                  </td>
-                  <td className="py-4 font-semibold text-xs md:text-sm">{commande.heure}</td>
-                  <td className="py-6 text-center">
-                    <button className="p-2  hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                      <MoreHorizontal size={20} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+
       </section>
 
     </div>

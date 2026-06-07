@@ -58,31 +58,28 @@ try {
       {
         model: LigneCommande,
         attributes: [],
-        required: true // On ne veut que les plats qui ont été commandés
+        required: true 
       }
     ],
     group: ['Plat.id', 'Utilisateur.id'], 
-    order: [[Sequelize.literal('total_commandes'), 'DESC']], // Utilise l'alias pour trier
+    order: [[Sequelize.literal('total_commandes'), 'DESC']], 
     limit: 5,
     raw: true,
-    subQuery: false // TRÈS IMPORTANT pour éviter l'erreur de champ inconnu avec LIMIT
+    subQuery: false 
   });
 } catch (e) {
   console.error("❌ Erreur SQL Plats Populaires :", e.message);
   platsPopulaires = []; 
 }
 
-// ✅ Dans ton res.json (tout en bas du fichier)
-// Assure-toi que le mapping ressemble à ça :
+
 platsPopulaires: platsPopulaires.map((p, index) => ({
   rang: index + 1,
   nom: p.nom,
-  // Vérifie bien le nom exact dans tes logs console (Utilisateur.nomRestaurant ou Utilisateur.nom_restaurant)
   restaurant: p["Utilisateur.nomRestaurant"] || "N/A", 
   commandes: parseInt(p.total_commandes) || 0
 }))
 
-    // ✅ Réponse JSON finale corrigée
     res.json({
       statsCards: [
         { titre: "Revenus totaux", valeur: `${totalRevenus} DA`, icon: "euro" },
@@ -101,7 +98,7 @@ platsPopulaires: platsPopulaires.map((p, index) => ({
         nom: p.nom,
         restaurant: p["restaurateur.nom_restaurant"] || "N/A",
         commandes: p.total_commandes || 0
-      })) // ✅ Fermeture correcte du map et de l'objet
+      })) 
     });
 
   } catch (error) {

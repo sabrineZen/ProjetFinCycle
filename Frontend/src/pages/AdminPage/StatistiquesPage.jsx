@@ -93,23 +93,12 @@ function StatistiquesPage() {
         </div>
 
         {/* 📈 GRAPHS (Gardant ton ancienne disposition) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
           {/* Revenus */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure text-left">
-            <h2 className="text-secondary font-semibold mb-4 italic text-left">Revenus mensuels (DA)</h2>
-            <ResponsiveContainer width="100%" height={220}>
-              <LineChart data={data?.revenusGraph}>
-                <XAxis dataKey="mois" axisLine={false} tickLine={false} />
-                <YAxis axisLine={false} tickLine={false} />
-                <Tooltip />
-                <Line type="monotone" dataKey="revenus" stroke="#FB923C" strokeWidth={3} dot={{r:4, fill:'#FB923C'}} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
+          
           {/* Catégories */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-bordure text-left">
-            <h2 className="text-secondary font-semibold mb-4 italic text-left">Répartition par Catégories</h2>
+            <h2 className="text-secondary font-semibold mb-4 italic text-center">Répartition par Catégories</h2>
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie data={data?.categoriesPie} dataKey="value" cx="50%" cy="50%" innerRadius={60} outerRadius={80}>

@@ -16,6 +16,7 @@ const upload = multer({ storage: storage });
 router.get('/', protect, platCtrl.getAllPlats);          
 router.post('/', protect, upload.single('image'), platCtrl.createPlat);   
 router.put('/:id', protect, upload.single('image'), platCtrl.updatePlat); 
-router.delete('/:id', protect, platCtrl.deletePlat);      
+router.delete('/:id', protect, platCtrl.deletePlat); 
+router.get('/populaires', protect, platCtrl.getPlatsPopulaires); // Nouvelle route pour les plats populaires     
 
 module.exports = router;

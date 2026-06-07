@@ -232,11 +232,11 @@ export default function Login() {
 
           <div className="flex w-full gap-3 mb-4">
             <button onClick={() => { setShowInscription(!showInscription); setError(""); setFormData({}); }}
-              className="flex-1 bg-[#951418] p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md text-sm">
+              className="flex-1 bg-[#951418] cursor-pointer p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md text-sm">
               {showInscription ? "Annuler" : "Inscrire"}
             </button>
             <button onClick={handleSubmit} disabled={loading}
-              className="flex-1 bg-[#FF7031] p-2 rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md text-sm">
+              className="flex-1 bg-[#FF7031] p-2 cursor-pointer rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md text-sm">
               {loading ? "..." : showInscription ? "S'inscrire" : "Se connecter"}
             </button>
           </div>
@@ -294,11 +294,11 @@ export default function Login() {
             {showInscription && (
               <div className="flex bg-[#FFE2D3] rounded-full p-1 shadow-md">
                 <button type="button" onClick={() => setRole("client")}
-                  className={`px-4 py-1 text-sm font-medium rounded-full transition ${role === "client" ? "bg-[#FF7031] text-white" : "bg-transparent text-[#951418]"}`}>
+                  className={`px-4 py-1 cursor-pointer text-sm font-medium rounded-full transition ${role === "client" ? "bg-[#FF7031] text-white" : "bg-transparent text-[#951418]"}`}>
                   Client
                 </button>
                 <button type="button" onClick={() => setRole("restaurateur")}
-                  className={`px-4 py-1 text-sm font-medium rounded-full transition ${role === "restaurateur" ? "bg-[#FF7031] text-white" : "bg-transparent text-[#951418]"}`}>
+                  className={`px-4 py-1 cursor-pointer text-sm font-medium rounded-full transition ${role === "restaurateur" ? "bg-[#FF7031] text-white" : "bg-transparent text-[#951418]"}`}>
                   Restaurateur
                 </button>
               </div>
@@ -360,11 +360,11 @@ export default function Login() {
 
           <div className="flex w-[88%] gap-6 mb-3 mt-1">
             <button onClick={() => { setShowInscription(!showInscription); setError(""); setFormData({}); }}
-              className="flex-1 bg-[#951418] p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md">
+              className="flex-1 cursor-pointer bg-[#951418] p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md">
               {showInscription ? "Annuler" : "S'inscrire"}
             </button>
             <button onClick={handleSubmit} disabled={loading}
-              className="flex-1 bg-[#FF7031] p-2 rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md">
+              className="flex-1 cursor-pointer bg-[#FF7031] p-2 rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md">
               {loading ? "Chargement..." : showInscription ? "S'inscrire" : "Se connecter"}
             </button>
           </div>

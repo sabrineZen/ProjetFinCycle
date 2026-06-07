@@ -42,7 +42,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
       try {
         const [categoriesRes, platsRes, restosRes] = await Promise.all([
           api.get('/categories'),
-          api.get('/plats'),
+          api.get('/plats/'),
           api.get('/utilisateurs/restaurateurs'),
         ]);
 
@@ -57,9 +57,12 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
           id: resto.id,
           name: resto.nomRestaurant || `${resto.nom} ${resto.prenom || ''}`,
           image: resto.image || resto1,
+          adresseRestaurant: resto.adresseRestaurant || "Adresse non disponible",
+          
         })));
       } catch (err) {
         console.error('Erreur chargement client:', err);
+        
       } finally {
         setChargement(false);
       }
@@ -184,7 +187,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {restaurants.map((res) => (
-              <RestaurantPopular key={res.id} restaurant={res} />
+              <RestaurantPopular key={res.id} restaurant={res}  />
             ))}
           </div>
         </section>

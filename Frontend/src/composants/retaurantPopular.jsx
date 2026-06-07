@@ -23,7 +23,7 @@ function RestaurantPopular({ restaurant }) {
         </h3>
         
         <p className="text-[10px] text-gray-400 font-medium">
-          situe a bejaia ville
+          {restaurant.adresseRestaurant || "Adresse non disponible"}
         </p>
         
         <p className="text-[10px] text-gray-300 leading-relaxed mt-1 mb-4">

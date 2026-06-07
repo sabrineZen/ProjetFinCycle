@@ -30,6 +30,7 @@ const getAllPlats = async (req, res) => {
         // On construit l'URL proprement avec un seul "/uploads/"
         image: fileName ? `http://${process.env.BACKEND_HOST}:${process.env.PORT}/uploads/${fileName}` : null,
         categorie: data.Categorie?.nom || '',
+        adresseRestaurant: data.adresseRestaurant || "Adresse non disponible",
       };
     });
 
@@ -38,7 +39,56 @@ const getAllPlats = async (req, res) => {
     res.status(500).json({ message: "Erreur récupération", erreur: err.message });
   }
 };
+//les plats populaires a parir du nombre de commandes
 
+const getPlatsPopulaires = async (req, res) => {
+  try {
+    const plats = await Plat.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.fn('COUNT', Sequelize.col('LigneCommandes.id')),
+            'nombreCommandes'
+          ]
+        ]
+      },
+      include: [
+        { model: Categorie, attributes: ['id', 'nom'] },
+        {
+          model: LigneCommande,
+          attributes: [],
+          required: false
+        }
+      ],
+      group: ['Plat.id', 'Categorie.id'],
+      order: [[Sequelize.literal('nombreCommandes'), 'DESC']]
+    });
+
+    const result = plats.map(p => {
+      const data = p.toJSON();
+
+      let fileName = data.image;
+      if (fileName?.startsWith('uploads/')) fileName = fileName.replace('uploads/', '');
+
+      return {
+        id: data.id,
+        nom: data.nom,
+        prix: data.prix,
+        image: fileName ? `http://${process.env.BACKEND_HOST}:${process.env.PORT}/uploads/${fileName}` : null,
+        categorie: data.Categorie?.nom || '',
+        nombreCommandes: data.nombreCommandes || 0
+      };
+    });
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json({
+      message: "Erreur récupération plats populaires",
+      erreur: err.message
+    });
+  }
+};
 // ── AJOUTER UN PLAT ──
 const createPlat = async (req, res) => {
   try {
@@ -115,6 +165,7 @@ const deletePlat = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Erreur suppression", erreur: err.message });
   }
+  
 };
 
-module.exports = { getAllPlats, createPlat, updatePlat, deletePlat }; 
+module.exports = { getAllPlats, createPlat, updatePlat, deletePlat,getPlatsPopulaires }; 

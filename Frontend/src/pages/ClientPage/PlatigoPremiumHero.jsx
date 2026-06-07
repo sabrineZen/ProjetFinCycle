@@ -53,13 +53,13 @@ const PlatigoLanding = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen  text-gray-900 bg-[#FFF9F5]">
 
       {/* ================= NAVBAR ================= */}
-      <header className="fixed top-0 w-full bg-white/70 backdrop-blur-md border-b border-gray-100 z-50">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <header className="fixed top-0 w-full bg-white/70 backdrop-blur-md border-b border-gray-100 z-50 ">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4 ">
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ">
             <img src={logoImage} className="w-8 h-8 rounded-lg" />
             <span className="font-bold text-lg text-[#8B2A1B]">
               PLATI<span className="text-[#8B2A1B]">GO</span>
@@ -76,8 +76,8 @@ const PlatigoLanding = () => {
       </header>
 
       {/* ================= HERO ================= */}
-      <section className="pt-28 pb-20 px-6">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <section className="pt-28 pb-20 px-6 bg-[#FFF9F5]">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center ">
 
           <div>
             <p className="text-[#8B2A1B] font-medium mb-3">
@@ -120,7 +120,7 @@ const PlatigoLanding = () => {
       </section>
 
       {/* ================= FEATURES ================= */}
-      <section className="bg-gray-50 py-16 px-6">
+      <section className=" py-16 px-6 bg-[#FFF9F1]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 text-center">
 
           <div className="bg-white p-6 rounded-xl">
@@ -142,7 +142,7 @@ const PlatigoLanding = () => {
       </section>
 
       {/* ================= PLATS DYNAMIQUES ================= */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-[#FFF9F5]">
         <div className="max-w-6xl mx-auto">
 
           <h2 className="text-3xl font-bold text-center mb-10 text-[#8B2A1B]">

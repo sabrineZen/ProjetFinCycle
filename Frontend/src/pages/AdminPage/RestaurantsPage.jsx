@@ -99,12 +99,12 @@ function RestaurantsPage() {
             placeholder="Recherche..."
             value={recherche}
             onChange={(e) => setRecherche(e.target.value)}
-            className="flex-1 border border-bordure rounded-xl px-4 py-2 text-secondary text-sm outline-none focus:border-button"
+            className="flex-1 border border-bordure rounded-xl cursor-text px-4 py-2 text-secondary text-sm outline-none focus:border-button"
           />
           <select
             value={statusFiltre}
             onChange={(e) => setStatusFiltre(e.target.value)}
-            className="border border-bordure rounded-xl px-4 py-2 text-secondary text-sm outline-none focus:border-button"
+            className="border border-bordure rounded-xl cursor-pointer px-4 py-2 text-secondary text-sm outline-none focus:border-button"
           >
             <option>Tous les status</option>
             <option>Actif</option>
@@ -163,11 +163,11 @@ function RestaurantsPage() {
 
                     <div className="flex gap-3">
                       {estActif ? (
-                        <button className="flex-1 bg-button text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <button className=" cursor-pointer flex-1 bg-button text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
                           <FaBan /> Suspendre
                         </button>
                       ) : (
-                        <button className="flex-1 border border-bordure text-secondary py-2 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <button className="cursor-pointer flex-1 border border-bordure text-secondary py-2 rounded-xl text-sm flex items-center justify-center gap-2">
                           <FaCheckCircle /> Réactiver
                         </button>
                       )}
@@ -175,7 +175,7 @@ function RestaurantsPage() {
                         <button
                           onClick={() => handleSupprimer(r.id)}
                           disabled={suppressionId === r.id}
-                          className={`bg-secondary text-white p-2 rounded-xl transition-opacity ${
+                          className={`bg-secondary cursor-pointer text-white p-2 rounded-xl transition-opacity ${
                             suppressionId === r.id ? 'opacity-50 cursor-not-allowed' : ''
                           }`}
                         >

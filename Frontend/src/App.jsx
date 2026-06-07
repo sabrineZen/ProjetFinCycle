@@ -30,6 +30,7 @@ import CategoriesAdminPage from './pages/AdminPage/CategoriesAdminPage.jsx';
 import StatistiquesPage from './pages/AdminPage/StatistiquesPage.jsx';
 
 import './index.css';
+import ProtectedRoute from './composants/protectedRoutes.jsx';
 
 // --- LAYOUTS ---
 const RestaurateurLayout = () => {
@@ -74,7 +75,7 @@ const RestaurateurLayout = () => {
 // --- APP PRINCIPALE ---
 
 function App() {
-  // ─── 1. ÉTAT GLOBAL DU PANIER ───
+ // ─── 1. ÉTAT GLOBAL DU PANIER ───
   const [panier, setPanier] = useState(() => {
     // On récupère le panier sauvegardé au démarrage
     const localData = localStorage.getItem("platigo_cart");
@@ -108,43 +109,69 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-                <Route path="/" element={<PlatigoPremiumHero />} />
+        <Route path="/" element={<PlatigoPremiumHero />} />
 
         {/* --- AUTH --- */}
-        <Route path="/login" element={<Login />} />
+        
+        <Route path="/login" element={
+          
+            <Login />
+            } />
 
         {/* --- CLIENT (Passage des données du panier) --- */}
         <Route 
           path="/homeClient" 
-          element={<Home panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />} 
+          element= { <ProtectedRoute allowedRoles={['client']} >
+            <Home panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />
+          </ProtectedRoute> } 
         />
         <Route 
           path="/categoriesPage" 
-          element={<CategoriesPage panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />} 
+          element={<ProtectedRoute allowedRoles={['client']} >
+            <CategoriesPage panier={panier} setPanier={setPanier} ajouterAuPanier={ajouterAuPanier} />
+          </ProtectedRoute>} 
         />
-        
         {/* Autres pages Client */}
-        <Route path="/categoriesAll" element={<AllCategories />} />
-        <Route path="/profil" element={<ProfilPage />} />
+        <Route path="/categoriesAll" element={ <ProtectedRoute allowedRoles={['client']} >
+          <AllCategories />
+        </ProtectedRoute> } />
+        <Route path="/profil" element={ <ProtectedRoute allowedRoles={['client']} >
+          <ProfilPage />
+        </ProtectedRoute> } />
         <Route path="/hero" element={<PlatigoPremiumHero />} />
 
         {/* --- RESTAURATEUR --- */}
-        <Route path="/restaurateur" element={<RestaurateurLayout />} />
+        <Route path="/restaurateur" element={<ProtectedRoute allowedRoles={['restaurateur']} >
+          <RestaurateurLayout />
+        </ProtectedRoute>} />
 
         {/* --- ADMIN --- */}
         <Route path="/admin">
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="validation" element={<ValidationPage />} />
-          <Route path="utilisateurs" element={<UtilisateursPage />} />
-          <Route path="restaurants" element={<RestaurantsPage />} />
-          <Route path="plats" element={<PlatsPage />} />
-          <Route path="categories" element={<CategoriesAdminPage />} />
-          <Route path="statistiques" element={<StatistiquesPage />} />
+          <Route path="dashboard" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <AdminDashboard />
+          </ProtectedRoute> } />
+          <Route path="validation" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <ValidationPage />
+          </ProtectedRoute> } />
+          <Route path="utilisateurs" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <UtilisateursPage />
+          </ProtectedRoute> } />
+          <Route path="restaurants" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <RestaurantsPage />
+          </ProtectedRoute> } />
+          <Route path="plats" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <PlatsPage />
+          </ProtectedRoute> } />
+          <Route path="categories" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <CategoriesAdminPage />
+          </ProtectedRoute> } />
+          <Route path="statistiques" element={ <ProtectedRoute allowedRoles={['admin']} >
+            <StatistiquesPage />
+          </ProtectedRoute> } />
         </Route>
 
         {/* --- REDIRECTIONS --- */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/homeClient" replace />} />
       </Routes>
     </BrowserRouter>
   );

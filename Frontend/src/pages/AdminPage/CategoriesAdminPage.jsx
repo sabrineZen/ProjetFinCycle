@@ -44,6 +44,7 @@ function ModalConfirm({ nom, onConfirm, onCancel, loading }) {
 function FormCategorie({ valeurs, onChange }) {
   return (
     <div className="flex flex-col gap-4">
+      
 
       <div>
         <label className="text-secondary text-sm font-medium">Nom *</label>
