@@ -1,4 +1,5 @@
-const { Plat, Categorie } = require('../models');
+const { Plat, Categorie,LigneCommande } = require('../models');
+const { Sequelize } = require('sequelize');
 
 // ── RÉCUPÉRER TOUS LES PLATS ──
 const getAllPlats = async (req, res) => {
@@ -43,44 +44,24 @@ const getAllPlats = async (req, res) => {
 
 const getPlatsPopulaires = async (req, res) => {
   try {
+    const countCommandes = Sequelize.literal(`(
+      SELECT COUNT(*)
+      FROM "LigneCommandes"
+      WHERE "LigneCommandes"."platId" = "Plat"."id"
+    )`);
+
     const plats = await Plat.findAll({
       attributes: {
-        include: [
-          [
-            Sequelize.fn('COUNT', Sequelize.col('LigneCommandes.id')),
-            'nombreCommandes'
-          ]
-        ]
+        include: [[countCommandes, 'nombreCommandes']]
       },
       include: [
-        { model: Categorie, attributes: ['id', 'nom'] },
-        {
-          model: LigneCommande,
-          attributes: [],
-          required: false
-        }
+        { model: Categorie, attributes: ['id', 'nom'] }
       ],
-      group: ['Plat.id', 'Categorie.id'],
-      order: [[Sequelize.literal('nombreCommandes'), 'DESC']]
+      order: [[countCommandes, 'DESC']],
+      limit:6
     });
 
-    const result = plats.map(p => {
-      const data = p.toJSON();
-
-      let fileName = data.image;
-      if (fileName?.startsWith('uploads/')) fileName = fileName.replace('uploads/', '');
-
-      return {
-        id: data.id,
-        nom: data.nom,
-        prix: data.prix,
-        image: fileName ? `http://${process.env.BACKEND_HOST}:${process.env.PORT}/uploads/${fileName}` : null,
-        categorie: data.Categorie?.nom || '',
-        nombreCommandes: data.nombreCommandes || 0
-      };
-    });
-
-    res.json(result);
+    res.json(plats);
 
   } catch (err) {
     res.status(500).json({

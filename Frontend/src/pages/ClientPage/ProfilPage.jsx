@@ -116,7 +116,7 @@ function ProfilPage() {
         <motion.button
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/homeClient")}
           className="group flex items-center gap-2 text-[#FF7A30] font-bold transition-all hover:text-[#e66a25]"
         >
           <div className="p-2 bg-white rounded-full shadow-sm group-hover:shadow-md transition-all">
@@ -139,11 +139,10 @@ function ProfilPage() {
             />
             <div>
               <h1 className="text-2xl font-bold">{profileName}</h1>
-              <p className="text-gray-400 text-sm italic">Membre depuis 2024</p>
-            </div>
+      </div>
           </div>
           <button
-            className="bg-[#FF7A30] hover:bg-[#e66a25] text-white px-8 py-3 rounded-full text-sm font-semibold transition-all shadow-lg shadow-[#FF7A30]/20"
+            className=" cursor-pointer bg-[#FF7A30] hover:bg-[#e66a25] text-white px-8 py-3 rounded-full text-sm font-semibold transition-all shadow-lg shadow-[#FF7A30]/20"
             onClick={() => setPageActive("informations")}
           >
             Modifier profil
@@ -160,13 +159,13 @@ function ProfilPage() {
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* MENU GAUCHE */}
-          <div className="w-full lg:w-72 bg-white rounded-[32px] p-5 shadow-sm border border-white">
+          <div className= " w-full lg:w-72 bg-white rounded-[32px] p-5 shadow-sm border border-white">
             <div className="space-y-2">
               {menuItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setPageActive(item.id)}
-                  className={`w-full flex justify-between items-center p-4 rounded-2xl transition-all duration-300
+                  className={` cursor-pointer w-full flex justify-between items-center p-4 rounded-2xl transition-all duration-300
                     ${pageActive === item.id 
                       ? "bg-[#FF7A30] text-white shadow-md" 
                       : "hover:bg-[#FFF5F0] text-[#6D2829]"}`}
@@ -186,7 +185,7 @@ function ProfilPage() {
                 className="w-full flex items-center gap-4 p-4 text-[#FF7A30] font-bold hover:bg-red-50 hover:text-red-500 rounded-2xl transition-all"
               >
                 <FiLogOut className="text-xl" />
-                <span className="text-sm">Se déconnecter</span>
+                <span className=" cursor-pointer text-sm">Se déconnecter</span>
               </button>
             </div>
           </div>

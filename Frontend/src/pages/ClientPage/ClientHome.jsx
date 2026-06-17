@@ -42,7 +42,7 @@ function Home({ panier, setPanier, ajouterAuPanier }) {
       try {
         const [categoriesRes, platsRes, restosRes] = await Promise.all([
           api.get('/categories'),
-          api.get('/plats/'),
+          api.get('/plats/populaires'), // On utilise la nouvelle route pour les plats populaires
           api.get('/utilisateurs/restaurateurs'),
         ]);
 

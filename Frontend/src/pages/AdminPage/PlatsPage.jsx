@@ -14,7 +14,6 @@ function PlatsPage() {
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
 
-  // const API_URL = "http://localhost:5000";
 
   // ── Chargement des données ──
   useEffect(() => {

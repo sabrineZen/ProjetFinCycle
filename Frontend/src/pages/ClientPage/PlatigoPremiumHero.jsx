@@ -32,7 +32,7 @@ const PlatigoLanding = () => {
       setLoading(true);
 
       try {
-        const res = await api.get("/plats");
+        const res = await api.get("/plats/populaires");
 
         const formatted = (res.data || []).map((p) => ({
           id: p.id,

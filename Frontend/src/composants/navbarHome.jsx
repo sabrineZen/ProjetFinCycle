@@ -38,7 +38,7 @@ function NavbarHome({ panierCount, onTogglePanier, plats, setTexteRecherche, mon
         <div className="flex items-center gap-2 md:gap-4">
           {/* BOUTON PANIER - Style Figma avec badge */}
           <button
-            className={`p-3 md:p-4 rounded-2xl transition-all relative ${
+            className={` cursor-pointer p-3 md:p-4 rounded-2xl transition-all relative ${
               montrerPanier 
               ? "bg-[#FE7D32] text-white shadow-lg scale-95" 
               : "bg-white text-[#FE7D32] hover:bg-orange-50 shadow-sm border border-gray-50"
@@ -56,7 +56,7 @@ function NavbarHome({ panierCount, onTogglePanier, plats, setTexteRecherche, mon
 
           {/* BOUTON PROFIL */}
           <button 
-            className="p-3 md:p-4 rounded-2xl bg-white text-[#FE7D32] hover:bg-orange-50 shadow-sm border border-gray-50 transition-all"
+            className=" cursor-pointer p-3 md:p-4 rounded-2xl bg-white text-[#FE7D32] hover:bg-orange-50 shadow-sm border border-gray-50 transition-all"
             onClick={() => navigate("/profil")}
           >
             <FaUser className="text-xl md:text-2xl" />
