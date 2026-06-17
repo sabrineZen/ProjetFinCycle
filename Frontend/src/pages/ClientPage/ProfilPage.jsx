@@ -26,7 +26,31 @@ function ProfilPage() {
     adresse: "",
     nomRestaurant: "",
   });
+//
+const [stats, setStats] = useState({
+  commandes: 0,
+});
 
+useEffect(() => {
+  const fetchStats = async () => {
+    try {
+      const [cmdRes] = await Promise.all([
+        api.get("/commandes/count"),
+
+      ]);
+
+      setStats({
+        commandes: cmdRes.data.totalCommandes,
+      });
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchStats();
+}, []);
+//
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -152,7 +176,7 @@ function ProfilPage() {
         {/* ── STATS ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <StatCard label="Dépenses totales" value="654 DA" icon={LuWallet} iconBg="#FDF1EB" iconColor="#9C6D57" />
-          <StatCard label="Articles commandés" value="48" icon={BiBasket} iconBg="#E6FAF5" iconColor="#3CDFB0" />
+          <StatCard  label="Articles commandés" value={stats.commandes} icon={BiBasket} iconBg="#E6FAF5" iconColor="#3CDFB0" />
         </div>
 
         {/* ── NAVIGATION ET CONTENU ── */}

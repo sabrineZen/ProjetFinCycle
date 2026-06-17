@@ -62,12 +62,33 @@ const login = async (req, res) => {
   }
 };
 
+//condition nombre caractere mot de passe
+const validatePassword = (password) => {
+  const minLength = 6;
+  const maxLength = 20;
+  const majiscule=/[A-Z]/.test(password);
+  const minuscule=/[a-z]/.test(password);
+  const chiffre=/[0-9]/.test(password);
+  return (  
+
+     password &&
+    password.length >= minLength &&
+    password.length <= maxLength &&
+    majiscule &&
+    minuscule &&
+    chiffre);
+};
 // ── INSCRIPTION CLIENT ──
 const registerClient = async (req, res) => {
   try {
     let { nom, prenom, email, motDePasse, telephone, adresse } = req.body;
 
-    // ... (votre logique de trim et validation existante)
+    if (!validatePassword(motDePasse)) {
+      return res.status(400).json({
+        message:
+          "Mot de passe invalide : 6-20 caractères + majuscule + minuscule + chiffre"
+      });
+    }
 
     const hash = await bcrypt.hash(motDePasse, 10);
 
@@ -90,7 +111,12 @@ const registerRestaurateur = async (req, res) => {
     let { nomRestaurant, adresseRestaurant, email, motDePasse, telephone, numeroRegistre } = req.body;
     const documentOfficiel = req.file ? req.file.filename : null;
 
-    // ... (votre logique de validation existante)
+    if (!validatePassword(motDePasse)) {
+      return res.status(400).json({
+        message:
+          "Mot de passe invalide : 6-20 caractères + majuscule + minuscule + chiffre"
+      });
+    }
 
     const hash = await bcrypt.hash(motDePasse, 10);
 
@@ -106,5 +132,6 @@ const registerRestaurateur = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 module.exports = { login, registerClient, registerRestaurateur };

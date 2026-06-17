@@ -1,5 +1,19 @@
 const { Commande, LigneCommande, Plat, Utilisateur, sequelize } = require('../models');
+//compter le nombre de commande commande par le client
+const countClientOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
 
+    const count = await Commande.count({
+      where: { utilisateurId: userId }
+    });
+
+    res.json({ totalCommandes: count });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 // Crée une commande (checkout)
 const checkout = async (req, res) => {
   try {
@@ -146,4 +160,4 @@ const updateStatus = async (req, res) => {
   }
 };
 
-module.exports = { checkout, getOrders, updateStatus };
+module.exports = { checkout, getOrders, updateStatus, countClientOrders };

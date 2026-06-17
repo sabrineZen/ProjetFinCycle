@@ -5,7 +5,6 @@ const { getRestaurateurs , deleteRestaurateur,supprimerMonCompte} = require('../
 
 router.get('/restaurateurs', /* verifierToken, estAdmin, */ getRestaurateurs);
 router.delete('/restaurateurs/:id', deleteRestaurateur);
-router.delete('/mon-compte', supprimerMonCompte);
 
 
 module.exports = router;
