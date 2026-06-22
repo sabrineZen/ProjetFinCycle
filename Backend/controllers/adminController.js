@@ -11,7 +11,7 @@ const getUtilisateurs = async (req, res) => {
       attributes: [
         'id', 'email', 'role',
         'nom', 'prenom', 'telephone', 'adresse',
-        'nomRestaurant', 'adresseRestaurant', 'numeroRegistre', 'statut'
+        'nomRestaurant', 'adresseRestaurant', 'numeroRegistre', 'documentOfficiel','statut'
       ],
       include: [{ model: Commande, attributes: ['id', 'total'], required: false }]
     });
@@ -31,6 +31,7 @@ const getUtilisateurs = async (req, res) => {
         nombreCommandes: data.role === 'client' ? commandes.length : null,
         totalDepenses: data.role === 'client' ? `$${totalDepenses.toFixed(2)}` : null,
         adresseRestaurant: data.adresseRestaurant || null,
+        documentOfficiel: data.documentOfficiel || null,
         statut: data.statut || null,
       };
     });
@@ -171,8 +172,7 @@ const getRestaurantsEnAttente = async (req, res) => {
   try {
     const enAttente = await Utilisateur.findAll({
       where: { role: 'restaurateur', statut: 'en_attente' },
-      attributes: ['id', 'nomRestaurant', 'nom', 'prenom', 'email'],
-      // ← supprime order et createdAt
+      attributes: ['id', 'nomRestaurant', 'nom', 'prenom', 'email','documentOfficiel'],
     });
     res.json(enAttente);
   } catch (err) {

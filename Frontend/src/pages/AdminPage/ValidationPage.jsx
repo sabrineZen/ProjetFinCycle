@@ -96,6 +96,7 @@ function ValidationPage() {
 
                 {/* Lien vers le document réel stocké sur le serveur */}
                 <div className="mb-4">
+                  
                   <p className="text-gray-400 text-sm mb-2">Document officiel :</p>
                   <a 
                     href={`${UPLOADS}/${r.documentOfficiel}`} 
@@ -106,7 +107,7 @@ function ValidationPage() {
                     <FaFilePdf /> Consulter le Registre de Commerce
                   </a>
                 </div>
-
+                   
                 <div className="flex gap-3 mt-4">
                   <button onClick={() => ouvrirModal(r)} className="flex-1 border border-button text-button py-2 rounded-xl text-sm font-medium hover:bg-orange-50 transition flex items-center justify-center gap-2">
                     <FaEye /> Détails

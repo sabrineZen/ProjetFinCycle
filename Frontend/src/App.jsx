@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 // Navbar & Layout Components
 import Sidebar from './composants/navbar/Sidebar';
 import Header from './composants/navbar/Header';
@@ -31,12 +30,12 @@ import StatistiquesPage from './pages/AdminPage/StatistiquesPage.jsx';
 
 import './index.css';
 import ProtectedRoute from './composants/protectedRoutes.jsx';
-
 // --- LAYOUTS ---
 const RestaurateurLayout = () => {
   const [activePage, setActivePage] = useState('dashboard');
   const [restaurantActif, setRestaurantActif] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  //ajoute recemment pour les stats
 
   const getTitle = (id) => {
     const titles = {
@@ -146,29 +145,27 @@ function App() {
         </ProtectedRoute>} />
 
         {/* --- ADMIN --- */}
-        <Route path="/admin">
-          <Route path="dashboard" element={ <ProtectedRoute allowedRoles={['admin']} >
-            <AdminDashboard />
+          <Route path="/admin/dashboard" element={ <ProtectedRoute allowedRoles={['admin']} >
+              <AdminDashboard />
           </ProtectedRoute> } />
-          <Route path="validation" element={ <ProtectedRoute allowedRoles={['admin']} >
+          <Route path="/admin/validation" element={ <ProtectedRoute allowedRoles={['admin']} >
             <ValidationPage />
           </ProtectedRoute> } />
-          <Route path="utilisateurs" element={ <ProtectedRoute allowedRoles={['admin']} >
+          <Route path="/admin/utilisateurs" element={ <ProtectedRoute allowedRoles={['admin']} >
             <UtilisateursPage />
           </ProtectedRoute> } />
-          <Route path="restaurants" element={ <ProtectedRoute allowedRoles={['admin']} >
+          <Route path="/admin/restaurants" element={ <ProtectedRoute allowedRoles={['admin']} >
             <RestaurantsPage />
           </ProtectedRoute> } />
-          <Route path="plats" element={ <ProtectedRoute allowedRoles={['admin']} >
+          <Route path="/admin/plats" element={ <ProtectedRoute allowedRoles={['admin']} >
             <PlatsPage />
           </ProtectedRoute> } />
-          <Route path="categories" element={ <ProtectedRoute allowedRoles={['admin']} >
+          <Route path="/admin/categories" element={ <ProtectedRoute allowedRoles={['admin']} >
             <CategoriesAdminPage />
           </ProtectedRoute> } />
-          <Route path="statistiques" element={ <ProtectedRoute allowedRoles={['admin']} >
+          <Route path="admin/statistiques" element={ <ProtectedRoute allowedRoles={['admin']} >
             <StatistiquesPage />
           </ProtectedRoute> } />
-        </Route>
 
         {/* --- REDIRECTIONS --- */}
         <Route path="/" element={<Navigate to="/login" replace />} />
