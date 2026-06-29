@@ -64,6 +64,7 @@ export default function Login() {
     localStorage.setItem("role", data.role);
     localStorage.setItem("nom", data.nom || "");
     localStorage.setItem("user", JSON.stringify(user));
+
   };
 
   const handleLogin = async () => {

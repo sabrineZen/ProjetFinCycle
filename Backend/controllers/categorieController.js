@@ -66,6 +66,7 @@ const createCategorie = async (req, res) => {
     const cat = await Categorie.create({ nom: nom.trim(), description, couleur, image });
     res.status(201).json({ ...cat.dataValues, restaurants: 0, plats: 0 });
   } catch (err) {
+    console.error("createCategorie erreur :", err.message);
     res.status(500).json({ message: "Erreur serveur", detail: err.message });
   }
 };

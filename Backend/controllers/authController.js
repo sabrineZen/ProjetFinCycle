@@ -60,6 +60,7 @@ const login = async (req, res) => {
     console.error('LOGIN ERROR:', err);
     res.status(500).json({ message: err.message });
   }
+
 };
 
 //condition nombre caractere mot de passe

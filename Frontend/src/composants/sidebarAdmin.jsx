@@ -9,6 +9,10 @@ function SidebarAdmin() {
   const handleDeconnexion = () => {
     // Optionnel : vider le stockage
     // localStorage.removeItem('token');
+     localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  localStorage.removeItem("user");
+  localStorage.removeItem("nom");
     navigate('/login');
   };
 

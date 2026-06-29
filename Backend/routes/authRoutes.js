@@ -1,12 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const { login, registerClient, registerRestaurateur} = require("../controllers/authController");
+const path = require("path");
+const { login, registerClient, registerRestaurateur } = require("../controllers/authController");
 
-const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage });
 
 router.post("/login", login);
 router.post("/register/client", registerClient);
-router.post("/register/restaurateur", upload.single("documentOfficiel"), registerRestaurateur);
+router.post(
+  "/register/restaurateur",
+  upload.single("documentOfficiel"),
+  registerRestaurateur
+);
 
 module.exports = router;

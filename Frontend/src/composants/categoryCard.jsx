@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 
 function CategoryCard({ couleur, category, hoverClass, onClick }) {
+  console.log(category); // Debug: Affiche les détails de la catégorie dans la console
   return (
     <motion.div
       onClick={onClick}
