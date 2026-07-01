@@ -27,22 +27,27 @@ function SidebarAdmin() {
   ];
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-56 bg-fond border-r border-tri flex flex-col justify-between py-6 px-4">
+    <div className="fixed top-0 left-0 h-screen w-56 bg-[#FFF7F1] border-r border-[#F5D8C4] shadow-[12px_0_40px_rgba(149,20,24,0.08)] flex flex-col justify-between py-6 px-4">
       <div>
-        <div className="flex items-center gap-2 mb-8 px-2">
-          <img src={logo} alt="Logo" className="w-15 h-14 object-contain" />
-          <h1 className="text-xl font-bold text-secondary">Plati<span className="text-button">Go</span></h1>
+        <div className="rounded-2xl bg-gradient-to-br from-[#FFF0E5] to-[#FFE4D1] p-3 mb-6 shadow-sm border border-[#F8D8C7]">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Logo" className="w-12 h-12 object-contain" />
+            <div>
+              <h1 className="text-lg font-black text-secondary">Plati<span className="text-button">Go</span></h1>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#9B5A3D]">Administration</p>
+            </div>
+          </div>
         </div>
+
         <nav className="flex flex-col gap-2">
           {menuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition
-                ${location.pathname === item.path
-                  ? "bg-button text-white"
-                  : "text-secondary hover:bg-accent hover:text-white"
-                }`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${location.pathname === item.path
+                ? "bg-[#FF7031] text-white shadow-md"
+                : "text-secondary hover:bg-[#FFE2D3] hover:text-[#951418]"
+              }`}
             >
               {item.icon}
               {item.label}
@@ -51,10 +56,9 @@ function SidebarAdmin() {
         </nav>
       </div>
 
-      {/* Bouton Déconnexion */}
-      <button 
+      <button
         onClick={handleDeconnexion}
-        className="flex items-center gap-3 px-4 py-3 text-secondary font-medium hover:text-button transition"
+        className="flex items-center gap-3 px-4 py-3 text-secondary font-medium rounded-xl hover:bg-[#FFE2D3] hover:text-[#951418] transition"
       >
         <FaSignOutAlt />
         Déconnexion
