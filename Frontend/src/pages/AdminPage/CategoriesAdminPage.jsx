@@ -51,15 +51,17 @@ function FormCategorie({ valeurs, onChange, onFileChange }) {
     onChange({ ...valeurs, imageUrl: URL.createObjectURL(file) });
   };
 
+  const suggestions = ["#FFF3E8", "#FFD8C2", "#FF7031", "#951418", "#F4C28F", "#E8A874", "#D8573A", "#C96A4A"];
+
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <label className="text-secondary text-sm font-medium">Photo de catégorie</label>
+        <label className="text-[#951418] text-sm font-semibold">Photo de catégorie</label>
         <input
           type="file"
           accept="image/*"
           onChange={(e) => handleFile(e.target.files?.[0] || null)}
-          className="w-full border border-bordure rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-button bg-fond"
+          className="w-full border border-[#F3D4BE] rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-[#FF7031] focus:ring-2 focus:ring-[#FFD7BF] bg-[#FFF8F2]"
         />
         {(valeurs.imageUrl || valeurs.image) && (
           <div className="mt-3 rounded-xl overflow-hidden border border-bordure h-24 w-24">
@@ -69,33 +71,33 @@ function FormCategorie({ valeurs, onChange, onFileChange }) {
       </div>
 
       <div>
-        <label className="text-secondary text-sm font-medium">Nom *</label>
+        <label className="text-[#951418] text-sm font-semibold">Nom *</label>
         <input
           type="text"
           value={valeurs.nom}
           onChange={e => onChange({ ...valeurs, nom: e.target.value })}
           placeholder="Ex : Mexicain"
-          className="w-full border border-bordure rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-button bg-fond"
+          className="w-full border border-[#F3D4BE] rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-[#FF7031] focus:ring-2 focus:ring-[#FFD7BF] bg-[#FFF8F2]"
         />
       </div>
 
       <div>
-        <label className="text-secondary text-sm font-medium">Description</label>
+        <label className="text-[#951418] text-sm font-semibold">Description</label>
         <textarea
           value={valeurs.description}
           onChange={e => onChange({ ...valeurs, description: e.target.value })}
-          className="w-full border border-bordure rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-button bg-fond h-20 resize-none"
+          className="w-full border border-[#F3D4BE] rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-[#FF7031] focus:ring-2 focus:ring-[#FFD7BF] bg-[#FFF8F2] h-20 resize-none"
         />
       </div>
 
       {/* ── Color picker libre ── */}
       <div>
-        <label className="text-secondary text-sm font-medium">Couleur *</label>
+        <label className="text-[#951418] text-sm font-semibold">Couleur *</label>
         <div className="flex items-center gap-3 mt-2">
 
           {/* Aperçu cliquable qui ouvre le picker natif */}
           <div
-            className="relative w-12 h-12 rounded-xl border-2 border-bordure cursor-pointer overflow-hidden flex-shrink-0"
+            className="relative w-12 h-12 rounded-xl border-2 border-[#F2C7AA] cursor-pointer overflow-hidden flex-shrink-0 shadow-sm"
             style={{ backgroundColor: valeurs.couleur }}
             title="Cliquer pour choisir une couleur"
           >
@@ -120,14 +122,14 @@ function FormCategorie({ valeurs, onChange, onFileChange }) {
                   onChange({ ...valeurs, couleur: val });
                 }
               }}
-              placeholder="#FCCEC1"
-              className="w-full border border-bordure rounded-xl px-4 py-3 text-secondary text-sm outline-none focus:border-button bg-fond font-mono"
+              placeholder="#FF7031"
+              className="w-full border border-[#F3D4BE] rounded-xl px-4 py-3 text-secondary text-sm outline-none focus:border-[#FF7031] focus:ring-2 focus:ring-[#FFD7BF] bg-[#FFF8F2] font-mono"
             />
           </div>
 
           {/* Aperçu avec le nom hex */}
           <div
-            className="w-12 h-12 rounded-xl border border-bordure flex-shrink-0"
+            className="w-12 h-12 rounded-xl border border-[#F2C7AA] flex-shrink-0 shadow-sm"
             style={{ backgroundColor: valeurs.couleur }}
           />
         </div>
@@ -136,12 +138,12 @@ function FormCategorie({ valeurs, onChange, onFileChange }) {
         <div className="mt-3">
           <p className="text-gray-400 text-xs mb-2">Suggestions rapides</p>
           <div className="flex gap-2 flex-wrap">
-            {["#FCCEC1","#FF8238","#FFD700","#4CAF50","#2196F3","#9C27B0","#F44336","#00BCD4","#FF5722","#607D8B"].map(c => (
+            {suggestions.map(c => (
               <div
                 key={c}
                 onClick={() => onChange({ ...valeurs, couleur: c })}
                 title={c}
-                className={`w-8 h-8 rounded-lg cursor-pointer border-2 transition-transform hover:scale-110 ${valeurs.couleur === c ? "border-button scale-110" : "border-transparent"}`}
+                className={`w-8 h-8 rounded-lg cursor-pointer border-2 transition-transform hover:scale-110 shadow-sm ${valeurs.couleur === c ? "border-[#951418] scale-110" : "border-white"}`}
                 style={{ backgroundColor: c }}
               />
             ))}
@@ -161,7 +163,7 @@ function CategoriesAdminPage() {
   const [sidebarOuverte, setSidebarOuverte] = useState(false);
 
   const [modalOuvert, setModalOuvert]       = useState(false);
-  const [nouvelle, setNouvelle]             = useState({ nom: "", description: "", couleur: "#FCCEC1", imageUrl: "" });
+  const [nouvelle, setNouvelle]             = useState({ nom: "", description: "", couleur: "#FF7031", imageUrl: "" });
   const [ajoutEnCours, setAjoutEnCours]     = useState(false);
 
   const [modifId, setModifId]               = useState(null);
@@ -201,7 +203,7 @@ function CategoriesAdminPage() {
       if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
       const creee = await r.json();
       setCategories(prev => [...prev, creee]);
-      setNouvelle({ nom: "", description: "", couleur: "#FCCEC1", imageUrl: "" });
+      setNouvelle({ nom: "", description: "", couleur: "#FF7031", imageUrl: "" });
       setImageSelectionnee(null);
       setModalOuvert(false);
       showToast("Catégorie ajoutée !");
@@ -227,7 +229,7 @@ function CategoriesAdminPage() {
       const formData = new FormData();
       formData.append("nom", valeursModif.nom);
       formData.append("description", valeursModif.description || "");
-      formData.append("couleur", valeursModif.couleur || "#FCCEC1");
+      formData.append("couleur", valeursModif.couleur || "#FF7031");
       if (imageSelectionnee) formData.append("image", imageSelectionnee);
 
       const r = await fetch(`${API}/categories/${cat.id}`, {
@@ -414,12 +416,12 @@ function CategoriesAdminPage() {
               />
               <div className="flex gap-3 mt-5">
                 <button
-                  onClick={() => { setModalOuvert(false); setNouvelle({ nom: "", description: "", couleur: "#FCCEC1", imageUrl: "" }); setImageSelectionnee(null); }}
-                  className="flex-1 bg-secondary text-white py-3 rounded-xl text-sm font-medium hover:opacity-80 transition flex items-center justify-center gap-2">
+                  onClick={() => { setModalOuvert(false); setNouvelle({ nom: "", description: "", couleur: "#FF7031", imageUrl: "" }); setImageSelectionnee(null); }}
+                  className="flex-1 bg-[#951418] text-white py-3 rounded-xl text-sm font-medium hover:bg-[#7a1012] transition flex items-center justify-center gap-2">
                   <FaTimes /> Annuler
                 </button>
                 <button onClick={ajouterCategorie} disabled={ajoutEnCours || !nouvelle.nom.trim()}
-                  className="flex-1 bg-button text-white py-3 rounded-xl text-sm font-medium hover:bg-valider transition flex items-center justify-center gap-2 disabled:opacity-60">
+                  className="flex-1 bg-[#FF7031] text-white py-3 rounded-xl text-sm font-medium hover:bg-[#e65f25] transition flex items-center justify-center gap-2 disabled:opacity-60">
                   {ajoutEnCours ? <FaSpinner className="animate-spin" size={14} /> : <FaPlus />}
                   Ajouter
                 </button>

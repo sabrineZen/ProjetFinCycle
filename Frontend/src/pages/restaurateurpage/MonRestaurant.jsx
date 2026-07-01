@@ -64,184 +64,176 @@ const MonRestaurant = ({ estActif, setEstActif }) => {
     }
   };
 
-  if (loading) return <p className="text-center text-[#951418]">Chargement...</p>;
+  if (loading) return <p className="text-center text-[#951418] font-medium">Chargement...</p>;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-12 pb-20">
-
-      {/* --- COLONNE GAUCHE --- */}
-      <div className="w-full lg:w-70 space-y-6">
-
-        {/* Carte Profil */}
-        <div className="bg-white p-11 rounded-[20px] shadow-md flex flex-col items-center text-center">
-          <div className="relative">
-
-            {/* Input fichier caché */}
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handlePhotoChange}
-              className="hidden"
-            />
-
-            <img
-              src={photoUrl}
-              alt="Logo"
-              className="w-28 h-28 rounded-xl object-cover border-4 border-orange-50"
-            />
-
-            {/* Bouton caméra */}
-            <button
-              type="button"
-              onClick={() => fileInputRef.current.click()}
-              className="absolute -bottom-2 -right-2 bg-[#FF843D] p-2 rounded-xl text-white shadow-lg hover:scale-110 transition-all"
-            >
-              <Camera size={20} />
-            </button>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(255,112,49,0.14),_transparent_35%),linear-gradient(135deg,_#fffaf6_0%,_#fff3ea_100%)] px-3 py-4 sm:px-5 lg:px-6 pb-20">
+      <div className="mx-auto max-w-7xl rounded-[32px] border border-[#F3D8C8] bg-white/80 backdrop-blur p-4 sm:p-6 lg:p-8 shadow-[0_20px_60px_rgba(149,20,24,0.08)]">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between mb-8">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#FF7031]">Restaurateur</p>
+            <h2 className="text-3xl font-black text-[#951418]">Mon restaurant</h2>
+            <p className="text-gray-500 mt-1">Gérez votre identité, vos informations et votre visibilité.</p>
           </div>
-
-          <h2 className="mt-4 text-2xl font-regular text-[#951418]">
-            {profil.nomRestaurant}
-          </h2>
-
-          <p className="text-[#951418]/70 font-regular text-sm">
-            {profil.numeroRegistre}
-          </p>
-
-          <div className={`mt-4 px-6 py-3 rounded-[14px] flex items-center gap-2 border ${
-            estActif ? 'bg-green-50 border-green-100 text-green-600' : 'bg-red-50 border-red-100 text-red-600'
-          }`}>
-            <span className={`w-3 h-3 rounded-full ${estActif ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
-            <span className="font-bold text-sm">{estActif ? 'Restaurant actif' : 'Restaurant inactif'}</span>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setEstActif(!estActif)}
-            className={`mt-6 w-full py-3 rounded-[14px] font-regular text-white text-sm transition-all shadow-lg ${
-              estActif ? 'bg-[#FF843D] shadow-orange-100' : 'bg-green-500 shadow-green-100'
-            }`}
-          >
-            {estActif ? 'Désactiver le restaurant' : 'Activer le restaurant'}
-          </button>
-        </div>
-
-        {/* Carte Infos Rapides */}
-        <div className="bg-white p-8 rounded-[20px] shadow-md">
-          <h3 className="text-xl font-regular text-[#951418] mb-6">Informations rapides</h3>
-          <div className="space-y-4">
-
-            <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
-              <MapPin className="text-[#951418]" size={20} />
-              {profil.adresseRestaurant}
-            </div>
-
-            <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
-              <Phone className="text-[#951418]" size={20} />
-              {profil.telephone}
-            </div>
-
-            <div className="flex items-center gap-4 text-[#951418]/70 font-regular">
-              <Mail className="text-[#951418]" size={20} />
-              <span className="text-[14px]">{profil.email}</span>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      {/* --- COLONNE DROITE (Formulaires) --- */}
-      <div className="lg:w-2/3 space-y-8">
-
-        <div className="bg-white p-10 rounded-[20px] shadow-md">
-          <div className="flex items-center gap-3 mb-8">
-            <Info className="text-[#951418]" size={28} />
-            <h3 className="text-3xl font-regular text-[#951418]">Informations générales</h3>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6">
-
-            <div className="space-y-2">
-              <label className="text-xl font-regular text-[#951418] ml-2">Nom du restaurant</label>
-              <input
-                type="text"
-                value={profil.nomRestaurant}
-                onChange={(e) => setProfil({ ...profil, nomRestaurant: e.target.value })}
-                className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
-              />
-            </div>
-
-            <div className="w-full relative">
-              <input type="file" id="file-upload-mobile" className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
-              <label htmlFor="file-upload-mobile" className="text-[#951418] block p-3 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer text-sm">
-                Télécharger document officiel
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-              <div className="space-y-2">
-                <label className="text-xl font-regular text-[#951418] ml-2">Numéro registre de commerce</label>
-                <input
-                  type="text"
-                  value={profil.numeroRegistre}
-                  onChange={(e) => setProfil({ ...profil, numeroRegistre: e.target.value })}
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xl font-regular text-[#951418] ml-2">Email</label>
-                <input
-                  type="email"
-                  value={profil.email}
-                  onChange={(e) => setProfil({ ...profil, email: e.target.value })}
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xl font-regular text-[#951418] ml-2">Telephone</label>
-                <input
-                  type="tel"
-                  value={profil.telephone}
-                  onChange={(e) => setProfil({ ...profil, telephone: e.target.value })}
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xl font-regular text-[#951418] ml-2">Adresse</label>
-                <input
-                  type="text"
-                  value={profil.adresseRestaurant}
-                  onChange={(e) => setProfil({ ...profil, adresseRestaurant: e.target.value })}
-                  className="w-full bg-[#FFF7F4] border border-[#C0A0A0] rounded-xl p-3 focus:ring-2 focus:ring-[#FF843D] transition-all outline-none"
-                />
-              </div>
-
-            </div>
+          <div className="rounded-2xl bg-[#FFF0E5] border border-[#F7D9C6] px-4 py-3 text-sm text-[#8E4A2D] shadow-sm">
+            Panel de gestion premium
           </div>
         </div>
 
-        {/* Message succès/erreur */}
-        {message && (
-          <p className="text-center font-bold text-sm"
-            style={{ color: message.includes('✅') ? 'green' : 'red' }}>
-            {message}
-          </p>
-        )}
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-[340px] space-y-6">
+            <div className="bg-white rounded-[24px] border border-[#F4D8C7] p-6 shadow-sm text-center">
+              <div className="relative mx-auto w-28 h-28">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handlePhotoChange}
+                  className="hidden"
+                />
 
-        {/* Bouton Sauvegarder */}
-        <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={handleSave}
-            className="bg-[#FF843D] text-white px-10 py-5 rounded-3xl font-regular shadow-lg shadow-orange-100 hover:scale-105 transition-all flex items-center gap-3"
-          >
-            <Save size={24} /> Sauvegarder les modifications
-          </button>
+                <img
+                  src={photoUrl}
+                  alt="Logo"
+                  className="w-28 h-28 rounded-2xl object-cover border-4 border-[#FFF0E5] shadow-sm"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current.click()}
+                  className="absolute -bottom-2 -right-2 bg-[#FF7031] p-2 rounded-xl text-white shadow-lg hover:scale-110 transition-all"
+                >
+                  <Camera size={18} />
+                </button>
+              </div>
+
+              <h3 className="mt-4 text-2xl font-black text-[#951418]">{profil.nomRestaurant}</h3>
+              <p className="text-[#8E4A2D] text-sm mt-1">{profil.numeroRegistre}</p>
+
+              <div className={`mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 border ${
+                estActif ? 'bg-green-50 border-green-100 text-green-700' : 'bg-red-50 border-red-100 text-red-700'
+              }`}>
+                <span className={`w-2.5 h-2.5 rounded-full ${estActif ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
+                <span className="text-sm font-semibold">{estActif ? 'Restaurant actif' : 'Restaurant inactif'}</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setEstActif(!estActif)}
+                className={`mt-5 w-full py-3 rounded-2xl font-semibold text-white text-sm transition-all shadow-md ${
+                  estActif ? 'bg-[#FF7031] hover:bg-[#e65f25]' : 'bg-[#16a34a] hover:bg-[#15803d]'
+                }`}
+              >
+                {estActif ? 'Désactiver le restaurant' : 'Activer le restaurant'}
+              </button>
+            </div>
+
+            <div className="bg-white rounded-[24px] border border-[#F4D8C7] p-6 shadow-sm">
+              <h4 className="text-lg font-semibold text-[#951418] mb-4">Informations rapides</h4>
+              <div className="space-y-4 text-sm text-[#7A4C35]">
+                <div className="flex items-start gap-3 rounded-xl bg-[#FFF7F1] p-3 border border-[#F6DFCE]">
+                  <MapPin className="text-[#FF7031] mt-0.5" size={18} />
+                  <span>{profil.adresseRestaurant}</span>
+                </div>
+                <div className="flex items-start gap-3 rounded-xl bg-[#FFF7F1] p-3 border border-[#F6DFCE]">
+                  <Phone className="text-[#FF7031] mt-0.5" size={18} />
+                  <span>{profil.telephone}</span>
+                </div>
+                <div className="flex items-start gap-3 rounded-xl bg-[#FFF7F1] p-3 border border-[#F6DFCE]">
+                  <Mail className="text-[#FF7031] mt-0.5" size={18} />
+                  <span>{profil.email}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-6">
+            <div className="bg-white rounded-[24px] border border-[#F4D8C7] p-6 sm:p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-[#FFF0E5] p-2.5 rounded-2xl text-[#FF7031]">
+                  <Info size={20} />
+                </div>
+                <h4 className="text-2xl font-semibold text-[#951418]">Informations générales</h4>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-[#951418]">Nom du restaurant</label>
+                  <input
+                    type="text"
+                    value={profil.nomRestaurant}
+                    onChange={(e) => setProfil({ ...profil, nomRestaurant: e.target.value })}
+                    className="w-full bg-[#FFF8F2] border border-[#F3D4BE] rounded-2xl p-3 focus:ring-2 focus:ring-[#FFD7BF] focus:border-[#FF7031] transition-all outline-none"
+                  />
+                </div>
+
+                <div className="w-full relative">
+                  <input type="file" id="file-upload-mobile" className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
+                  <label htmlFor="file-upload-mobile" className="text-[#951418] block p-3 border border-[#F3D4BE] rounded-2xl bg-[#FFF8F2] text-center cursor-pointer text-sm font-medium">
+                    Télécharger document officiel
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-[#951418]">Numéro registre de commerce</label>
+                    <input
+                      type="text"
+                      value={profil.numeroRegistre}
+                      onChange={(e) => setProfil({ ...profil, numeroRegistre: e.target.value })}
+                      className="w-full bg-[#FFF8F2] border border-[#F3D4BE] rounded-2xl p-3 focus:ring-2 focus:ring-[#FFD7BF] focus:border-[#FF7031] transition-all outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-[#951418]">Email</label>
+                    <input
+                      type="email"
+                      value={profil.email}
+                      onChange={(e) => setProfil({ ...profil, email: e.target.value })}
+                      className="w-full bg-[#FFF8F2] border border-[#F3D4BE] rounded-2xl p-3 focus:ring-2 focus:ring-[#FFD7BF] focus:border-[#FF7031] transition-all outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-[#951418]">Téléphone</label>
+                    <input
+                      type="tel"
+                      value={profil.telephone}
+                      onChange={(e) => setProfil({ ...profil, telephone: e.target.value })}
+                      className="w-full bg-[#FFF8F2] border border-[#F3D4BE] rounded-2xl p-3 focus:ring-2 focus:ring-[#FFD7BF] focus:border-[#FF7031] transition-all outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-[#951418]">Adresse</label>
+                    <input
+                      type="text"
+                      value={profil.adresseRestaurant}
+                      onChange={(e) => setProfil({ ...profil, adresseRestaurant: e.target.value })}
+                      className="w-full bg-[#FFF8F2] border border-[#F3D4BE] rounded-2xl p-3 focus:ring-2 focus:ring-[#FFD7BF] focus:border-[#FF7031] transition-all outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {message && (
+              <p className="text-center font-semibold text-sm" style={{ color: message.includes('✅') ? 'green' : 'red' }}>
+                {message}
+              </p>
+            )}
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleSave}
+                className="bg-[#FF7031] text-white px-8 py-4 rounded-2xl font-semibold shadow-md hover:bg-[#e65f25] transition-all flex items-center gap-3"
+              >
+                <Save size={20} /> Sauvegarder les modifications
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
