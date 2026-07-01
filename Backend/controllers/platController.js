@@ -1,24 +1,27 @@
 const { Plat, Categorie,LigneCommande } = require('../models');
 const { Sequelize } = require('sequelize');
 
-// ── RÉCUPÉRER TOUS LES PLATS ──
 const getAllPlats = async (req, res) => {
   try {
-    // Si c'est un restaurateur, il voit UNIQUEMENT ses propres plats
     const where = req.user.role === 'restaurateur' ? { utilisateurId: req.user.id } : {};
-    
+    const commandeCount = Sequelize.literal(`(
+      SELECT COUNT(*)
+      FROM "LigneCommandes"
+      WHERE "LigneCommandes"."platId" = "Plat"."id"
+    )`);
+
     const plats = await Plat.findAll({
       where,
-      include: [{ model: Categorie, attributes: ['id', 'nom'] }]
+      include: [{ model: Categorie, attributes: ['id', 'nom'] }],
+      attributes: {
+        include: [[commandeCount, 'commandes']]
+      }
     });
 
     const result = plats.map((p) => {
       const data = p.toJSON();
-      
-      // LOGIQUE DE CORRECTION DU LIEN DOUBLÉ
       let fileName = data.image;
-      
-      // Si le nom contient déjà "uploads/", on l'enlève pour ne pas l'avoir 2 fois
+
       if (fileName && fileName.startsWith('uploads/')) {
         fileName = fileName.replace('uploads/', '');
       }
@@ -28,10 +31,10 @@ const getAllPlats = async (req, res) => {
 
       return {
         ...data,
-        // On construit l'URL proprement avec un seul "/uploads/"
         image: fileName ? `http://${process.env.BACKEND_HOST}:${process.env.PORT}/uploads/${fileName}` : null,
         categorie: data.Categorie?.nom || '',
         adresseRestaurant: data.adresseRestaurant || "Adresse non disponible",
+        commandes: Number(data.commandes || 0)
       };
     });
 
@@ -40,7 +43,6 @@ const getAllPlats = async (req, res) => {
     res.status(500).json({ message: "Erreur récupération", erreur: err.message });
   }
 };
-//les plats populaires a parir du nombre de commandes
 
 const getPlatsPopulaires = async (req, res) => {
   try {
@@ -62,7 +64,6 @@ const getPlatsPopulaires = async (req, res) => {
     });
 
     res.json(plats);
-
   } catch (err) {
     res.status(500).json({
       message: "Erreur récupération plats populaires",
@@ -70,7 +71,7 @@ const getPlatsPopulaires = async (req, res) => {
     });
   }
 };
-// ── AJOUTER UN PLAT ──
+
 const createPlat = async (req, res) => {
   try {
     const { nom, description, prix, categorieId, disponible } = req.body;
@@ -102,7 +103,6 @@ const createPlat = async (req, res) => {
   }
 };
 
-// ── MODIFIER UN PLAT ──
 const updatePlat = async (req, res) => {
   try {
     const { id } = req.params;

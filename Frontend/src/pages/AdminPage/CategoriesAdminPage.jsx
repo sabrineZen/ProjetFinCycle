@@ -41,10 +41,32 @@ function ModalConfirm({ nom, onConfirm, onCancel, loading }) {
 }
 
 // ── Formulaire avec color picker libre ────────────────────────────────────────
-function FormCategorie({ valeurs, onChange }) {
+function FormCategorie({ valeurs, onChange, onFileChange }) {
+  const handleFile = (file) => {
+    if (!file) {
+      onFileChange?.(null);
+      return;
+    }
+    onFileChange?.(file);
+    onChange({ ...valeurs, imageUrl: URL.createObjectURL(file) });
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      
+      <div>
+        <label className="text-secondary text-sm font-medium">Photo de catégorie</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFile(e.target.files?.[0] || null)}
+          className="w-full border border-bordure rounded-xl px-4 py-3 mt-1 text-secondary text-sm outline-none focus:border-button bg-fond"
+        />
+        {(valeurs.imageUrl || valeurs.image) && (
+          <div className="mt-3 rounded-xl overflow-hidden border border-bordure h-24 w-24">
+            <img src={valeurs.imageUrl || valeurs.image} alt="Aperçu" className="w-full h-full object-cover" />
+          </div>
+        )}
+      </div>
 
       <div>
         <label className="text-secondary text-sm font-medium">Nom *</label>
@@ -139,11 +161,12 @@ function CategoriesAdminPage() {
   const [sidebarOuverte, setSidebarOuverte] = useState(false);
 
   const [modalOuvert, setModalOuvert]       = useState(false);
-  const [nouvelle, setNouvelle]             = useState({ nom: "", description: "", couleur: "#FCCEC1" });
+  const [nouvelle, setNouvelle]             = useState({ nom: "", description: "", couleur: "#FCCEC1", imageUrl: "" });
   const [ajoutEnCours, setAjoutEnCours]     = useState(false);
 
   const [modifId, setModifId]               = useState(null);
   const [valeursModif, setValeursModif]     = useState({});
+  const [imageSelectionnee, setImageSelectionnee] = useState(null);
   const [modifEnCours, setModifEnCours]     = useState(false);
 
   const [aSupprimer, setASupprimer]                 = useState(null);
@@ -165,15 +188,21 @@ function CategoriesAdminPage() {
     if (!nouvelle.nom.trim()) return;
     setAjoutEnCours(true);
     try {
+      const formData = new FormData();
+      formData.append("nom", nouvelle.nom);
+      formData.append("description", nouvelle.description || "");
+      formData.append("couleur", nouvelle.couleur);
+      if (imageSelectionnee) formData.append("image", imageSelectionnee);
+
       const r = await fetch(`${API}/categories`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nouvelle),
+        body: formData,
       });
       if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
       const creee = await r.json();
       setCategories(prev => [...prev, creee]);
-      setNouvelle({ nom: "", description: "", couleur: "#FCCEC1" });
+      setNouvelle({ nom: "", description: "", couleur: "#FCCEC1", imageUrl: "" });
+      setImageSelectionnee(null);
       setModalOuvert(false);
       showToast("Catégorie ajoutée !");
     } catch (e) {
@@ -186,7 +215,8 @@ function CategoriesAdminPage() {
   // Ouvrir modification
   const ouvrirModif = (cat) => {
     setModifId(cat.id);
-    setValeursModif({ nom: cat.nom, description: cat.description, couleur: cat.couleur });
+    setValeursModif({ nom: cat.nom, description: cat.description, couleur: cat.couleur, imageUrl: cat.image || "" });
+    setImageSelectionnee(null);
   };
 
   // Sauvegarder modification
@@ -194,15 +224,21 @@ function CategoriesAdminPage() {
     if (!valeursModif.nom?.trim()) return;
     setModifEnCours(true);
     try {
+      const formData = new FormData();
+      formData.append("nom", valeursModif.nom);
+      formData.append("description", valeursModif.description || "");
+      formData.append("couleur", valeursModif.couleur || "#FCCEC1");
+      if (imageSelectionnee) formData.append("image", imageSelectionnee);
+
       const r = await fetch(`${API}/categories/${cat.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(valeursModif),
+        body: formData,
       });
       if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
       const maj = await r.json();
       setCategories(prev => prev.map(c => c.id === cat.id ? { ...c, ...maj } : c));
       setModifId(null);
+      setImageSelectionnee(null);
       showToast("Catégorie modifiée !");
     } catch (e) {
       showToast(e.message || "Erreur lors de la modification.", "error");
@@ -290,15 +326,25 @@ function CategoriesAdminPage() {
               <div key={cat.id} className="bg-white rounded-2xl shadow-sm border border-bordure overflow-hidden">
 
                 <div className="h-28 lg:h-32 flex items-center justify-center transition-colors duration-300" style={{ backgroundColor: cat.couleur }}>
-                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white bg-opacity-40 flex items-center justify-center text-3xl lg:text-4xl">
-                    🍽️
-                  </div>
+                  {cat.image ? (
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white bg-opacity-40 flex items-center justify-center overflow-hidden border border-white/70">
+                      <img src={cat.image} alt={cat.nom} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white bg-opacity-40 flex items-center justify-center text-3xl lg:text-4xl">
+                      🍽️
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-3 lg:p-4">
                   {modifId === cat.id ? (
                     <div className="flex flex-col gap-3">
-                      <FormCategorie valeurs={valeursModif} onChange={setValeursModif} />
+                      <FormCategorie
+                        valeurs={valeursModif}
+                        onChange={setValeursModif}
+                        onFileChange={(file) => setImageSelectionnee(file)}
+                      />
                       <div className="flex gap-2 mt-1">
                         <button onClick={() => sauvegarderModif(cat)} disabled={modifEnCours || !valeursModif.nom?.trim()}
                           className="flex-1 bg-button text-white py-2 rounded-xl text-xs font-medium hover:bg-valider transition flex items-center justify-center gap-1 disabled:opacity-60">
@@ -361,10 +407,14 @@ function CategoriesAdminPage() {
           <div className="fixed inset-0 bg-black/50 bg-opacity-10 backdrop-blur-md flex items-center justify-center z-50 px-4">
             <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl lg:text-2xl font-bold text-secondary mb-5">Nouvelle catégorie</h2>
-              <FormCategorie valeurs={nouvelle} onChange={setNouvelle} />
+              <FormCategorie
+                valeurs={nouvelle}
+                onChange={setNouvelle}
+                onFileChange={(file) => setImageSelectionnee(file)}
+              />
               <div className="flex gap-3 mt-5">
                 <button
-                  onClick={() => { setModalOuvert(false); setNouvelle({ nom: "", description: "", couleur: "#FCCEC1" }); }}
+                  onClick={() => { setModalOuvert(false); setNouvelle({ nom: "", description: "", couleur: "#FCCEC1", imageUrl: "" }); setImageSelectionnee(null); }}
                   className="flex-1 bg-secondary text-white py-3 rounded-xl text-sm font-medium hover:opacity-80 transition flex items-center justify-center gap-2">
                   <FaTimes /> Annuler
                 </button>

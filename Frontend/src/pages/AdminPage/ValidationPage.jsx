@@ -99,7 +99,7 @@ function ValidationPage() {
                   
                   <p className="text-gray-400 text-sm mb-2">Document officiel :</p>
                   <a 
-                    href={`${UPLOADS}/${r.documentOfficiel}`} 
+                    href={r.documentOfficiel ? `${UPLOADS}/${r.documentOfficiel}` : '#'}
                     target="_blank" 
                     rel="noreferrer"
                     className="flex items-center gap-2 text-blue-600 text-sm font-medium hover:underline"

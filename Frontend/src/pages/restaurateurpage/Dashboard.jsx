@@ -1,65 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { DollarSign, ClipboardList, Star, Clock, ChevronRight, MoreHorizontal } from "lucide-react";
+import { DollarSign, ClipboardList, Star, Clock, MoreHorizontal } from "lucide-react";
 import api from "../../api";
 
-// ─────────────────────────────
-// DASHBOARD
-// ─────────────────────────────
-
 const Dashboard = ({ estActif, setEstActif }) => {
-  
-
   const [stats, setStats] = useState(null);
   const [topPlats, setTopPlats] = useState([]);
   const [commandesRecentes, setCommandesRecentes] = useState([]);
+  const [weeklySales, setWeeklySales] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ─────────────────────────────
-  // CHARGEMENT BACKEND
-  // ─────────────────────────────
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
         const [statsRes, platsRes, commandesRes] = await Promise.all([
           api.get("/admin/stats"),
-          api.get("/plats"), // ou /plats/populaires si tu l’as
+          api.get("/plats"),
           api.get("/commandes")
         ]);
 
-        // ─── STATS ───
+        const commandesData = commandesRes.data || [];
+        const salesByDay = Array.from({ length: 7 }, (_, index) => {
+          const date = new Date();
+          date.setDate(date.getDate() - (6 - index));
+          const label = date.toLocaleDateString("fr-FR", { weekday: "short" });
+          const total = commandesData.reduce((sum, commande) => {
+            const commandeDate = new Date(commande.dateCommande || commande.createdAt || commande.created_at);
+            if (commandeDate.toDateString() === date.toDateString()) {
+              return sum + Number(commande.total || 0);
+            }
+            return sum;
+          }, 0);
+
+          return { label, total };
+        });
+
         setStats({
-          ventes: statsRes.data.revenus || 0,
-          commandes: statsRes.data.totalPlats || 0,
+          ventes: salesByDay.reduce((sum, day) => sum + day.total, 0),
+          commandes: commandesData.length,
           note: 4.7,
           temps: "28 min"
         });
+        setWeeklySales(salesByDay);
 
-        // ─── TOP PLATS ───
-        const platsFormates = (platsRes.data || []).map((p, index) => ({
-          id: p.id,
-          nom: p.nom,
-          commandes: p.commandes || 0,
-          progress: Math.min((p.commandes || 0) * 10, 100),
-          rank: index + 1
-        }));
+        const platsFormates = (platsRes.data || [])
+          .map((plat) => ({
+            id: plat.id,
+            nom: plat.nom,
+            commandes: Number(plat.commandes || 0),
+            progress: Math.min((Number(plat.commandes || 0) * 20), 100),
+            rank: 0
+          }))
+          .sort((a, b) => b.commandes - a.commandes)
+          .map((plat, index) => ({ ...plat, rank: index + 1 }))
+          .slice(0, 4);
 
-        setTopPlats(platsFormates.slice(0, 4));
+        setTopPlats(platsFormates);
 
-        // ─── COMMANDES RÉCENTES ───
-        const commandesFormatees = (commandesRes.data || []).map((c) => ({
-          id: `#${c.id}`,
-          client: c.clientNom || "Client",
-          plats: c.plats?.map(p => p.nom).join(" + ") || "",
-          montant: `${c.total} DA`,
-          status: c.status,
-          heure: new Date(c.createdAt).toLocaleTimeString([], {
+        const commandesFormatees = (commandesData || []).map((commande) => ({
+          id: `#${commande.id}`,
+          client: commande.clientNom || "Client",
+          plats: commande.plats?.map((plat) => plat.nom).join(" + ") || "",
+          montant: `${commande.total} DA`,
+          status: commande.status,
+          heure: new Date(commande.createdAt || commande.dateCommande).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit"
           })
         }));
 
         setCommandesRecentes(commandesFormatees);
-
       } catch (err) {
         console.error("Erreur dashboard:", err);
       } finally {
@@ -70,9 +79,6 @@ const Dashboard = ({ estActif, setEstActif }) => {
     fetchDashboard();
   }, []);
 
-  // ─────────────────────────────
-  // STYLE STATUS
-  // ─────────────────────────────
   const getStatusStyle = (status) => {
     switch (status) {
       case "En cours": return "bg-orange-100 text-orange-600";
@@ -91,13 +97,9 @@ const Dashboard = ({ estActif, setEstActif }) => {
     );
   }
 
-  // ─────────────────────────────
-  // UI
-  // ─────────────────────────────
   return (
     <div className="flex-1 space-y-10 pb-10 text-[#951418] font-regular">
 
-      {/* ───── STATUT RESTAURANT ───── */}
       <section className="bg-white p-6 rounded-[20px] shadow-md flex items-center justify-between">
         <div>
           <h2 className="text-xl">Statut de votre restaurant</h2>
@@ -125,7 +127,6 @@ const Dashboard = ({ estActif, setEstActif }) => {
         </div>
       </section>
 
-      {/* ───── STATS ───── */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: "Ventes", value: `${stats.ventes} DA`, icon: <DollarSign /> },
@@ -143,13 +144,30 @@ const Dashboard = ({ estActif, setEstActif }) => {
         ))}
       </section>
 
-      {/* ───── TOP PLATS + GRAPH (mock graph gardé) ───── */}
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-
-        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md min-h-100">
-          <h3 className="text-2xl mb-6">Ventes de la semaine</h3>
-          <div className="border-2 border-dashed border-gray-200 rounded-3xl h-60 flex items-center justify-center text-gray-300">
-            Graphique dynamique à connecter
+        <div className="xl:col-span-2 bg-white p-8 rounded-[20px] shadow-md">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl">Ventes de la semaine</h3>
+            <p className="text-sm text-gray-500">{stats.ventes} DA</p>
+          </div>
+          <div className="flex items-end justify-between gap-2 h-56 mt-4">
+            {weeklySales.map((day) => {
+              const height = Math.max(8, Math.round((day.total / Math.max(...weeklySales.map((item) => item.total), 1)) * 100));
+              return (
+                <div key={day.label} className="flex-1 flex flex-col items-center gap-2">
+                  <div className="w-full flex justify-center items-end h-44">
+                    <div
+                      className="w-full max-w-10 rounded-t-xl bg-gradient-to-t from-orange-500 to-orange-300"
+                      style={{ height: `${height}%` }}
+                    />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs font-semibold uppercase">{day.label}</p>
+                    <p className="text-[10px] text-gray-500">{day.total} DA</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -182,9 +200,7 @@ const Dashboard = ({ estActif, setEstActif }) => {
         </div>
       </section>
 
-      {/* ───── COMMANDES RÉCENTES ───── */}
       <section className="bg-white p-8 rounded-[20px] shadow-md">
-
         <h3 className="text-2xl mb-6">Commandes récentes</h3>
 
         <table className="w-full text-left">

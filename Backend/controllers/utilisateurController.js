@@ -1,18 +1,26 @@
 // controllers/utilisateurController.js
-const { Utilisateur } = require('../models');
-
+const { Utilisateur, Plat } = require('../models');
 
 const getRestaurateurs = async (req, res) => {
   try {
     const restaurateurs = await Utilisateur.findAll({
-      where: { role: 'restaurateur' },
+      where: { role: 'restaurateur', statut: 'approuve' },
       attributes: [
         'id', 'email', 'nomRestaurant', 'adresseRestaurant',
         'numeroRegistre', 'statut', 'nom', 'prenom', 'documentOfficiel'
       ]
     });
-    
-    res.json(restaurateurs);
+
+    const data = await Promise.all(restaurateurs.map(async (restaurateur) => {
+      const nombrePlats = await Plat.count({ where: { utilisateurId: restaurateur.id } });
+      return {
+        ...restaurateur.toJSON(),
+        nombrePlats,
+      };
+    }));
+
+    data.sort((a, b) => (b.nombrePlats || 0) - (a.nombrePlats || 0));
+    res.json(data);
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }

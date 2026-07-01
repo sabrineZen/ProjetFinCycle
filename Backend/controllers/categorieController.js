@@ -1,5 +1,22 @@
 const { Categorie, Plat } = require("../models");
 
+const buildImageUrl = (req, value) => {
+  if (!value) return null;
+  if (/^https?:\/\//i.test(value)) return value;
+
+  const clean = String(value).replace(/^uploads[\\/]/, "").replace(/^\/+/, "");
+  return `${req.protocol}://${req.get("host")}/uploads/${clean}`;
+};
+
+const serializeCategorie = (req, cat, extra = {}) => ({
+  id: cat.id,
+  nom: cat.nom,
+  description: cat.description,
+  couleur: cat.couleur || "#FCCEC1",
+  image: buildImageUrl(req, cat.image),
+  ...extra,
+});
+
 const getCategories = async (req, res) => {
   try {
     const categories = await Categorie.findAll();
@@ -18,24 +35,15 @@ const getCategories = async (req, res) => {
             col: "utilisateurId",
           });
 
-          return {
-            id: cat.id,
-            nom: cat.nom,
-            description: cat.description,
-            couleur: cat.couleur || "#FCCEC1",
-            image: cat.image || null,
+          return serializeCategorie(req, cat, {
             restaurants: restaurants || 0,
             plats: plats || 0,
-          };
+          });
         } catch (countErr) {
-          return {
-            id: cat.id,
-            nom: cat.nom,
-            description: cat.description,
-            couleur: cat.couleur || "#FCCEC1",
+          return serializeCategorie(req, cat, {
             restaurants: 0,
             plats: 0,
-          };
+          });
         }
       })
     );
@@ -51,20 +59,27 @@ const getCategorieById = async (req, res) => {
   try {
     const cat = await Categorie.findByPk(req.params.id);
     if (!cat) return res.status(404).json({ message: "Catégorie introuvable" });
-    res.json(cat);
+    res.json(serializeCategorie(req, cat));
   } catch (err) {
     res.status(500).json({ message: "Erreur serveur", detail: err.message });
   }
 };
 
 const createCategorie = async (req, res) => {
-  const { nom, description = "", couleur, image = "" } = req.body;
+  const { nom, description = "", couleur } = req.body;
   if (!nom?.trim() || !couleur?.trim())
     return res.status(400).json({ message: "Nom et couleur requis." });
 
   try {
-    const cat = await Categorie.create({ nom: nom.trim(), description, couleur, image });
-    res.status(201).json({ ...cat.dataValues, restaurants: 0, plats: 0 });
+    const imageValue = req.file ? req.file.filename : req.body.image || null;
+    const cat = await Categorie.create({
+      nom: nom.trim(),
+      description,
+      couleur,
+      image: imageValue,
+    });
+
+    res.status(201).json(serializeCategorie(req, cat, { restaurants: 0, plats: 0 }));
   } catch (err) {
     console.error("createCategorie erreur :", err.message);
     res.status(500).json({ message: "Erreur serveur", detail: err.message });
@@ -77,13 +92,15 @@ const updateCategorie = async (req, res) => {
     const cat = await Categorie.findByPk(req.params.id);
     if (!cat) return res.status(404).json({ message: "Catégorie introuvable" });
 
+    const imageValue = req.file ? req.file.filename : (image ?? cat.image);
+
     await cat.update({
       nom: nom ? nom.trim() : cat.nom,
       description: description ?? cat.description,
       couleur: couleur ?? cat.couleur,
-      image: image ?? cat.image,
+      image: imageValue,
     });
-    res.json(cat);
+    res.json(serializeCategorie(req, cat));
   } catch (err) {
     res.status(500).json({ message: "Erreur serveur", detail: err.message });
   }

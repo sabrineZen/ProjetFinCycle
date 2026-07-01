@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const path = require("path");
 const router  = express.Router();
 
 const {
@@ -9,19 +11,17 @@ const {
   deleteCategorie,
 } = require("../controllers/categorieController");
 
-// Vérifie que les fonctions sont bien importées
-console.log("✅ categorieController chargé :", {
-  getCategories:    typeof getCategories,
-  getCategorieById: typeof getCategorieById,
-  createCategorie:  typeof createCategorie,
-  updateCategorie:  typeof updateCategorie,
-  deleteCategorie:  typeof deleteCategorie,
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, "../uploads")),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
+
+const upload = multer({ storage });
 
 router.get("/",       getCategories);
 router.get("/:id",    getCategorieById);
-router.post("/",      createCategorie);
-router.put("/:id",    updateCategorie);
+router.post("/",      upload.single("image"), createCategorie);
+router.put("/:id",    upload.single("image"), updateCategorie);
 router.delete("/:id", deleteCategorie);
 
 module.exports = router;
