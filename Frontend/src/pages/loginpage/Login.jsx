@@ -145,8 +145,8 @@ export default function Login() {
       : "polygon(0 0, 100% 0, 90% 100%, 0 100%)";
   };
 
-  const inputClass = "w-full bg-[#FFF7F4] border border-[#BD897D] p-3 rounded-xl outline-none text-sm focus:ring-1 focus:ring-[#FF843D] transition-all";
-  const inputClassDesktop = "w-[85%] bg-[#FFF7F4] border border-[#BD897D] p-2 rounded-xl outline-none focus:ring-1 focus:ring-[#FF843D] transition-all";
+  const inputClass = "w-full bg-[#FFF7F4] border border-[#E7C2B2] p-3 rounded-2xl outline-none text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-[#FF843D] focus:border-[#FF843D] transition-all";
+  const inputClassDesktop = "w-[85%] bg-[#FFF7F4] border border-[#E7C2B2] p-3 rounded-2xl outline-none text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-[#FF843D] focus:border-[#FF843D] transition-all";
 
   if (isMobile) {
     return (
@@ -164,12 +164,13 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="w-full bg-[#FFF7F1] flex flex-col items-center pt-6 pb-10 px-6 shadow-2xl flex-1"
+        <div className="w-full bg-[#FFF7F1] flex flex-col items-center pt-6 pb-10 px-6 shadow-2xl flex-1 border border-orange-100"
           style={{ borderRadius: "36px 36px 0 0", marginTop: "-32px", zIndex: 10, position: "relative", overflowY: "auto" }}>
 
           <div className="w-full flex flex-col items-center gap-3 mb-4">
-            <div className="text-[#951418] font-bold cursor-pointer text-lg" onClick={() => setShowInscription(false)}>
-             <img src={logo} alt="Logo" className='w-12 h-12 md:w-15 md:h-14' />
+            <div className="flex items-center gap-2 text-[#951418] font-black cursor-pointer text-lg" onClick={() => setShowInscription(false)}>
+             <img src={logo} alt="Logo" className='w-12 h-12 md:w-15 md:h-14 rounded-2xl shadow-sm' />
+             <span className="tracking-wide">PLATIGO</span>
             </div>
             {showInscription && (
               <div className="flex bg-[#FFE2D3] rounded-full p-1 shadow-md">
@@ -234,11 +235,11 @@ export default function Login() {
 
           <div className="flex w-full gap-3 mb-4">
             <button onClick={() => { setShowInscription(!showInscription); setError(""); setFormData({}); }}
-              className="flex-1 bg-[#951418] cursor-pointer p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md text-sm">
+              className="flex-1 bg-[#951418] cursor-pointer p-2.5 rounded-2xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md text-sm">
               {showInscription ? "Annuler" : "Inscrire"}
             </button>
             <button onClick={handleSubmit} disabled={loading}
-              className="flex-1 bg-[#FF7031] p-2 cursor-pointer rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md text-sm">
+              className="flex-1 bg-[#FF7031] p-2.5 cursor-pointer rounded-2xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md text-sm">
               {loading ? "..." : showInscription ? "S'inscrire" : "Se connecter"}
             </button>
           </div>
@@ -272,7 +273,7 @@ export default function Login() {
       />
 
       <motion.div layout transition={slowTransition}
-        className={`relative z-10 bg-[#FFF7F1] w-237.5 h-145 rounded-[45px] flex p-2 shadow-2xl ${showInscription ? "flex-row-reverse" : "flex-row"}`}>
+        className={`relative z-10 bg-[#FFF7F1] w-237.5 h-145 rounded-[45px] flex p-2 shadow-[0_25px_70px_rgba(149,20,24,0.16)] border border-orange-100 ${showInscription ? "flex-row-reverse" : "flex-row"}`}>
 
         <motion.div layout transition={slowTransition} style={{ zIndex: 20 }} className="flex-[1.2] relative rounded-[40px] overflow-hidden">
           <motion.img key={index} initial={{ opacity: 0.8 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
@@ -290,11 +291,12 @@ export default function Login() {
         <motion.div layout transition={slowTransition} style={{ zIndex: 10 }} className="flex-1 p-8 flex flex-col items-center">
 
           <div className="w-full flex justify-between items-center mb-1">
-           <div className="ml-2 cursor-pointer" onClick={() => setShowInscription(false)}>
-                <img src={logo} alt="Logo" className="w-12 h-12 object-contain" />
+           <div className="ml-2 cursor-pointer flex items-center gap-2" onClick={() => setShowInscription(false)}>
+                <img src={logo} alt="Logo" className="w-12 h-12 object-contain rounded-2xl shadow-sm" />
+                <span className="text-[#951418] font-black tracking-wide">PLATIGO</span>
             </div>
             {showInscription && (
-              <div className="flex bg-[#FFE2D3] rounded-full p-1 shadow-md">
+              <div className="flex bg-[#FFE2D3] rounded-full p-1 shadow-sm border border-orange-100">
                 <button type="button" onClick={() => setRole("client")}
                   className={`px-4 py-1 cursor-pointer text-sm font-medium rounded-full transition ${role === "client" ? "bg-[#FF7031] text-white" : "bg-transparent text-[#951418]"}`}>
                   Client
@@ -312,7 +314,7 @@ export default function Login() {
               {role === "client" ? "Client" : "Restaurateur"}
             </h1>
           ) : (
-            <h1 className="text-[#951418] text-6xl mb-12 font-semibold mt-4">Welcome</h1>
+            <h1 className="text-[#951418] text-5xl md:text-6xl mb-10 font-semibold mt-4">Welcome</h1>
           )}
 
           <div className="w-full flex flex-col items-center gap-4 mb-2">
@@ -337,7 +339,7 @@ export default function Login() {
                     <input type="text" name="numeroRegistre" placeholder="Numéro de Registre du commerce" onChange={handleChange} autoComplete="off" className={inputClassDesktop} />
                     <div className="w-[85%] relative">
                       <input type="file" id="file-upload" onChange={handleFile} className="opacity-0 absolute inset-0 w-full h-full cursor-pointer" />
-                      <label htmlFor="file-upload" className="text-[#951418] block p-2 border border-[#BD897D] rounded-xl bg-[#FFF7F4] text-center cursor-pointer">
+                      <label htmlFor="file-upload" className="text-[#951418] block p-3 border border-[#E7C2B2] rounded-2xl bg-[#FFF7F4] text-center cursor-pointer shadow-sm hover:bg-[#fff2e9] transition">
                         Télécharger document officiel
                       </label>
                     </div>
@@ -362,11 +364,11 @@ export default function Login() {
 
           <div className="flex w-[88%] gap-6 mb-3 mt-1">
             <button onClick={() => { setShowInscription(!showInscription); setError(""); setFormData({}); }}
-              className="flex-1 cursor-pointer bg-[#951418] p-2 rounded-xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md">
+              className="flex-1 cursor-pointer bg-[#951418] p-2.5 rounded-2xl text-white font-bold hover:bg-[#7a1012] transition duration-100 shadow-md">
               {showInscription ? "Annuler" : "S'inscrire"}
             </button>
             <button onClick={handleSubmit} disabled={loading}
-              className="flex-1 cursor-pointer bg-[#FF7031] p-2 rounded-xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md">
+              className="flex-1 cursor-pointer bg-[#FF7031] p-2.5 rounded-2xl text-white font-bold hover:bg-[#e65f25] transition duration-100 shadow-md">
               {loading ? "Chargement..." : showInscription ? "S'inscrire" : "Se connecter"}
             </button>
           </div>
